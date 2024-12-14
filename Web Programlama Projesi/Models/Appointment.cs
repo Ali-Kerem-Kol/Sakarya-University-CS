@@ -1,42 +1,42 @@
-﻿namespace Web_Programlama_Projesi.Models
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using Web_Programlama_Projesi.Data;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
+namespace Web_Programlama_Projesi.Models
+{
     public class Appointment
     {
         [Key]
-        public int AppointmentId { get; set; }
+        public int Id { get; set; }
 
+        // Müşteri ile ilişki (N-1)
         [Required]
-        public int UserId { get; set; }
-        public User User { get; set; } // Randevuyu alan kullanıcı
+        [ForeignKey("Customer")]
+        public int CustomerId { get; set; }
+        public User Customer { get; set; } = null!;
 
+        // Çalışan ile ilişki (N-1)
         [Required]
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
-        public Employee Employee { get; set; } // Randevuyu sağlayan çalışan
+        public Employee Employee { get; set; } = null!;
+
+        // Salon ile ilişki (N-1)
+        [Required]
+        [ForeignKey("Salon")]
+        public int SalonId { get; set; }
+        public Salon Salon { get; set; } = null!;
 
         [Required]
-        public DateTime StartTime { get; set; } // Randevu başlangıç zamanı
+        [DataType(DataType.DateTime)] // Randevu başlangıç tarihi
+        public DateTime Date { get; set; }
 
         [Required]
-        public DateTime EndTime { get; set; } // Randevu bitiş zamanı
-
-        [Required, MaxLength(200)]
-        public string Service { get; set; } // Alınan hizmet (örneğin saç kesimi)
+        [Range(15, 240)] // Randevu süresi (15dk ile 240dk arasında)
+        public int Duration { get; set; } = 60;
 
         [Required]
-        public decimal Price { get; set; } // Ücret
-
-
-        public static bool IsTimeSlotAvailable(KuaforContext context, int employeeId, DateTime startTime, DateTime endTime)
-        {
-            return !context.Appointments.Any(a =>
-                a.EmployeeId == employeeId &&
-                ((startTime >= a.StartTime && startTime < a.EndTime) ||
-                 (endTime > a.StartTime && endTime <= a.EndTime)));
-        }
-
+        [Column(TypeName = "decimal(18,2)")] // Hassasiyet ve ölçek belirtildi
+        public decimal Price { get; set; }
     }
+
 }

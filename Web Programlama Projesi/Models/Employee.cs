@@ -1,30 +1,34 @@
-﻿namespace Web_Programlama_Projesi.Models
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
+namespace Web_Programlama_Projesi.Models
+{
     public class Employee
     {
         [Key]
-        public int EmployeeId { get; set; }
-
-        [Required, MaxLength(50)]
-        public string Name { get; set; } // Çalışan adı
-
-        [Required, MaxLength(50)]
-        public string Username { get; set; } // Çalışan kullanıcı adı
-
-        [Required, MaxLength(100)]
-        public string Password { get; set; } // Şifre
-
-        [Required, MaxLength(200)]
-        public string Expertise { get; set; } // Uzmanlık alanı
+        public int Id { get; set; }
 
         [Required]
-        public int SalonId { get; set; } // Çalışanın bağlı olduğu salon
-        public Salon Salon { get; set; }
+        [MaxLength(50)]
+        public string Username { get; set; } = null!;
 
-        public ICollection<Appointment> Appointments { get; set; } // Çalışanın randevuları
+        [Required]
+        [MaxLength(255)]
+        public string PasswordHash { get; set; } = null!;
+
+        [Required]
+        [MaxLength(100)] // Uzmanlık alanı (örn: Saç kesimi)
+        public string Expertise { get; set; } = null!;
+
+        public bool IsActive { get; set; } = true;
+
+        // Salon ile ilişki (N-1)
+        [ForeignKey("Salon")] // Foreign Key
+        public int? SalonId { get; set; }
+        public Salon? Salon { get; set; }
+
+        // Çalışanın sahip olabileceği randevular (1-N İlişkisi)
+        public ICollection<Appointment>? Appointments { get; set; }
     }
+
 }

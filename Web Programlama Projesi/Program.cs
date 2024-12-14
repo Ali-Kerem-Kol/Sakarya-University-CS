@@ -4,7 +4,7 @@ using Web_Programlama_Projesi.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Veritabaný baðlantý dizesini doðru þekilde alýyoruz
-builder.Services.AddDbContext<KuaforContext>(options =>
+builder.Services.AddDbContext<KuaferContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // MVC'yi ekle

@@ -1,42 +1,26 @@
-﻿namespace Web_Programlama_Projesi.Models
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace Web_Programlama_Projesi.Models
+{
     public class Salon
     {
         [Key]
-        public int SalonId { get; set; }
-
-        [Required, MaxLength(100)]
-        public string Name { get; set; } // Salon adı
-
-        [Required, MaxLength(200)]
-        public string Location { get; set; } // Salonun adresi
+        public int Id { get; set; }
 
         [Required]
-        public TimeSpan StartHour { get; set; } // Çalışma başlangıç saati
+        [MaxLength(100)] // Salon adı için maksimum uzunluk
+        public string Name { get; set; } = null!;
 
         [Required]
-        public TimeSpan EndHour { get; set; } // Çalışma bitiş saati
+        [MaxLength(50)] // Örn: "09:00-17:00" formatında çalışma saatleri
+        public string WorkingHours { get; set; } = null!;
 
-        [Required, Range(15, 120)]
-        public int TimeSlotDuration { get; set; } // Randevu aralığı (dakika cinsinden)
+        [Required]
+        [Range(15, 240)] // Periyot için aralık (15dk ile 240dk arasında)
+        public int Interval { get; set; } = 60;
 
-        public ICollection<Employee> Employees { get; set; } // Salondaki çalışanlar
-
-
-        public IEnumerable<TimeSpan> GenerateTimeSlots()
-        {
-            var slots = new List<TimeSpan>();
-            var currentTime = StartHour;
-            while (currentTime < EndHour)
-            {
-                slots.Add(currentTime);
-                currentTime = currentTime.Add(TimeSpan.FromMinutes(TimeSlotDuration));
-            }
-            return slots;
-        }
-
+        // Salona bağlı çalışanlar (1-N İlişkisi)
+        public ICollection<Employee>? Employees { get; set; }
     }
+
 }

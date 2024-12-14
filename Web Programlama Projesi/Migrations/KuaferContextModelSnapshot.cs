@@ -10,8 +10,8 @@ using Web_Programlama_Projesi.Data;
 
 namespace Web_Programlama_Projesi.Migrations
 {
-    [DbContext(typeof(KuaforContext))]
-    partial class KuaforContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(KuaferContext))]
+    partial class KuaferContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -24,65 +24,63 @@ namespace Web_Programlama_Projesi.Migrations
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Appointment", b =>
                 {
-                    b.Property<int>("AppointmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppointmentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Service")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("SalonId")
                         .HasColumnType("int");
 
-                    b.HasKey("AppointmentId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SalonId");
 
                     b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Employee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Expertise")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("SalonId")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("SalonId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -90,7 +88,7 @@ namespace Web_Programlama_Projesi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("SalonId");
 
@@ -99,98 +97,116 @@ namespace Web_Programlama_Projesi.Migrations
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Salon", b =>
                 {
-                    b.Property<int>("SalonId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalonId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<TimeSpan>("EndHour")
-                        .HasColumnType("time");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("Interval")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<TimeSpan>("StartHour")
-                        .HasColumnType("time");
+                    b.Property<string>("WorkingHours")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TimeSlotDuration")
-                        .HasColumnType("int");
-
-                    b.HasKey("SalonId");
+                    b.HasKey("Id");
 
                     b.ToTable("Salons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Interval = 60,
+                            Name = "Varsayılan Salon",
+                            WorkingHours = "09:00-17:00"
+                        });
                 });
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Password")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            Password = "1234",
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 12, 14, 12, 9, 16, 783, DateTimeKind.Local).AddTicks(2804),
+                            IsActive = true,
+                            PasswordHash = "admin123",
                             Role = "Admin",
-                            Username = "Admin"
+                            Username = "admin"
                         });
                 });
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Appointment", b =>
                 {
+                    b.HasOne("Web_Programlama_Projesi.Models.User", "Customer")
+                        .WithMany("Appointments")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Web_Programlama_Projesi.Models.Employee", "Employee")
                         .WithMany("Appointments")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web_Programlama_Projesi.Models.User", "User")
+                    b.HasOne("Web_Programlama_Projesi.Models.Salon", "Salon")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SalonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Customer");
+
                     b.Navigation("Employee");
 
-                    b.Navigation("User");
+                    b.Navigation("Salon");
                 });
 
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Employee", b =>
                 {
                     b.HasOne("Web_Programlama_Projesi.Models.Salon", "Salon")
                         .WithMany("Employees")
-                        .HasForeignKey("SalonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalonId");
 
                     b.Navigation("Salon");
                 });
@@ -203,6 +219,11 @@ namespace Web_Programlama_Projesi.Migrations
             modelBuilder.Entity("Web_Programlama_Projesi.Models.Salon", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("Web_Programlama_Projesi.Models.User", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }
