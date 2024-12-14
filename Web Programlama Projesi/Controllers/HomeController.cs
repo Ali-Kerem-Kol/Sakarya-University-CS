@@ -6,7 +6,7 @@ namespace Web_Programlama_Projesi.Controllers
 {
     public class HomeController : Controller
     {
-
+        // Selamun aleykum beyler
         private readonly KuaforContext _context;
 
         public HomeController(KuaforContext context)
