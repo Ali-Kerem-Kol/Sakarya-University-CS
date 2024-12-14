@@ -14,19 +14,19 @@
 
         [Required]
         [MaxLength(255)] // Şifre için maksimum uzunluk
-        public string PasswordHash { get; set; } = null!;
+        public string Password { get; set; } = null!; // Şifreyi burada tutacağız
 
         [Required]
-        [MaxLength(20)] // "Admin" veya "User" rollerini tutar
-        public string Role { get; set; } = "User";
+        [MaxLength(20)] // Rol: Admin, User veya Employee
+        public string Role { get; set; } = "User"; // Varsayılan: User
 
         public bool IsActive { get; set; } = true; // Kullanıcı aktif mi?
 
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-
         // Kullanıcının alabileceği randevular (1-N İlişkisi)
         public ICollection<Appointment>? Appointments { get; set; }
+
+        // Çalışan bilgileri (1-1 İlişki)
+        public Employee? EmployeeDetails { get; set; }
     }
 
 }

@@ -5,22 +5,19 @@ namespace Web_Programlama_Projesi.Models
 {
     public class Employee
     {
-        [Key]
+        [Key] // Birincil anahtar
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string Username { get; set; } = null!;
-
-        [Required]
-        [MaxLength(255)]
-        public string PasswordHash { get; set; } = null!;
 
         [Required]
         [MaxLength(100)] // Uzmanlık alanı (örn: Saç kesimi)
         public string Expertise { get; set; } = null!;
 
         public bool IsActive { get; set; } = true;
+
+        // User tablosuyla bire bir ilişki
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
         // Salon ile ilişki (N-1)
         [ForeignKey("Salon")] // Foreign Key
@@ -30,5 +27,4 @@ namespace Web_Programlama_Projesi.Models
         // Çalışanın sahip olabileceği randevular (1-N İlişkisi)
         public ICollection<Appointment>? Appointments { get; set; }
     }
-
 }

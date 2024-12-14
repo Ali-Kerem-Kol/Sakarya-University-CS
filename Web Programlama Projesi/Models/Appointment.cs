@@ -37,6 +37,10 @@ namespace Web_Programlama_Projesi.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")] // Hassasiyet ve ölçek belirtildi
         public decimal Price { get; set; }
+
+        // Randevu onay durumu: true = onaylı, false = onaysız (Burada true olarak ayarlıyoruz)
+        public bool IsApproved { get; set; } = true;  // Varsayılan olarak randevu onaylı
+
     }
 
 }

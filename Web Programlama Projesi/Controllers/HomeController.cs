@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.EntityFrameworkCore;
 using Web_Programlama_Projesi.Data;
 using Web_Programlama_Projesi.Models;
 
@@ -6,7 +8,7 @@ namespace Web_Programlama_Projesi.Controllers
 {
     public class HomeController : Controller
     {
-        // Selamun aleykum beyler
+
         private readonly KuaferContext _context;
 
         public HomeController(KuaferContext context)
@@ -14,8 +16,22 @@ namespace Web_Programlama_Projesi.Controllers
             _context = context;
         }
 
+        // Ana sayfa
         public IActionResult Index()
         {
+            // Kullanýcýnýn giriþ yapýp yapmadýðýný kontrol et
+            var username = HttpContext.Session.GetString("Username");
+
+            // Giriþ yapmýþsa, bilgiyi ViewData'ya gönder
+            if (username != null)
+            {
+                ViewData["Username"] = username;
+            }
+            else
+            {
+                ViewData["Username"] = null; // Giriþ yapmamýþsa null olarak gönder
+            }
+
             return View();
         }
 
@@ -23,6 +39,134 @@ namespace Web_Programlama_Projesi.Controllers
         {
             return View();
         }
+
+
+        //----------------------------Register--------------------------------------------------------
+        // Kullanýcý Kayýt Sayfasýna Yönlendiren GET Aksiyonu
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // Kullanýcý Kayýt Ýþlemi Gerçekleþtiren POST Aksiyonu
+        [HttpPost]
+        public async Task<IActionResult> Register(User user)
+        {
+            // Kullanýcý adý kontrolü
+            if (_context.Users.Any(u => u.Username == user.Username))
+            {
+                ModelState.AddModelError("Username", "Bu kullanýcý adý zaten alýnmýþ.");
+                return View(user);  // Hata varsa, formu tekrar gösteriyoruz
+            }
+
+            // Þifreyi ve diðer verileri veritabanýna kaydediyoruz
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Users.Add(user);  // Yeni kullanýcýyý ekliyoruz
+                    await _context.SaveChangesAsync();  // Veritabanýna kaydediyoruz
+                    return RedirectToAction("Index", "Home");  // Ana sayfaya yönlendiriyoruz
+                }
+                catch (Exception ex)
+                {
+                    // Hata mesajý ekliyoruz
+                    ModelState.AddModelError("", "Veritabanýna kaydetme iþlemi baþarýsýz oldu: " + ex.Message);
+                }
+            }
+
+            // Eðer model geçerli deðilse, formu tekrar gösteriyoruz
+            return View(user);
+        }
+        //----------------------------Register--------------------------------------------------------
+        
+        
+        //----------------------------Login--------------------------------------------------------
+        // Giriþ sayfasýna yönlendiren GET aksiyonu
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // Kullanýcý giriþ iþlemi
+        [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+            // Kullanýcý kontrolü ve þifre doðrulama
+            if (user == null || user.Password != password)
+            {
+                ModelState.AddModelError(string.Empty, "Geçersiz kullanýcý adý veya þifre.");
+                return View();
+            }
+
+            // Kullanýcý bilgilerini session'da saklýyoruz
+            HttpContext.Session.SetString("Username", user.Username);
+            HttpContext.Session.SetString("Role", user.Role); // Rolü sakla
+
+            // ViewData'ya aktarým
+            ViewData["Username"] = user.Username;
+            ViewData["Role"] = user.Role;
+
+            // Rol bazlý yönlendirme
+            if (user.Role == "Admin")
+            {
+                return RedirectToAction("AdminDashboard", "Admin");
+            }
+            else if (user.Role == "User")
+            {
+                return RedirectToAction("UserDashboard", "Home");
+            }
+            else
+            {
+                return RedirectToAction("EmployeeDashboard", "Employee");
+            }
+        }
+
+        //----------------------------Login--------------------------------------------------------
+
+
+        //----------------------------Logout--------------------------------------------------------
+        // Çýkýþ metodu
+        public IActionResult Logout()
+        {
+            // Session temizleme
+            HttpContext.Session.Clear();
+
+            // ViewData'yý sýfýrla
+            ViewData["Username"] = null;
+            ViewData["Role"] = null;
+
+            // Ana sayfaya yönlendirme
+            return RedirectToAction("Index");
+        }
+        //----------------------------Logout--------------------------------------------------------
+
+
+        //----------------------------Admin Dashboard--------------------------------------------------------
+        public IActionResult AdminDashboard()
+        {
+            return View();
+        }
+        //----------------------------Admin Dashboard--------------------------------------------------------
+        
+        
+        //----------------------------User Dashboard--------------------------------------------------------
+        public IActionResult UserDashboard()
+        {
+            return View();
+        }
+        //----------------------------User Dashboard--------------------------------------------------------
+        
+        
+        //----------------------------Employee Dashboard--------------------------------------------------------
+        public IActionResult EmployeeDashboard()
+        {
+            return View();
+        }
+        //----------------------------Employee Dashboard--------------------------------------------------------
 
     }
 }

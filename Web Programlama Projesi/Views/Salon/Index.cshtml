@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Salonlar";
+    var salonWithAvailableSlots = ViewData["SalonWithAvailableSlots"] as List<dynamic>;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<script>
+    // Zaman dilimi kutusuna tıklama işlemi
+    $(".time-slot").click(function () {
+        var slotTime = $(this).data("slot");
+        var salonId = $(this).data("salon");
+
+        // Saat dilimini formda göster
+        $("#slotTime").val(slotTime);
+
+        // Formu göster
+        $("#appointmentForm").show();
+    });
+</script>
+
+@foreach (var salonItem in salonWithAvailableSlots)
+{
+    var salon = salonItem.Salon;
+    var availableSlots = salonItem.AvailableSlots;
+
+    <div>
+        <h3>@salon.Name</h3>
+        <p>Çalışma Saatleri: @salon.WorkingHours</p>
+        <p>Periyot: @salon.Interval dakika</p>
+
+        <div class="row">
+            @foreach (var slot in availableSlots)
+            {
+                // Zaman dilimlerini kutucuk olarak göstermek için
+                var isAvailable = true; // Burada dolu olanları kontrol etmemiz gerek
+                var slotTime = slot.ToString("HH:mm");
+                <div class="col-3">
+                    <div class="time-slot @((isAvailable ? "available" : "unavailable"))" data-slot="@slotTime" data-salon="@salon.Id" style="cursor: pointer; border: 1px solid #ccc; padding: 10px; text-align: center;">
+                        @slotTime
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Kullanıcı saat dilimine tıkladığında, çalışandan seçim yapma formunu göstereceğiz -->
+        <div id="appointmentForm" style="display:none;">
+            <form method="post" action="@Url.Action("BookAppointment", "Salon")">
+                <input type="hidden" name="salonId" value="@salon.Id" />
+                <input type="hidden" name="slotTime" id="slotTime" />
+                <label for="employeeId">Çalışan Seçin:</label>
+                <select name="employeeId" id="employeeId">
+                    @foreach (var employee in salon.Employees)
+                    {
+                        <option value="@employee.Id">@employee.Username</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Randevu Al</button>
+            </form>
+        </div>
+    </div>
+}

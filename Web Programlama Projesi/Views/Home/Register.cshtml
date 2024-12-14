@@ -1,27 +1,23 @@
-﻿@model RegisterViewModel
+﻿@model User
 
-<h2>Kayıt Ol</h2>
-<form asp-action="Register" asp-controller="Home" method="post">
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
     <div class="form-group">
         <label for="Username">Kullanıcı Adı</label>
-        <input asp-for="Username" class="form-control" id="Username" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+        <input type="text" class="form-control" id="Username" name="Username" required />
+        @if (ViewData.ModelState["Username"]?.Errors.Count > 0)
+        {
+            <span class="text-danger">@ViewData.ModelState["Username"]?.Errors[0]?.ErrorMessage</span>
+        }
     </div>
     <div class="form-group">
         <label for="Password">Şifre</label>
-        <input asp-for="Password" type="password" class="form-control" id="Password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="ConfirmPassword">Şifre Tekrarı</label>
-        <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <input type="password" class="form-control" id="Password" name="Password" required />
     </div>
     <button type="submit" class="btn btn-primary">Kayıt Ol</button>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

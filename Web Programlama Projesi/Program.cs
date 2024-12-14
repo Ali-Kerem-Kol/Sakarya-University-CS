@@ -3,42 +3,30 @@ using Web_Programlama_Projesi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Veritabaný baðlantý dizesini doðru þekilde alýyoruz
+// PostgreSQL veritabaný baðlantýsý için DbContext yapýlandýrmasý
 builder.Services.AddDbContext<KuaferContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// MVC'yi ekle
-builder.Services.AddControllersWithViews();
-
-//----------------------------------------------
-// Authentication ve Authorization ekleme
-builder.Services.AddAuthentication("CookieAuth")
-    .AddCookie("CookieAuth", options =>
-    {
-        options.LoginPath = "/Account/Login"; // Kimlik doðrulama gerektiren sayfalar için yönlendirme
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz eriþimler için yönlendirme
-    });
-
-builder.Services.AddAuthorization(options =>
+// Session'ý yapýlandýrýyoruz
+builder.Services.AddDistributedMemoryCache(); // Session için bellek tabanlý cache
+builder.Services.AddSession(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
-    options.AddPolicy("Customer", policy => policy.RequireRole("Customer"));
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi (30 dakika)
+    options.Cookie.HttpOnly = true; // Sadece HTTP üzerinden eriþilebilir
+    options.Cookie.IsEssential = true; // Çerez gerekli
 });
 
+// Add services to the container.
 builder.Services.AddControllersWithViews();
-//----------------------------------------------
-
 
 var app = builder.Build();
 
-//----------------------------------------------
-// Middleware ekleme
-app.UseAuthentication(); // Authentication mekanizmasýný aktif hale getirir
-app.UseAuthorization();  // Authorization mekanizmasýný aktif hale getirir
-//----------------------------------------------
-
-if (!app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -49,7 +37,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseAuthorization();
+// Session middleware'ini kullanýyoruz
+app.UseSession();
+
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

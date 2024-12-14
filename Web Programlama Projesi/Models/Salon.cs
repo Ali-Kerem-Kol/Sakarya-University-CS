@@ -22,5 +22,4 @@ namespace Web_Programlama_Projesi.Models
         // Salona bağlı çalışanlar (1-N İlişkisi)
         public ICollection<Employee>? Employees { get; set; }
     }
-
 }

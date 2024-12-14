@@ -4,5 +4,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
+    @if (ViewData["Username"] != null)
+    {
+        <p>Hoş geldiniz, @ViewData["Username"]!</p>
+    }
+    else
+    {
+        <p>Hoş geldiniz! Lütfen giriş yapın.</p>
+    }
+
     <p>Learn about <a href="https://aka.ms/aspnetcore">building Web apps with ASP.NET Core</a>.</p>
 </div>
