@@ -1,62 +1,140 @@
 ﻿@{
     ViewData["Title"] = "Salonlar";
-    var salonWithAvailableSlots = ViewData["SalonWithAvailableSlots"] as List<dynamic>;
+    var salonWithAvailableSlots = TempData["SalonWithAvailableSlots"] != null ? TempData["SalonWithAvailableSlots"] as List<dynamic> : new List<dynamic>();
+    var employees = TempData["Employees"] != null ? TempData["Employees"] as List<Employee> : new List<Employee>();
 }
 
-<h2>@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    // Zaman dilimi kutusuna tıklama işlemi
-    $(".time-slot").click(function () {
-        var slotTime = $(this).data("slot");
-        var salonId = $(this).data("salon");
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-        // Saat dilimini formda göster
-        $("#slotTime").val(slotTime);
+        .col-3 {
+            width: 23%;
+            margin-right: 2%;
+            margin-bottom: 10px;
+        }
 
-        // Formu göster
-        $("#appointmentForm").show();
-    });
-</script>
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-@foreach (var salonItem in salonWithAvailableSlots)
-{
-    var salon = salonItem.Salon;
-    var availableSlots = salonItem.AvailableSlots;
-
-    <div>
-        <h3>@salon.Name</h3>
-        <p>Çalışma Saatleri: @salon.WorkingHours</p>
-        <p>Periyot: @salon.Interval dakika</p>
-
-        <div class="row">
-            @foreach (var slot in availableSlots)
-            {
-                // Zaman dilimlerini kutucuk olarak göstermek için
-                var isAvailable = true; // Burada dolu olanları kontrol etmemiz gerek
-                var slotTime = slot.ToString("HH:mm");
-                <div class="col-3">
-                    <div class="time-slot @((isAvailable ? "available" : "unavailable"))" data-slot="@slotTime" data-salon="@salon.Id" style="cursor: pointer; border: 1px solid #ccc; padding: 10px; text-align: center;">
-                        @slotTime
-                    </div>
-                </div>
+            .time-slot.btn-success {
+                background-color: green;
+                color: white;
             }
-        </div>
 
-        <!-- Kullanıcı saat dilimine tıkladığında, çalışandan seçim yapma formunu göstereceğiz -->
-        <div id="appointmentForm" style="display:none;">
-            <form method="post" action="@Url.Action("BookAppointment", "Salon")">
-                <input type="hidden" name="salonId" value="@salon.Id" />
-                <input type="hidden" name="slotTime" id="slotTime" />
-                <label for="employeeId">Çalışan Seçin:</label>
-                <select name="employeeId" id="employeeId">
-                    @foreach (var employee in salon.Employees)
+            .time-slot.btn-danger {
+                background-color: red;
+                color: white;
+                cursor: not-allowed; /* Tıklanamaz olmasını sağlıyoruz */
+            }
+
+            .time-slot:hover {
+                opacity: 0.8;
+            }
+
+        button {
+            width: 100%;
+            padding: 10px;
+        }
+
+        #appointmentForm {
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .form-select {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>@ViewData["Title"]</h2>
+
+    <script>
+        function selectTimeSlot(timeSlotId, salonId) {
+            $("#timeSlotId").val(timeSlotId);
+            $("#salonId").val(salonId);
+            $("#appointmentForm").show();  // Randevu formunu göster
+        }
+    </script>
+
+    @if (salonWithAvailableSlots != null && salonWithAvailableSlots.Any())
+    {
+        @foreach (var salonItem in salonWithAvailableSlots)
+        {
+            var salon = salonItem.Salon;
+            var availableSlots = salonItem.AvailableSlots;
+
+            <div>
+                <h3>@salon.Name</h3>
+                <p>Çalışma Saatleri: @salon.WorkingHours</p>
+
+                <div class="row">
+                    @foreach (var timeSlot in availableSlots)
                     {
-                        <option value="@employee.Id">@employee.Username</option>
+                        var slotTime = timeSlot.StartTime + " - " + timeSlot.EndTime;
+                        var isAvailable = timeSlot.IsAvailable;
+
+                        <div class="col-3 mb-2">
+                            <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
+                            @(!isAvailable ? "disabled" : "")
+                                    onclick="selectTimeSlot('@timeSlot.Id', '@salon.Id')">
+                                @slotTime
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Salonlar ve boş zaman dilimleri bulunamadı.</p>
+    }
+
+    <div id="appointmentForm">
+        <h4>Randevu Al</h4>
+        <form method="post" action="@Url.Action("BookAppointment", "Salon")">
+            <input type="hidden" id="salonId" name="salonId" />
+            <input type="hidden" id="timeSlotId" name="timeSlotId" />
+
+            <div class="mb-3">
+                <label for="employeeId" class="form-label">Çalışan Seçin:</label>
+                <select name="employeeId" id="employeeId" class="form-select">
+                    @foreach (var employee in employees)
+                    {
+                        <option value="@employee.Id">@employee.User.Username - @employee.Expertise</option>
                     }
                 </select>
-                <button type="submit" class="btn btn-primary">Randevu Al</button>
-            </form>
-        </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Randevu Al</button>
+        </form>
     </div>
-}
+
+</body>
+</html>

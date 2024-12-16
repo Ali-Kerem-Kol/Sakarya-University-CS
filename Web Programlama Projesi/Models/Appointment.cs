@@ -8,39 +8,23 @@ namespace Web_Programlama_Projesi.Models
         [Key]
         public int Id { get; set; }
 
-        // Müşteri ile ilişki (N-1)
         [Required]
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public User Customer { get; set; } = null!;
-
-        // Çalışan ile ilişki (N-1)
-        [Required]
-        [ForeignKey("Employee")]
-        public int EmployeeId { get; set; }
-        public Employee Employee { get; set; } = null!;
-
-        // Salon ile ilişki (N-1)
-        [Required]
-        [ForeignKey("Salon")]
-        public int SalonId { get; set; }
-        public Salon Salon { get; set; } = null!;
+        public int TimeSlotId { get; set; }  // Hangi zaman dilimine ait
+        public TimeSlot TimeSlot { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)] // Randevu başlangıç tarihi
-        public DateTime Date { get; set; }
+        public int CustomerId { get; set; }  // Randevu sahibinin id'si
+        public User Customer { get; set; }
 
         [Required]
-        [Range(15, 240)] // Randevu süresi (15dk ile 240dk arasında)
-        public int Duration { get; set; } = 60;
+        public int EmployeeId { get; set; }  // Çalışanın id'si
+        public Employee Employee { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")] // Hassasiyet ve ölçek belirtildi
-        public decimal Price { get; set; }
+        public decimal Price { get; set; }  // Fiyat bilgisi
 
-        // Randevu onay durumu: true = onaylı, false = onaysız (Burada true olarak ayarlıyoruz)
-        public bool IsApproved { get; set; } = true;  // Varsayılan olarak randevu onaylı
-
+        public bool IsApproved { get; set; } = true;  // Randevu onaylı mı?
     }
+
 
 }

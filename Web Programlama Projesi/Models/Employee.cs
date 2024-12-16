@@ -19,10 +19,11 @@ namespace Web_Programlama_Projesi.Models
         public int UserId { get; set; }
         public User User { get; set; } = null!;
 
-        // Salon ile ilişki (N-1)
+        /*
         [ForeignKey("Salon")] // Foreign Key
         public int? SalonId { get; set; }
         public Salon? Salon { get; set; }
+        */
 
         // Çalışanın sahip olabileceği randevular (1-N İlişkisi)
         public ICollection<Appointment>? Appointments { get; set; }

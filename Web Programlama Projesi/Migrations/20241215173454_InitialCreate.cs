@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -20,9 +19,8 @@ namespace Web_Programlama_Projesi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    WorkingHours = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Interval = table.Column<int>(type: "integer", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    WorkingHours = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,6 +44,28 @@ namespace Web_Programlama_Projesi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TimeSlots",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SalonId = table.Column<int>(type: "integer", nullable: false),
+                    StartTime = table.Column<string>(type: "text", nullable: false),
+                    EndTime = table.Column<string>(type: "text", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeSlots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeSlots_Salons_SalonId",
+                        column: x => x.SalonId,
+                        principalTable: "Salons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -53,17 +73,11 @@ namespace Web_Programlama_Projesi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Expertise = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    SalonId = table.Column<int>(type: "integer", nullable: true)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_Salons_SalonId",
-                        column: x => x.SalonId,
-                        principalTable: "Salons",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_Users_UserId",
                         column: x => x.UserId,
@@ -78,12 +92,10 @@ namespace Web_Programlama_Projesi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TimeSlotId = table.Column<int>(type: "integer", nullable: false),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
-                    SalonId = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Duration = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -96,9 +108,9 @@ namespace Web_Programlama_Projesi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_Salons_SalonId",
-                        column: x => x.SalonId,
-                        principalTable: "Salons",
+                        name: "FK_Appointments_TimeSlots_TimeSlotId",
+                        column: x => x.TimeSlotId,
+                        principalTable: "TimeSlots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -111,8 +123,12 @@ namespace Web_Programlama_Projesi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Salons",
-                columns: new[] { "Id", "Interval", "Name", "WorkingHours" },
-                values: new object[] { 1, 60, "Sac kesim salonu", "09:00-17:00" });
+                columns: new[] { "Id", "Name", "WorkingHours" },
+                values: new object[,]
+                {
+                    { 1, "Saç Kesim Salonu", "09:00-17:00" },
+                    { 2, "Güzellik Salonu", "10:00-18:00" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -126,8 +142,21 @@ namespace Web_Programlama_Projesi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "Expertise", "IsActive", "SalonId", "UserId" },
-                values: new object[] { 1, "Saç Kesimi", true, 1, 3 });
+                columns: new[] { "Id", "Expertise", "IsActive", "UserId" },
+                values: new object[] { 1, "Saç Kesimi", true, 3 });
+
+            migrationBuilder.InsertData(
+                table: "TimeSlots",
+                columns: new[] { "Id", "EndTime", "IsAvailable", "SalonId", "StartTime" },
+                values: new object[,]
+                {
+                    { 1, "10:00", true, 1, "09:00" },
+                    { 2, "11:00", true, 1, "10:00" },
+                    { 3, "12:00", true, 1, "11:00" },
+                    { 4, "11:00", true, 2, "10:00" },
+                    { 5, "12:00", true, 2, "11:00" },
+                    { 6, "13:00", true, 2, "12:00" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_CustomerId",
@@ -140,20 +169,20 @@ namespace Web_Programlama_Projesi.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_SalonId",
+                name: "IX_Appointments_TimeSlotId",
                 table: "Appointments",
-                column: "SalonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_SalonId",
-                table: "Employees",
-                column: "SalonId");
+                column: "TimeSlotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_UserId",
                 table: "Employees",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSlots_SalonId",
+                table: "TimeSlots",
+                column: "SalonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",
@@ -172,10 +201,13 @@ namespace Web_Programlama_Projesi.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Salons");
+                name: "TimeSlots");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Salons");
         }
     }
 }
