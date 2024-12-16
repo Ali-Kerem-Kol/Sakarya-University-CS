@@ -1,0 +1,178 @@
+﻿<h2 class="dashboard-title">Kullanıcı Paneli</h2>
+
+<div class="dashboard-container">
+    <!-- Kullanıcı Bilgileri Formu -->
+    <div class="form-container">
+        <h3>Bilgileriniz</h3>
+        <form asp-action="UpdateUser" method="post">
+            <label for="Username">Kullanıcı Adı:</label>
+            <input type="text" id="Username" name="Username" value="@ViewData["Username"]" disabled required />
+
+            <label for="Password">Şifre:</label>
+            <input type="password" id="Password" name="Password" required />
+
+            @if (ViewData["PasswordErrorMessage"] != null)
+            {
+                <div class="error-message">@ViewData["PasswordErrorMessage"]</div>
+            }
+
+            <button type="submit" class="btn-update">Bilgileri Güncelle</button>
+        </form>
+    </div>
+
+    <!-- Çizgi Ayrıcı -->
+    <div class="divider"></div>
+
+    <!-- Randevular Tablosu -->
+    <div class="appointments-container">
+        <h3>Randevularınız</h3>
+        <table class="appointments-table">
+            <thead>
+                <tr>
+                    <th>Randevu ID</th>
+                    <th>Tarih ve Saat</th>
+                    <th>Fiyat</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewData["Appointments"] != null)
+                {
+                    foreach (var appointment in (List<Appointment>)ViewData["Appointments"])
+                    {
+                        <tr>
+                            <td>@appointment.Id</td>
+                            <td>@appointment.TimeSlot.StartTime - @appointment.TimeSlot.EndTime</td>
+                            <td>@appointment.Price</td>
+                            <td>
+                                <form asp-action="DeleteAppointment" method="post">
+                                    <input type="hidden" name="AppointmentId" value="@appointment.Id" />
+                                    <button type="submit" class="btn-delete">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- CSS -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dashboard-title {
+        text-align: center;
+        color: #333;
+        margin-top: 30px;
+    }
+
+    .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container,
+    .appointments-container {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .error-message {
+        color: red;
+        margin-bottom: 10px;
+    }
+
+    .btn-update {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-update:hover {
+            background-color: #45a049;
+        }
+
+    .btn-delete {
+        background-color: #f44336; /* Kırmızı renk */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-delete:hover {
+            background-color: #d32f2f; /* Koyu kırmızı hover efekti */
+        }
+
+
+    .divider {
+        width: 100%;
+        height: 1px;
+        background-color: #ddd;
+        margin: 30px 0;
+    }
+
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .appointments-table th,
+        .appointments-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .appointments-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .appointments-table tr:hover {
+            background-color: #f1f1f1;
+        }
+</style>

@@ -16,20 +16,25 @@ namespace Web_Programlama_Projesi.Controllers
             _context = context;
         }
 
+
+
         // Ana sayfa
         public IActionResult Index()
         {
             // Kullanýcýnýn giriþ yapýp yapmadýðýný kontrol et
             var username = HttpContext.Session.GetString("Username");
+            var role = HttpContext.Session.GetString("Role");
 
             // Giriþ yapmýþsa, bilgiyi ViewData'ya gönder
             if (username != null)
             {
                 ViewData["Username"] = username;
+                ViewData["Role"] = role;
             }
             else
             {
                 ViewData["Username"] = null; // Giriþ yapmamýþsa null olarak gönder
+                ViewData["Role"] = null;
             }
 
             return View();
@@ -90,7 +95,6 @@ namespace Web_Programlama_Projesi.Controllers
 
         // Kullanýcý giriþ iþlemi
         [HttpPost]
-        [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -105,24 +109,15 @@ namespace Web_Programlama_Projesi.Controllers
             // Kullanýcý bilgilerini session'da saklýyoruz
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.Role); // Rolü sakla
+            HttpContext.Session.SetInt32("Id", user.Id);
 
             // ViewData'ya aktarým
             ViewData["Username"] = user.Username;
             ViewData["Role"] = user.Role;
+            ViewData["Id"] = user.Id;
 
-            // Rol bazlý yönlendirme
-            if (user.Role == "Admin")
-            {
-                return RedirectToAction("AdminDashboard", "Admin");
-            }
-            else if (user.Role == "User")
-            {
-                return RedirectToAction("UserDashboard", "Home");
-            }
-            else
-            {
-                return RedirectToAction("EmployeeDashboard", "Employee");
-            }
+            return RedirectToAction("Index","Home");
+
         }
 
         //----------------------------Login--------------------------------------------------------
@@ -169,4 +164,5 @@ namespace Web_Programlama_Projesi.Controllers
         //----------------------------Employee Dashboard--------------------------------------------------------
 
     }
+
 }

@@ -45,7 +45,7 @@ namespace Web_Programlama_Projesi.Controllers
             {
                 var sortedSlots = _context.TimeSlots
                                           .Where(ts => ts.SalonId == salon.Id)
-                                          .OrderBy(ts => ts.Id) // Id'ye göre sırala
+                                          .OrderBy(ts => ts.Id)
                                           .ToList();
 
                 salonWithAvailableSlots.Add(new { Salon = salon, AvailableSlots = sortedSlots });
@@ -54,8 +54,14 @@ namespace Web_Programlama_Projesi.Controllers
             TempData["SalonWithAvailableSlots"] = salonWithAvailableSlots;
             TempData["Employees"] = employees;
 
+            // Kullanıcının giriş yapıp yapmadığını kontrol et ve ViewData'ya aktar
             var username = HttpContext.Session.GetString("Username");
             ViewData["Username"] = username;
+
+            var role = HttpContext.Session.GetString("Role");
+            ViewData["Role"] = role;
+
+            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
 
             return View();
         }

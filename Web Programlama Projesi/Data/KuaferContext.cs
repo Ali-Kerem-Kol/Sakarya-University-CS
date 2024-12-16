@@ -63,7 +63,7 @@ namespace Web_Programlama_Projesi.Data
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 3,
-                Username = "ahmet",
+                Username = "Ahmet",
                 Password = "123",
                 Role = "Employee",
                 IsActive = true,
@@ -76,6 +76,25 @@ namespace Web_Programlama_Projesi.Data
                 Expertise = "Saç Kesimi",
                 IsActive = true,
                 UserId = 3,  // Kullanıcı Id'si 3 olan ahmet ile ilişkilendirme
+            });
+
+            // Varsayılan Çalışan Kullanıcısı
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 4,
+                Username = "Ayşe",
+                Password = "123",
+                Role = "Employee",
+                IsActive = true,
+            });
+
+            // Varsayılan Çalışan (Employee Tablosu)
+            modelBuilder.Entity<Employee>().HasData(new Employee
+            {
+                Id = 2,
+                Expertise = "Güzellik Bakımı",
+                IsActive = true,
+                UserId = 4,  // Kullanıcı Id'si 3 olan ahmet ile ilişkilendirme
             });
 
             // Varsayılan Salon

@@ -2,6 +2,8 @@
     ViewData["Title"] = "Salonlar";
     var salonWithAvailableSlots = TempData["SalonWithAvailableSlots"] != null ? TempData["SalonWithAvailableSlots"] as List<dynamic> : new List<dynamic>();
     var employees = TempData["Employees"] != null ? TempData["Employees"] as List<Employee> : new List<Employee>();
+    var isLoggedIn = ViewData["IsLoggedIn"] != null && (bool)ViewData["IsLoggedIn"];
+    var username = ViewData["Username"] as string;
 }
 
 <!DOCTYPE html>
@@ -13,6 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -32,6 +35,7 @@
             border: 1px solid #ccc;
         }
 
+        
             .time-slot.btn-success {
                 background-color: green;
                 color: white;
@@ -40,7 +44,12 @@
             .time-slot.btn-danger {
                 background-color: red;
                 color: white;
-                cursor: not-allowed; /* Tıklanamaz olmasını sağlıyoruz */
+                cursor: not-allowed;
+            }
+
+            .time-slot.temp-alert {
+                background-color: red !important;
+                color: white;
             }
 
             .time-slot:hover {
@@ -69,18 +78,34 @@
             width: 100%;
         }
     </style>
+
+    <script>
+        function showTemporaryAlert(button) {
+            // Mevcut metin ve sınıfları sakla
+            const originalText = button.innerHTML;
+            const originalClass = button.className;
+
+            // Kutucuğun rengini kırmızı yap ve mesaj göster
+            button.className = "time-slot temp-alert";
+            button.innerHTML = "Lütfen giriş yapınız.";
+
+            // 1 saniye sonra eski haline döndür
+            setTimeout(() => {
+                button.className = originalClass;
+                button.innerHTML = originalText;
+            }, 1000);
+        }
+
+        function selectTimeSlot(timeSlotId, salonId) {
+            $("#timeSlotId").val(timeSlotId);
+            $("#salonId").val(salonId);
+            $("#appointmentForm").show();
+        }
+    </script>
 </head>
 <body>
 
     <h2>@ViewData["Title"]</h2>
-
-    <script>
-        function selectTimeSlot(timeSlotId, salonId) {
-            $("#timeSlotId").val(timeSlotId);
-            $("#salonId").val(salonId);
-            $("#appointmentForm").show();  // Randevu formunu göster
-        }
-    </script>
 
     @if (salonWithAvailableSlots != null && salonWithAvailableSlots.Any())
     {
@@ -100,11 +125,24 @@
                         var isAvailable = timeSlot.IsAvailable;
 
                         <div class="col-3 mb-2">
-                            <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
-                            @(!isAvailable ? "disabled" : "")
-                                    onclick="selectTimeSlot('@timeSlot.Id', '@salon.Id')">
-                                @slotTime
-                            </button>
+                            @if (isLoggedIn)
+                            {
+                                <!-- Giriş yapmış kullanıcılar için -->
+                                <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
+                                @(!isAvailable ? "disabled" : "")
+                                        onclick="selectTimeSlot('@timeSlot.Id', '@salon.Id')">
+                                    @slotTime
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Giriş yapmamış kullanıcılar için -->
+                                <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
+                                @(!isAvailable ? "disabled" : "")
+                                        onclick="@((isAvailable ? "showTemporaryAlert(this)" : ""))">
+                                    @slotTime
+                                </button>
+                            }
                         </div>
                     }
                 </div>
@@ -116,25 +154,29 @@
         <p>Salonlar ve boş zaman dilimleri bulunamadı.</p>
     }
 
-    <div id="appointmentForm">
-        <h4>Randevu Al</h4>
-        <form method="post" action="@Url.Action("BookAppointment", "Salon")">
-            <input type="hidden" id="salonId" name="salonId" />
-            <input type="hidden" id="timeSlotId" name="timeSlotId" />
+    @if (isLoggedIn)
+    {
+        <!-- Giriş yapmış kullanıcılar için randevu formu -->
+        <div id="appointmentForm">
+            <h4>Randevu Al</h4>
+            <form method="post" action="@Url.Action("BookAppointment", "Salon")">
+                <input type="hidden" id="salonId" name="salonId" />
+                <input type="hidden" id="timeSlotId" name="timeSlotId" />
 
-            <div class="mb-3">
-                <label for="employeeId" class="form-label">Çalışan Seçin:</label>
-                <select name="employeeId" id="employeeId" class="form-select">
-                    @foreach (var employee in employees)
-                    {
-                        <option value="@employee.Id">@employee.User.Username - @employee.Expertise</option>
-                    }
-                </select>
-            </div>
+                <div class="mb-3">
+                    <label for="employeeId" class="form-label">Çalışan Seçin:</label>
+                    <select name="employeeId" id="employeeId" class="form-select">
+                        @foreach (var employee in employees)
+                        {
+                            <option value="@employee.Id">@employee.User.Username - @employee.Expertise</option>
+                        }
+                    </select>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Randevu Al</button>
-        </form>
-    </div>
+                <button type="submit" class="btn btn-primary">Randevu Al</button>
+            </form>
+        </div>
+    }
 
 </body>
 </html>

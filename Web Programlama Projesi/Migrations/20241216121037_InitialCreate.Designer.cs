@@ -11,7 +11,7 @@ using Web_Programlama_Projesi.Data;
 namespace Web_Programlama_Projesi.Migrations
 {
     [DbContext(typeof(KuaferContext))]
-    [Migration("20241215173454_InitialCreate")]
+    [Migration("20241216121037_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -91,6 +91,13 @@ namespace Web_Programlama_Projesi.Migrations
                             Expertise = "Saç Kesimi",
                             IsActive = true,
                             UserId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Expertise = "Güzellik Bakımı",
+                            IsActive = true,
+                            UserId = 4
                         });
                 });
 
@@ -264,7 +271,15 @@ namespace Web_Programlama_Projesi.Migrations
                             IsActive = true,
                             Password = "123",
                             Role = "Employee",
-                            Username = "ahmet"
+                            Username = "Ahmet"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsActive = true,
+                            Password = "123",
+                            Role = "Employee",
+                            Username = "Ayşe"
                         });
                 });
 

@@ -21,11 +21,30 @@ namespace Web_Programlama_Projesi.Controllers
                 .Include(e => e.User) // User tablosunu dahil et
                 .ToList();
 
-            // Kullanıcı giriş yaptıysa, oturum bilgisini ViewData'ya gönderiyoruz
+            // Kullanıcının giriş yapıp yapmadığını kontrol et ve ViewData'ya aktar
             var username = HttpContext.Session.GetString("Username");
             ViewData["Username"] = username;
 
+            var role = HttpContext.Session.GetString("Role");
+            ViewData["Role"] = role;
+
+            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+
             return View(employees);
+        }
+
+        public IActionResult Dashboard()
+        {
+            // Kullanıcının giriş yapıp yapmadığını kontrol et ve ViewData'ya aktar
+            var username = HttpContext.Session.GetString("Username");
+            ViewData["Username"] = username;
+
+            var role = HttpContext.Session.GetString("Role");
+            ViewData["Role"] = role;
+
+            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+
+            return View();
         }
 
     }

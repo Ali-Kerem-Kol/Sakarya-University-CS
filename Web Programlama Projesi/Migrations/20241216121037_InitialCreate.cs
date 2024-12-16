@@ -137,13 +137,18 @@ namespace Web_Programlama_Projesi.Migrations
                 {
                     { 1, true, "123", "Admin", "admin" },
                     { 2, true, "123", "User", "user" },
-                    { 3, true, "123", "Employee", "ahmet" }
+                    { 3, true, "123", "Employee", "Ahmet" },
+                    { 4, true, "123", "Employee", "Ayşe" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
                 columns: new[] { "Id", "Expertise", "IsActive", "UserId" },
-                values: new object[] { 1, "Saç Kesimi", true, 3 });
+                values: new object[,]
+                {
+                    { 1, "Saç Kesimi", true, 3 },
+                    { 2, "Güzellik Bakımı", true, 4 }
+                });
 
             migrationBuilder.InsertData(
                 table: "TimeSlots",

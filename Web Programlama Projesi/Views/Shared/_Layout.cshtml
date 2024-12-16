@@ -30,14 +30,21 @@
                             @if (ViewData["Role"]?.ToString() == "Admin")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Admin/Dashboard">Admin Paneli</a>
+                                    <a class="nav-link" href="/Admin/Dashboard">Hesap</a>
                                 </li>
                             }
                             <!-- Çalışan rolü için -->
                             @if (ViewData["Role"]?.ToString() == "Employee")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Employee/Dashboard">Çalışan Paneli</a>
+                                    <a class="nav-link" href="/Employee/Dashboard">Hesap</a>
+                                </li>
+                            }
+                            <!-- Kullanıcı rolü için -->
+                            @if (ViewData["Role"]?.ToString() == "User")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/User/Dashboard">Hesap</a>
                                 </li>
                             }
 
