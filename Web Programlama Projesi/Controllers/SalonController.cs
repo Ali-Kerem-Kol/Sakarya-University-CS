@@ -113,7 +113,7 @@ namespace Web_Programlama_Projesi.Controllers
                 CustomerId = user.Id,
                 EmployeeId = employeeId,
                 TimeSlotId = timeSlotId,
-                Price = 100.00m,
+                Price = timeSlot.Salon.AppointmentPrice,
                 IsApproved = true,
             };
 

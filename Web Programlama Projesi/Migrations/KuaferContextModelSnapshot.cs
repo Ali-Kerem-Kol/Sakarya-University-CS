@@ -106,6 +106,9 @@ namespace Web_Programlama_Projesi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("AppointmentPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -122,12 +125,14 @@ namespace Web_Programlama_Projesi.Migrations
                         new
                         {
                             Id = 1,
+                            AppointmentPrice = 100m,
                             Name = "Saç Kesim Salonu",
                             WorkingHours = "09:00-17:00"
                         },
                         new
                         {
                             Id = 2,
+                            AppointmentPrice = 100m,
                             Name = "Güzellik Salonu",
                             WorkingHours = "10:00-18:00"
                         });

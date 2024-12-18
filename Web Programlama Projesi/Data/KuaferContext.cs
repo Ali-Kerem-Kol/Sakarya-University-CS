@@ -103,13 +103,15 @@ namespace Web_Programlama_Projesi.Data
     {
         Id = 1,
         Name = "Saç Kesim Salonu",
-        WorkingHours = "09:00-17:00"
+        WorkingHours = "09:00-17:00",
+        AppointmentPrice = 100
     },
     new Salon
     {
         Id = 2,
         Name = "Güzellik Salonu",
-        WorkingHours = "10:00-18:00"
+        WorkingHours = "10:00-18:00",
+        AppointmentPrice = 100
     }
 );
 

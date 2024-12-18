@@ -43,7 +43,7 @@
                         <tr>
                             <td>@appointment.Id</td>
                             <td>@appointment.TimeSlot.StartTime - @appointment.TimeSlot.EndTime</td>
-                            <td>@appointment.Price</td>
+                            <td>@appointment.Price TL</td>
                             <td>
                                 <form asp-action="DeleteAppointment" method="post">
                                     <input type="hidden" name="AppointmentId" value="@appointment.Id" />

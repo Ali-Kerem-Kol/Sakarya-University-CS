@@ -2,11 +2,8 @@
 
 namespace Web_Programlama_Projesi.Models
 {
-    public class Salon
+    public class SalonDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }  // Salon adı
 
@@ -17,7 +14,6 @@ namespace Web_Programlama_Projesi.Models
         public decimal AppointmentPrice { get; set; }  // Fiyat bilgisi
 
         // Salon ile ilişkilendirilmiş zaman dilimlerini tutan koleksiyon
-        public ICollection<TimeSlot> TimeSlots { get; set; }
+        //public ICollection<TimeSlot>? TimeSlots { get; set; }
     }
-
 }
