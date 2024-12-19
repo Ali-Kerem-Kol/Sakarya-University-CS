@@ -83,7 +83,12 @@ namespace Web_Programlama_Projesi.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == timeSlotId);
+            //var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == timeSlotId);
+            var timeSlot = _context.TimeSlots
+                       .Include(ts => ts.Salon)  // Salon'u dahil et
+                       .Include(ts => ts.Appointments)
+                       .FirstOrDefault(ts => ts.Id == timeSlotId);
+
             if (timeSlot == null)
             {
                 TempData["ErrorMessage"] = "Seçilen zaman dilimi mevcut değil.";

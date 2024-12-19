@@ -35,6 +35,7 @@
                 <td>@salon.AppointmentPrice</td>
                 <td style="white-space:nowrap">
                     <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditSalon" asp-route-id="@salon.Id">Edit</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="TimeSlotDashboard" asp-route-id="@salon.Id">Edit Time Slots</a>
                     <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteSalon" asp-route-id="@salon.Id" onclick="return confirm('Emin Misiniz?')">Delete</a>
                 </td>
             </tr>
