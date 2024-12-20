@@ -109,6 +109,10 @@ namespace Web_Programlama_Projesi.Migrations
                     b.Property<decimal>("AppointmentPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Expertise")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -126,6 +130,7 @@ namespace Web_Programlama_Projesi.Migrations
                         {
                             Id = 1,
                             AppointmentPrice = 100m,
+                            Expertise = "Saç Kesimi",
                             Name = "Saç Kesim Salonu",
                             WorkingHours = "09:00-17:00"
                         },
@@ -133,6 +138,7 @@ namespace Web_Programlama_Projesi.Migrations
                         {
                             Id = 2,
                             AppointmentPrice = 100m,
+                            Expertise = "Güzellik Bakımı",
                             Name = "Güzellik Salonu",
                             WorkingHours = "10:00-18:00"
                         });

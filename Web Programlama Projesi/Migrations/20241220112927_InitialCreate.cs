@@ -21,7 +21,8 @@ namespace Web_Programlama_Projesi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     WorkingHours = table.Column<string>(type: "text", nullable: false),
-                    AppointmentPrice = table.Column<decimal>(type: "numeric", nullable: false)
+                    AppointmentPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    Expertise = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,11 +125,11 @@ namespace Web_Programlama_Projesi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Salons",
-                columns: new[] { "Id", "AppointmentPrice", "Name", "WorkingHours" },
+                columns: new[] { "Id", "AppointmentPrice", "Expertise", "Name", "WorkingHours" },
                 values: new object[,]
                 {
-                    { 1, 100m, "Saç Kesim Salonu", "09:00-17:00" },
-                    { 2, 100m, "Güzellik Salonu", "10:00-18:00" }
+                    { 1, 100m, "Saç Kesimi", "Saç Kesim Salonu", "09:00-17:00" },
+                    { 2, 100m, "Güzellik Bakımı", "Güzellik Salonu", "10:00-18:00" }
                 });
 
             migrationBuilder.InsertData(

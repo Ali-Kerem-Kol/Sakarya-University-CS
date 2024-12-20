@@ -233,6 +233,12 @@ namespace Web_Programlama_Projesi.Controllers
 
             var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == id);
 
+            var appointmentWithCustomer = _context.Appointments
+                .Include(a => a.Customer) // Müşteriyi dahil etmek için
+                .FirstOrDefault(a => a.TimeSlotId == id && a.Customer != null);
+
+
+
             if (timeSlot == null)
             {
                 return RedirectToAction("SalonDashboard", "Admin");
@@ -247,6 +253,7 @@ namespace Web_Programlama_Projesi.Controllers
 
             ViewData["TimeSlotId"] = id;
             ViewData["SalonId"] = timeSlot.SalonId;
+            ViewData["Customer"] = appointmentWithCustomer?.Customer;
 
             return View(timeSlotDto);
         }
@@ -299,6 +306,7 @@ namespace Web_Programlama_Projesi.Controllers
             return RedirectToAction("TimeSlotDashboard", new { salonId });
         }
         //==========================TimeSlot====================================
+
 
         //==========================Appointment====================================
         public IActionResult AppointmentDashboard()
@@ -404,6 +412,323 @@ namespace Web_Programlama_Projesi.Controllers
 
         //==========================Appointment====================================
 
+
+        //==========================Employee====================================
+        public IActionResult EmployeeDashboard(int Id)
+        {
+            SessionControl();
+
+            var employees = _context.Employees
+                           .Include(e => e.User)  // Employee'ın User'ını dahil et
+                           .Include(e => e.Appointments)  // Employee'ın User'ını dahil et
+                           .ToList();
+
+            return View(employees);
+        }
+
+        public IActionResult CreateEmployee()
+        {
+            SessionControl();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateEmployee(EmployeeDto employeeDto)
+        {
+            SessionControl();
+
+            if (!ModelState.IsValid)
+            {
+                return View(employeeDto);
+            }
+
+            // Kullanıcı adı kontrolü: Aynı kullanıcı adı var mı?
+            var existingUser = _context.Users.FirstOrDefault(u => u.Username == employeeDto.Username);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("User.Username", "Bu kullanıcı adı zaten kullanımda. Lütfen başka bir kullanıcı adı seçin.");
+                return View(employeeDto);  // Kullanıcı adı mevcutsa geri döneriz.
+            }
+
+            // Önce User oluştur ve kaydet
+            User user = new User()
+            {
+                Username = employeeDto.Username,
+                Password = employeeDto.Password,
+                Role = employeeDto.Role,
+                IsActive = employeeDto.IsActive
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges(); // User kaydedildikten sonra Id'si oluşur
+
+            // Sonra Employee oluştur ve User ile ilişkilendir
+            Employee employee = new Employee()
+            {
+                UserId = user.Id, // Yeni oluşturulan User'ın Id'sini kullan
+                User = user, // User nesnesini ilişkilendir
+                Expertise = employeeDto.Expertise,
+                IsActive = employeeDto.IsActive
+            };
+
+            _context.Employees.Add(employee);
+            _context.SaveChanges(); // Employee kaydedilir
+
+            return RedirectToAction("EmployeeDashboard", "Admin");
+        }
+
+        public IActionResult EditEmployee(int id) // EmployeeId
+        {
+            SessionControl();
+
+            var employee = _context.Employees
+                .Include(e => e.User) // User tablosunu dahil ediyoruz
+                .FirstOrDefault(e => e.Id == id); // Id'ye göre arama
+
+            if (employee == null)
+            {
+                return RedirectToAction("EmployeeDashboard", "Admin");
+            }
+
+            var employeeDto = new EmployeeDto()
+            {
+                Username = employee.User.Username,
+                Password = employee.User.Password,
+                Role = employee.User.Role,
+                Expertise = employee.Expertise,
+                IsActive = employee.IsActive
+            };
+
+            ViewData["EmployeeId"] = id;
+
+            return View(employeeDto);
+        }
+
+        [HttpPost]
+        public IActionResult EditEmployee(int id, EmployeeDto employeeDto) // EmployeeId
+        {
+            SessionControl();
+
+            var employee = _context.Employees
+                .Include(e => e.User) // User tablosunu dahil ediyoruz
+                .FirstOrDefault(e => e.Id == id); // Id'ye göre arama
+
+            if (employee == null)
+            {
+                return RedirectToAction("EmployeeDashboard", "Admin");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["EmployeeId"] = id;
+                return View(employeeDto);
+            }
+
+            employee.User.Username = employeeDto.Username;
+            employee.User.Password = employeeDto.Password;
+            employee.User.Role = employeeDto.Role;
+            employee.Expertise = employeeDto.Expertise;
+            employee.IsActive = employeeDto.IsActive;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("EmployeeDashboard", "Admin");
+
+        }
+
+        public IActionResult DeleteEmployee(int id) // EmployeeId
+        {
+            SessionControl();
+
+            var employee = _context.Employees
+                .Include(e => e.User) // User tablosunu dahil ediyoruz
+                .FirstOrDefault(e => e.Id == id); // Id'ye göre arama
+
+            if (employee == null)
+            {
+                return RedirectToAction("EmployeeDashboard", "Admin");
+            }
+
+            User user = employee.User;
+            _context.Users.Remove(user);
+            _context.Employees.Remove(employee);
+            _context.SaveChanges();
+
+            return RedirectToAction("EmployeeDashboard", "Admin");
+        }
+
+        //==========================Employee====================================
+
+
+        //==========================User====================================
+
+        public IActionResult UserDashboard()
+        {
+            SessionControl();
+            var users = _context.Users.ToList();
+            ViewData["Users"] = users;
+            return View(users);
+        }
+
+        public IActionResult CreateUser()
+        {
+            SessionControl();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser(UserDto userDto)
+        {
+            SessionControl();
+
+            if (!ModelState.IsValid)
+            {
+                return View(userDto);
+            }
+
+            User user = new User()
+            {
+                Username = userDto.Username,
+                Password = userDto.Password, // Şifreyi burada hashleyin
+                Role = userDto.Role,
+                IsActive = userDto.IsActive,
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return RedirectToAction("UserDashboard", "User");
+        }
+
+        public IActionResult EditUser(int id)
+        {
+            SessionControl();
+
+            var user = _context.Users.Find(id);
+
+            if (user == null)
+            {
+                return RedirectToAction("UserDashboard", "User");
+            }
+
+            var userDto = new UserDto()
+            {
+                Username = user.Username,
+                Password = user.Password,
+                Role = user.Role,
+                IsActive = user.IsActive,
+            };
+
+            ViewData["UserId"] = id;
+
+            return View(userDto);
+        }
+
+        [HttpPost]
+        public IActionResult EditUser(int id, UserDto userDto)
+        {
+            SessionControl();
+
+            var user = _context.Users.Find(id);
+
+            if (user == null)
+            {
+                return RedirectToAction("UserDashboard", "User");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["UserId"] = id;
+                return View(userDto);
+            }
+
+            user.Username = userDto.Username;
+            user.Password = userDto.Password; // Şifreyi burada hashleyin
+            user.Role = userDto.Role;
+            user.IsActive = userDto.IsActive;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("UserDashboard", "User");
+        }
+
+        public IActionResult DeleteUser(int id)
+        {
+            SessionControl();
+
+            var user = _context.Users.Include(u => u.Appointments) // Kullanıcının randevularını dahil et
+                                      .ThenInclude(a => a.TimeSlot) // Randevularının bağlı olduğu TimeSlot'ları dahil et
+                                      .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return RedirectToAction("UserDashboard", "Admin");
+            }
+
+            // Kullanıcının randevuları varsa, onları sil
+            if (user.Appointments != null && user.Appointments.Any())
+            {
+                foreach (var appointment in user.Appointments)
+                {
+                    // TimeSlot'un müsaitlik durumunu true yap
+                    if (appointment.TimeSlot != null)
+                    {
+                        appointment.TimeSlot.IsAvailable = true;
+                    }
+
+                    // Randevuyu sil
+                    _context.Appointments.Remove(appointment);
+                }
+            }
+
+            // Kullanıcıyı sil
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+
+            return RedirectToAction("UserDashboard", "Admin");
+        }
+
+
+        public IActionResult ToggleActiveStatus(int id)
+        {
+            SessionControl();
+
+            var user = _context.Users.Include(u => u.Appointments) // Kullanıcının randevularını da dahil et
+                          .ThenInclude(a => a.TimeSlot) // Randevularının bağlı olduğu TimeSlot'ları da dahil et
+                          .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return RedirectToAction("UserDashboard", "Admin");
+            }
+
+            // Admin yalnızca aktiflik durumunu değiştirebilir.
+            user.IsActive = !user.IsActive;
+
+            // Eğer kullanıcı deaktif yapılıyorsa
+            if (!user.IsActive)
+            {
+                // Kullanıcının randevuları varsa, onları sil
+                if (user.Appointments != null && user.Appointments.Any())
+                {
+                    foreach (var appointment in user.Appointments)
+                    {
+                        // TimeSlot'u boşalt
+                        appointment.TimeSlot.IsAvailable = true;
+
+                        // Randevuyu sil
+                        _context.Appointments.Remove(appointment);
+                    }
+                }
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("UserDashboard", "Admin");
+        }
+
+        //==========================User====================================
     }
 
 

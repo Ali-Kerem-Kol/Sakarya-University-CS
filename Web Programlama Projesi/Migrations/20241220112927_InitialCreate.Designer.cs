@@ -11,7 +11,7 @@ using Web_Programlama_Projesi.Data;
 namespace Web_Programlama_Projesi.Migrations
 {
     [DbContext(typeof(KuaferContext))]
-    [Migration("20241217173823_InitialCreate")]
+    [Migration("20241220112927_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -112,6 +112,10 @@ namespace Web_Programlama_Projesi.Migrations
                     b.Property<decimal>("AppointmentPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Expertise")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -129,6 +133,7 @@ namespace Web_Programlama_Projesi.Migrations
                         {
                             Id = 1,
                             AppointmentPrice = 100m,
+                            Expertise = "Saç Kesimi",
                             Name = "Saç Kesim Salonu",
                             WorkingHours = "09:00-17:00"
                         },
@@ -136,6 +141,7 @@ namespace Web_Programlama_Projesi.Migrations
                         {
                             Id = 2,
                             AppointmentPrice = 100m,
+                            Expertise = "Güzellik Bakımı",
                             Name = "Güzellik Salonu",
                             WorkingHours = "10:00-18:00"
                         });

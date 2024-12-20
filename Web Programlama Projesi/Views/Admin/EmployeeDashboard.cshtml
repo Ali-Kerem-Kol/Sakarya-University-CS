@@ -1,0 +1,46 @@
+﻿@model List<Employee>
+@{
+    ViewData["Title"] = "EmployeeDashboard";
+}
+
+<h2 class="text-center mb-5">Çalışanlar</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateEmployee">Çalışan Ekle</a>
+    </div>
+    <div class="col">
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Expertise</th>
+            <th>IsActive</th>
+            <th>UserId</th>
+            <th>Username</th>
+            <th>Appointments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>@employee.Expertise</td>
+                <td>@employee.IsActive</td>
+                <td>@employee.UserId</td>
+                <td>@employee.User.Username</td>
+                <td>@employee.Appointments.Count</td>
+                <td style="white-space:nowrap">
+                    <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditEmployee" asp-route-id="@employee.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteEmployee" asp-route-id="@employee.Id" onclick="return confirm('Emin Misiniz?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

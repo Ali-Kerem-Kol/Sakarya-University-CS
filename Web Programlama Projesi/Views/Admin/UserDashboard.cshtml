@@ -1,0 +1,56 @@
+﻿@model IEnumerable<User>
+
+<h2>User Dashboard</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Role</td>
+                <td>
+                    @if (user.IsActive)
+                    {
+                        <span class="badge badge-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @if (user.Role == "Admin")
+                    {
+                        <span class="badge badge-warning">Admin cannot change their own status</span>
+                    }
+                    else
+                    {
+                        <form method="post" asp-action="ToggleActiveStatus" asp-route-id="@user.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                @if (user.IsActive)
+                                {
+                                    <text>Deactivate</text>
+                                }
+                                else
+                                {
+                                    <text>Activate</text>
+                                }
+                            </button>
+                        </form>
+                    }
+                <td>
+                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" onclick="return confirm('Emin Misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -99,6 +99,12 @@ namespace Web_Programlama_Projesi.Controllers
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
+            if (user.IsActive == false)
+            {
+                ModelState.AddModelError(string.Empty, "Hesabýnýz Askýya Alýndý.");
+                return View();
+            }
+
             // Kullanýcý kontrolü ve þifre doðrulama
             if (user == null || user.Password != password)
             {

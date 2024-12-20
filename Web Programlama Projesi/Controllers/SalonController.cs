@@ -89,6 +89,7 @@ namespace Web_Programlama_Projesi.Controllers
                        .Include(ts => ts.Appointments)
                        .FirstOrDefault(ts => ts.Id == timeSlotId);
 
+
             if (timeSlot == null)
             {
                 TempData["ErrorMessage"] = "Seçilen zaman dilimi mevcut değil.";
@@ -108,9 +109,19 @@ namespace Web_Programlama_Projesi.Controllers
 
             if (existingAppointment != null)
             {
-                TempData["ErrorMessage"] = "Bu çalışan zaten bu zaman diliminde başka bir salonda randevulu.";
+                TempData["ErrorMessage"] = "Bu çalışan bu saat dilimi için müsait değil";
                 return RedirectToAction("Index", "Salon");
             }
+
+            // Salona özel çalışan
+            var employee = _context.Employees.Find(employeeId);
+
+            if (timeSlot.Salon.Expertise != employee.Expertise)
+            {
+                TempData["ErrorMessage"] = "Bu çalışan bu salonda çalışmıyor.";
+                return RedirectToAction("Index", "Salon");
+            }
+            // Salona özel çalışan
 
             // Randevu oluşturma
             var appointment = new Appointment

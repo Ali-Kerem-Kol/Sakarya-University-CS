@@ -41,6 +41,39 @@ namespace Web_Programlama_Projesi.Data
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
+            // Sonradan eklenenler
+            modelBuilder.Entity<User>()
+    .HasOne(u => u.EmployeeDetails)
+    .WithOne(e => e.User)
+    .HasForeignKey<Employee>(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+    .HasOne(u => u.EmployeeDetails)
+    .WithOne(e => e.User)
+    .HasForeignKey<Employee>(e => e.UserId)
+    .OnDelete(DeleteBehavior.Cascade);  // Cascade delete ekleniyor
+
+            modelBuilder.Entity<TimeSlot>()
+    .HasOne(ts => ts.Salon)
+    .WithMany(s => s.TimeSlots)
+    .HasForeignKey(ts => ts.SalonId)
+    .OnDelete(DeleteBehavior.Cascade);  // Cascade delete
+
+            modelBuilder.Entity<Appointment>()
+    .HasOne(a => a.TimeSlot)
+    .WithMany(ts => ts.Appointments)
+    .HasForeignKey(a => a.TimeSlotId)
+    .OnDelete(DeleteBehavior.Cascade);  // Cascade delete
+
+            modelBuilder.Entity<Appointment>()
+        .HasOne(a => a.Customer)  // Appointment, User'a bağlı
+        .WithMany(u => u.Appointments)  // User birden fazla Appointment'a sahip olabilir
+        .HasForeignKey(a => a.CustomerId)  // Appointment'taki UserId ile ilişkilendiriyoruz
+        .OnDelete(DeleteBehavior.Cascade);  // User silindiğinde ona ait Appointment'lar da silinsin
+
+            // Sonradan eklenenler
+
+
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
@@ -104,14 +137,16 @@ namespace Web_Programlama_Projesi.Data
         Id = 1,
         Name = "Saç Kesim Salonu",
         WorkingHours = "09:00-17:00",
-        AppointmentPrice = 100
+        AppointmentPrice = 100,
+        Expertise = "Saç Kesimi"
     },
     new Salon
     {
         Id = 2,
         Name = "Güzellik Salonu",
         WorkingHours = "10:00-18:00",
-        AppointmentPrice = 100
+        AppointmentPrice = 100,
+        Expertise = "Güzellik Bakımı"
     }
 );
 
