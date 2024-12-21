@@ -2,21 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Web_Programlama_Projesi.Data;
 using Web_Programlama_Projesi.Models;
+using Web_Programlama_Projesi.Security;
 
 namespace Web_Programlama_Projesi.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly KuaferContext _context;
+        private readonly AuthorizeHelper _authorizeHelper;
 
-        public EmployeeController(KuaferContext context)
+        public EmployeeController(KuaferContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _authorizeHelper = new AuthorizeHelper(httpContextAccessor.HttpContext, context);
         }
 
         // Çalışanlar sayfasını görüntülemek için
         public IActionResult Index()
         {
+
+
             // Employee'lerle birlikte User bilgilerini de alıyoruz
             var employees = _context.Employees
                 .Include(e => e.User) // User tablosunu dahil et
@@ -37,6 +42,10 @@ namespace Web_Programlama_Projesi.Controllers
         // Çalışan Dashboard Sayfasını Yükle
         public IActionResult Dashboard()
         {
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Employee");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
             var currentUserId = HttpContext.Session.GetInt32("Id");
             if (currentUserId == null) return RedirectToAction("Login", "Home");
 
@@ -64,6 +73,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult UpdateEmployee(string Password, string Expertise)
         {
+
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Employee");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
             var currentUserId = HttpContext.Session.GetInt32("Id");
             if (currentUserId == null) return RedirectToAction("Login", "Home");
 
@@ -96,6 +110,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult CompleteAppointment(int AppointmentId)
         {
+
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Employee");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
             var currentUserId = HttpContext.Session.GetInt32("Id");
             if (currentUserId == null) return RedirectToAction("Login", "Home");
 

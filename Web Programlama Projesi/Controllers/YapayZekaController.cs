@@ -27,9 +27,22 @@ namespace Web_Programlama_Projesi.Controllers
 
         }
 
+        private void SetUserInfoToViewData()
+        {
+            var username = HttpContext.Session.GetString("Username");
+            ViewData["Username"] = username;
+
+            var role = HttpContext.Session.GetString("Role");
+            ViewData["Role"] = role;
+
+            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+        }
+
+
         // Ana sayfa
         public IActionResult Index()
         {
+            SetUserInfoToViewData();
             return View();
         }
 
@@ -37,6 +50,7 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(IFormFile photo)
         {
+
             if (photo == null || photo.Length == 0)
             {
                 ViewData["Message"] = "Lütfen geçerli bir fotoğraf yükleyin.";

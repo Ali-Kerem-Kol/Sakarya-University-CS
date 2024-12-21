@@ -1,38 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Google;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Web_Programlama_Projesi.Data;
 using Web_Programlama_Projesi.Models;
+using Web_Programlama_Projesi.Security;
 
 namespace Web_Programlama_Projesi.Controllers
 {
 
+    //[Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly KuaferContext _context;
+        private readonly AuthorizeHelper _authorizeHelper;
 
-        public AdminController(KuaferContext context)
+        public AdminController(KuaferContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _authorizeHelper = new AuthorizeHelper(httpContextAccessor.HttpContext, context);
         }
 
-        private IActionResult SessionControl()
+        private void SetUserInfoToViewData()
         {
             var username = HttpContext.Session.GetString("Username");
             ViewData["Username"] = username;
+
             var role = HttpContext.Session.GetString("Role");
             ViewData["Role"] = role;
-            ViewData["IsLoggedIn"] = username != null;
 
-            var currentUserId = HttpContext.Session.GetInt32("Id");
-            if (currentUserId == null) return RedirectToAction("Login", "Home");
-            return null;
+            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
         }
 
         public IActionResult Index()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             return View();
         }
@@ -41,7 +49,12 @@ namespace Web_Programlama_Projesi.Controllers
         //==========================Salon====================================
         public IActionResult SalonDashboard()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             var salons = _context.Salons.Include(s => s.TimeSlots).ToList();
             //var salons = _context.Salons.ToList();
             ViewData["Salons"] = salons;
@@ -50,14 +63,24 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult CreateSalon()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             return View();
         }
 
         [HttpPost]
         public IActionResult CreateSalon(SalonDto salonDto)
         {
-            SessionControl();
+
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             if (!ModelState.IsValid)
             {
@@ -80,7 +103,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult EditSalon(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var salon = _context.Salons.Find(id);
 
@@ -105,7 +132,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult EditSalon(int id,SalonDto salonDto)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var salon = _context.Salons.Find(id);
 
@@ -133,7 +164,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult DeleteSalon(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var salon = _context.Salons.Find(id);
 
@@ -154,7 +189,11 @@ namespace Web_Programlama_Projesi.Controllers
         // TimeSlotları Listeleme
         public IActionResult TimeSlotDashboard(int Id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var salon = _context.Salons.Include(s => s.TimeSlots).FirstOrDefault(s => s.Id == Id);
 
@@ -172,7 +211,12 @@ namespace Web_Programlama_Projesi.Controllers
         // TimeSlot Ekleme Sayfası
         public IActionResult CreateTimeSlot(int salonId)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             var salon = _context.Salons.Include(s => s.TimeSlots).FirstOrDefault(s => s.Id == salonId);
             ViewData["SalonId"] = salonId;
             ViewData["SalonName"] = salon.Name; // sonradan eklendi
@@ -184,7 +228,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult CreateTimeSlot(int salonId, TimeSlotDto timeSlotDto)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var salon = _context.Salons.Include(s => s.TimeSlots).FirstOrDefault(s => s.Id == salonId);
             //var salons = _context.Salons.Include(s => s.TimeSlots).ToList();
@@ -232,7 +280,11 @@ namespace Web_Programlama_Projesi.Controllers
         // TimeSlot Düzenleme
         public IActionResult EditTimeSlot(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == id);
 
@@ -264,7 +316,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult EditTimeSlot(int id, TimeSlotDto timeSlotDto)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == id);
 
@@ -292,7 +348,11 @@ namespace Web_Programlama_Projesi.Controllers
         // TimeSlot Silme
         public IActionResult DeleteTimeSlot(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == id);
 
@@ -314,7 +374,12 @@ namespace Web_Programlama_Projesi.Controllers
         //==========================Appointment====================================
         public IActionResult AppointmentDashboard()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             var appointments = _context.Appointments
                                        .Include(a => a.Customer)  // Customer'ı dahil et
                                        .Include(a => a.Employee)  // Employee'ı dahil et
@@ -326,7 +391,12 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult EditAppointment(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             /*
             var appointment = _context.Appointments
                                       .Include(a => a.TimeSlot)
@@ -362,7 +432,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult EditAppointment(int id, AppointmentDto appointmentDto)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var appointment = _context.Appointments.Find(id);
 
@@ -393,7 +467,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult DeleteAppointment(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var appointment = _context.Appointments
                 .Include(a => a.TimeSlot) // TimeSlot'u yükle
@@ -420,7 +498,11 @@ namespace Web_Programlama_Projesi.Controllers
         //==========================Employee====================================
         public IActionResult EmployeeDashboard(int Id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             // Çalışanları, toplam kazanca göre azalan sırayla sıralıyoruz
             var employees = _context.Employees
@@ -435,7 +517,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult CreateEmployee()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             return View();
         }
@@ -443,7 +529,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult CreateEmployee(EmployeeDto employeeDto)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             if (!ModelState.IsValid)
             {
@@ -487,7 +577,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult EditEmployee(int id) // EmployeeId
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var employee = _context.Employees
                 .Include(e => e.User) // User tablosunu dahil ediyoruz
@@ -515,7 +609,11 @@ namespace Web_Programlama_Projesi.Controllers
         [HttpPost]
         public IActionResult EditEmployee(int id, EmployeeDto employeeDto) // EmployeeId
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var employee = _context.Employees
                 .Include(e => e.User) // User tablosunu dahil ediyoruz
@@ -546,7 +644,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult DeleteEmployee(int id) // EmployeeId
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var employee = _context.Employees
                 .Include(e => e.User) // User tablosunu dahil ediyoruz
@@ -567,6 +669,12 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult ResetEmployeeStats(int id)
         {
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             // Çalışanı bul
             var employee = _context.Employees.Include(e => e.Appointments).FirstOrDefault(e => e.Id == id);
 
@@ -592,7 +700,12 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult UserDashboard()
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
+
             var users = _context.Users.ToList();
             ViewData["Users"] = users;
             return View(users);
@@ -600,7 +713,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult DeleteUser(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var user = _context.Users.Include(u => u.Appointments) // Kullanıcının randevularını dahil et
                                       .ThenInclude(a => a.TimeSlot) // Randevularının bağlı olduğu TimeSlot'ları dahil et
@@ -663,7 +780,11 @@ namespace Web_Programlama_Projesi.Controllers
 
         public IActionResult ToggleActiveStatus(int id)
         {
-            SessionControl();
+            // Güvenlik kontrolünü çağır
+            var result = _authorizeHelper.CheckUserRoles("Admin");
+            if (result != null) return result; // Eğer hata varsa, döndür
+
+            SetUserInfoToViewData();
 
             var user = _context.Users.Include(u => u.Appointments) // Kullanıcının randevularını da dahil et
                           .ThenInclude(a => a.TimeSlot) // Randevularının bağlı olduğu TimeSlot'ları da dahil et
