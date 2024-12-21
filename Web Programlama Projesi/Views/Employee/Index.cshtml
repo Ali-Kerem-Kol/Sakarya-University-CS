@@ -4,19 +4,54 @@
     ViewData["Title"] = "Çalışanlar";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class ="text-center mb-5">@ViewData["Title"]</h2>
 
-@foreach (var employee in Model)
-{
-    <div>
-        <!-- Username bilgisi artık employee.User.Username üzerinden çekiliyor -->
-        <h3>@employee.User?.Username</h3> <!-- ?? "Belirtilmemiş" == yazıyordu burada-->
-        <p>Uzmanlık: @employee.Expertise</p>
-        <p>Durum: @(employee.IsActive ? "Aktif" : "Pasif")</p>
+<div class="row">
+    @foreach (var employee in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="employee-box @(employee.User?.IsActive == true ? "active" : "inactive")">
+                <h3>@employee.User?.Username</h3>
+                <p><strong>Uzmanlık:</strong> @employee.Expertise</p>
+                <p><strong>Durum:</strong> @(employee.User?.IsActive == true ? "Aktif" : "Pasif")</p>
+            </div>
+        </div>
+    }
+</div>
 
-        <!-- 
-        Çalışanlar sadece görüntülenebilir, randevu alınamaz
-        <p>Randevu kabul etmek için giriş yapmalısınız.</p>
-        -->
-    </div>
-}
+<!-- CSS için düzenlemeler -->
+<style>
+    .employee-box {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s;
+    }
+
+        .employee-box:hover {
+            transform: scale(1.05);
+        }
+
+    .active {
+        background-color: #28a745; /* Yeşil */
+        color: white;
+    }
+
+    .inactive {
+        background-color: #dc3545; /* Kırmızı */
+        color: white;
+    }
+
+    .employee-box h3 {
+        margin: 0 0 10px 0;
+    }
+
+    .employee-box p {
+        margin: 5px 0;
+    }
+
+    .employee-box strong {
+        font-weight: bold;
+    }
+</style>

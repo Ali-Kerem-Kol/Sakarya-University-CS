@@ -13,6 +13,9 @@ namespace Web_Programlama_Projesi.Models
         [Required]
         public decimal AppointmentPrice { get; set; }  // Fiyat bilgisi
 
+        [Required]
+        public string Expertise { get; set; }
+
         // Salon ile ilişkilendirilmiş zaman dilimlerini tutan koleksiyon
         //public ICollection<TimeSlot>? TimeSlots { get; set; }
     }

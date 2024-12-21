@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Yapay Zeka";
+}
+
+<h2>Fotoğraf Yükleyin</h2>
+
+<form method="post" enctype="multipart/form-data" asp-controller="YapayZeka" asp-action="Index">
+    <div class="form-group">
+        <label for="photo">Fotoğraf Seçin</label>
+        <input type="file" name="photo" id="photo" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Fotoğrafı Yükle ve Analiz Et</button>
+</form>
+
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-info mt-3">
+        @Html.Raw(ViewData["Message"])
+    </div>
+}
+
+@if (ViewBag.Result != null)
+{
+    <div class="mt-4">
+        <p>Result:</p>
+        <div class="alert alert-info">@Html.Raw(ViewBag.Result)</div>
+    </div>
+}

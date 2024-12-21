@@ -22,6 +22,7 @@
             <th>WorkingHours</th>
             <th>TimeSlots</th>
             <th>AppointmentPrice</th>
+            <th>Expertise</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -33,6 +34,7 @@
                 <td>@salon.WorkingHours</td>
                 <td>@salon.TimeSlots.Count</td>
                 <td>@salon.AppointmentPrice</td>
+                <td>@salon.Expertise</td>
                 <td style="white-space:nowrap">
                     <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditSalon" asp-route-id="@salon.Id">Edit</a>
                     <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="TimeSlotDashboard" asp-route-id="@salon.Id">Edit Time Slots</a>

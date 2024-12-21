@@ -75,7 +75,9 @@ namespace Web_Programlama_Projesi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Expertise = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    TotalAppointments = table.Column<int>(type: "integer", nullable: false),
+                    TotalEarnings = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,11 +147,11 @@ namespace Web_Programlama_Projesi.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "Expertise", "IsActive", "UserId" },
+                columns: new[] { "Id", "Expertise", "IsActive", "TotalAppointments", "TotalEarnings", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Saç Kesimi", true, 3 },
-                    { 2, "Güzellik Bakımı", true, 4 }
+                    { 1, "Saç Kesimi", true, 0, 0m, 3 },
+                    { 2, "Güzellik Bakımı", true, 0, 0m, 4 }
                 });
 
             migrationBuilder.InsertData(

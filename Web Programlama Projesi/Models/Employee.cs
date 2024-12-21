@@ -21,5 +21,8 @@ namespace Web_Programlama_Projesi.Models
 
         // Çalışanın sahip olabileceği randevular (1-N İlişkisi)
         public ICollection<Appointment>? Appointments { get; set; }
+
+        public int TotalAppointments { get; set; }
+        public decimal TotalEarnings { get; set; }
     }
 }

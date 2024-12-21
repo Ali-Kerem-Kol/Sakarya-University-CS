@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Web_Programlama_Projesi.Data;
+using OpenAI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // Sadece HTTP üzerinden eriþilebilir
     options.Cookie.IsEssential = true; // Çerez gerekli
 });
+
+// OPENAI
+builder.Services.AddHttpClient();
+// OPENAI
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -14,39 +14,39 @@
     <tbody>
         @foreach (var user in Model)
         {
+            // Admin rolündeki kullanıcıları atlıyoruz
+            if (user.Role == "Admin")
+            {
+                continue;
+            }
+
             <tr>
                 <td>@user.Username</td>
                 <td>@user.Role</td>
                 <td>
                     @if (user.IsActive)
                     {
-                        <span class="badge badge-success">Active</span>
+                        <span class="badge badge-success" style="color:black; background-color:lightgreen;">Active</span>
                     }
                     else
                     {
-                        <span class="badge badge-danger">Inactive</span>
+                        <span class="badge badge-danger" style="color:black; background-color:salmon;">Inactive</span>
                     }
                 </td>
                 <td>
-                    @if (user.Role == "Admin")
-                    {
-                        <span class="badge badge-warning">Admin cannot change their own status</span>
-                    }
-                    else
-                    {
-                        <form method="post" asp-action="ToggleActiveStatus" asp-route-id="@user.Id" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-primary">
-                                @if (user.IsActive)
-                                {
-                                    <text>Deactivate</text>
-                                }
-                                else
-                                {
-                                    <text>Activate</text>
-                                }
-                            </button>
-                        </form>
-                    }
+                    <form method="post" asp-action="ToggleActiveStatus" asp-route-id="@user.Id" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            @if (user.IsActive)
+                            {
+                                <text>Deactivate</text>
+                            }
+                            else
+                            {
+                                <text>Activate</text>
+                            }
+                        </button>
+                    </form>
+                </td>
                 <td>
                     <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" onclick="return confirm('Emin Misiniz?')">Sil</a>
                 </td>

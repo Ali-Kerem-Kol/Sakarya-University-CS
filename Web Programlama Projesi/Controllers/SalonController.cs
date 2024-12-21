@@ -113,8 +113,11 @@ namespace Web_Programlama_Projesi.Controllers
                 return RedirectToAction("Index", "Salon");
             }
 
-            // Salona özel çalışan
-            var employee = _context.Employees.Find(employeeId);
+            // Salona özel çalışan, User bilgisi ile birlikte alınacak
+            var employee = _context.Employees
+                                   .Include(e => e.User)  // User'ı dahil et
+                                   .FirstOrDefault(e => e.Id == employeeId);
+
 
             if (timeSlot.Salon.Expertise != employee.Expertise)
             {
@@ -123,6 +126,12 @@ namespace Web_Programlama_Projesi.Controllers
             }
             // Salona özel çalışan
 
+            if (employee.User.IsActive == false)
+            {
+                TempData["ErrorMessage"] = "Çalışan Aktif Değil";
+                return RedirectToAction("Index", "Salon");
+            }
+
             // Randevu oluşturma
             var appointment = new Appointment
             {
@@ -130,12 +139,21 @@ namespace Web_Programlama_Projesi.Controllers
                 EmployeeId = employeeId,
                 TimeSlotId = timeSlotId,
                 Price = timeSlot.Salon.AppointmentPrice,
-                IsApproved = true,
+                //IsApproved = true,
+                IsApproved = false,
             };
 
             // Randevuyu veritabanına kaydet
             _context.Appointments.Add(appointment);
             _context.SaveChanges();
+
+            // Çalışan toplam randevu sayısı ve toplam kacanç depolama
+            if (employee != null)
+            {
+                employee.TotalAppointments += 1;
+                employee.TotalEarnings += appointment.Price;
+            }
+            // Çalışan toplam randevu sayısı ve toplam kacanç depolama
 
             // Zaman dilimini dolu olarak işaretle
             timeSlot.IsAvailable = false;

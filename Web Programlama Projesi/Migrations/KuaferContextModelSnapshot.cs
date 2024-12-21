@@ -71,6 +71,12 @@ namespace Web_Programlama_Projesi.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("TotalAppointments")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalEarnings")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -87,6 +93,8 @@ namespace Web_Programlama_Projesi.Migrations
                             Id = 1,
                             Expertise = "Saç Kesimi",
                             IsActive = true,
+                            TotalAppointments = 0,
+                            TotalEarnings = 0m,
                             UserId = 3
                         },
                         new
@@ -94,6 +102,8 @@ namespace Web_Programlama_Projesi.Migrations
                             Id = 2,
                             Expertise = "Güzellik Bakımı",
                             IsActive = true,
+                            TotalAppointments = 0,
+                            TotalEarnings = 0m,
                             UserId = 4
                         });
                 });

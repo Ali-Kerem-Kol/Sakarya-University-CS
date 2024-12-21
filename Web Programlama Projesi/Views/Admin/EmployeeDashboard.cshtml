@@ -21,7 +21,9 @@
             <th>IsActive</th>
             <th>UserId</th>
             <th>Username</th>
-            <th>Appointments</th>
+            <th>Current Appointments</th>
+            <th>Total Appointments</th>
+            <th>Total Earnings</th>
         </tr>
     </thead>
     <tbody>
@@ -34,9 +36,12 @@
                 <td>@employee.UserId</td>
                 <td>@employee.User.Username</td>
                 <td>@employee.Appointments.Count</td>
+                <td>@employee.TotalAppointments</td>
+                <td>@employee.TotalEarnings TL</td>
                 <td style="white-space:nowrap">
                     <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditEmployee" asp-route-id="@employee.Id">Edit</a>
                     <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteEmployee" asp-route-id="@employee.Id" onclick="return confirm('Emin Misiniz?')">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="ResetEmployeeStats" asp-route-id="@employee.Id" onclick="return confirm('Emin Misiniz?')">Reset Stats</a>
                 </td>
             </tr>
         }

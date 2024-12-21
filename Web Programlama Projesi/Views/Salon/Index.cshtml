@@ -35,7 +35,7 @@
             border: 1px solid #ccc;
         }
 
-        
+
             .time-slot.btn-success {
                 background-color: green;
                 color: white;
@@ -105,12 +105,13 @@
 </head>
 <body>
 
-    <h2>@ViewData["Title"]</h2>
+    <h2 class="text-center mb-5">@ViewData["Title"]</h2>
 
     @if (salonWithAvailableSlots != null && salonWithAvailableSlots.Any())
     {
         @foreach (var salonItem in salonWithAvailableSlots)
         {
+            <hr />
             var salon = salonItem.Salon;
             var availableSlots = salonItem.AvailableSlots;
 
@@ -174,7 +175,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary" >Randevu Al</button>
+                <button type="submit" class="btn btn-primary">Randevu Al</button>
             </form>
         </div>
     }

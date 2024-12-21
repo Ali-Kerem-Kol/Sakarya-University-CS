@@ -69,6 +69,7 @@ namespace Web_Programlama_Projesi.Controllers
                 Name = salonDto.Name,
                 WorkingHours = salonDto.WorkingHours,
                 AppointmentPrice = salonDto.AppointmentPrice,
+                Expertise = salonDto.Expertise
             };
 
             _context.Salons.Add(salon);
@@ -93,6 +94,7 @@ namespace Web_Programlama_Projesi.Controllers
                 Name=salon.Name,
                 WorkingHours = salon.WorkingHours,
                 AppointmentPrice = salon.AppointmentPrice,
+                Expertise = salon.Expertise
             };
 
             ViewData["SalonId"] = id;
@@ -121,6 +123,7 @@ namespace Web_Programlama_Projesi.Controllers
             salon.Name = salonDto.Name;
             salon.WorkingHours = salonDto.WorkingHours;
             salon.AppointmentPrice = salonDto.AppointmentPrice;
+            salon.Expertise = salonDto.Expertise;
 
             _context.SaveChanges();
 
@@ -398,11 +401,12 @@ namespace Web_Programlama_Projesi.Controllers
 
             if (appointment != null)
             {
-                // Randevuyu sil
-                _context.Appointments.Remove(appointment);
 
                 // Zaman dilimini yeniden uygun hale getir
                 appointment.TimeSlot.IsAvailable = true;
+
+                // Randevuyu sil
+                _context.Appointments.Remove(appointment);
 
                 _context.SaveChanges();
             }
@@ -418,13 +422,16 @@ namespace Web_Programlama_Projesi.Controllers
         {
             SessionControl();
 
+            // Çalışanları, toplam kazanca göre azalan sırayla sıralıyoruz
             var employees = _context.Employees
-                           .Include(e => e.User)  // Employee'ın User'ını dahil et
-                           .Include(e => e.Appointments)  // Employee'ın User'ını dahil et
-                           .ToList();
+                                   .Include(e => e.User)  // Employee'ın User'ını dahil et
+                                   .Include(e => e.Appointments)  // Employee'ın Randevularını dahil et
+                                   .OrderByDescending(e => e.TotalEarnings)  // Kazanca göre azalan sıralama
+                                   .ToList();
 
             return View(employees);
         }
+
 
         public IActionResult CreateEmployee()
         {
@@ -558,6 +565,26 @@ namespace Web_Programlama_Projesi.Controllers
             return RedirectToAction("EmployeeDashboard", "Admin");
         }
 
+        public IActionResult ResetEmployeeStats(int id)
+        {
+            // Çalışanı bul
+            var employee = _context.Employees.Include(e => e.Appointments).FirstOrDefault(e => e.Id == id);
+
+            if (employee != null)
+            {
+                // Çalışanın toplam randevularını ve kazancını sıfırla
+                employee.TotalAppointments = 0;
+                employee.TotalEarnings = 0;
+
+                // Çalışanın verilerini güncelle
+                _context.Update(employee);
+                _context.SaveChanges();
+            }
+
+            // Reset işleminden sonra admin paneline geri dön
+            return RedirectToAction("EmployeeDashboard");
+        }
+
         //==========================Employee====================================
 
 
@@ -569,88 +596,6 @@ namespace Web_Programlama_Projesi.Controllers
             var users = _context.Users.ToList();
             ViewData["Users"] = users;
             return View(users);
-        }
-
-        public IActionResult CreateUser()
-        {
-            SessionControl();
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateUser(UserDto userDto)
-        {
-            SessionControl();
-
-            if (!ModelState.IsValid)
-            {
-                return View(userDto);
-            }
-
-            User user = new User()
-            {
-                Username = userDto.Username,
-                Password = userDto.Password, // Şifreyi burada hashleyin
-                Role = userDto.Role,
-                IsActive = userDto.IsActive,
-            };
-
-            _context.Users.Add(user);
-            _context.SaveChanges();
-
-            return RedirectToAction("UserDashboard", "User");
-        }
-
-        public IActionResult EditUser(int id)
-        {
-            SessionControl();
-
-            var user = _context.Users.Find(id);
-
-            if (user == null)
-            {
-                return RedirectToAction("UserDashboard", "User");
-            }
-
-            var userDto = new UserDto()
-            {
-                Username = user.Username,
-                Password = user.Password,
-                Role = user.Role,
-                IsActive = user.IsActive,
-            };
-
-            ViewData["UserId"] = id;
-
-            return View(userDto);
-        }
-
-        [HttpPost]
-        public IActionResult EditUser(int id, UserDto userDto)
-        {
-            SessionControl();
-
-            var user = _context.Users.Find(id);
-
-            if (user == null)
-            {
-                return RedirectToAction("UserDashboard", "User");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["UserId"] = id;
-                return View(userDto);
-            }
-
-            user.Username = userDto.Username;
-            user.Password = userDto.Password; // Şifreyi burada hashleyin
-            user.Role = userDto.Role;
-            user.IsActive = userDto.IsActive;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("UserDashboard", "User");
         }
 
         public IActionResult DeleteUser(int id)
@@ -682,13 +627,39 @@ namespace Web_Programlama_Projesi.Controllers
                 }
             }
 
+
+            // LINQ kullanımı
+            var employee = (from e in _context.Employees
+                            where e.UserId == id
+                            select e)
+                .Include(e => e.Appointments)  // Çalışanın randevularını dahil et
+                .ThenInclude(a => a.TimeSlot)  // Randevuların bağlı olduğu TimeSlot'ları dahil et
+                .FirstOrDefault();
+
+            if (employee != null)
+            {
+                foreach (var appointment in employee.Appointments)
+                {
+                    // TimeSlot'un müsaitlik durumunu true yap
+                    if (appointment.TimeSlot != null)
+                    {
+                        appointment.TimeSlot.IsAvailable = true;
+                    }
+
+                    // Randevuyu sil
+                    _context.Appointments.Remove(appointment);
+                }
+            }
+
+
+
+
             // Kullanıcıyı sil
             _context.Users.Remove(user);
             _context.SaveChanges();
 
             return RedirectToAction("UserDashboard", "Admin");
         }
-
 
         public IActionResult ToggleActiveStatus(int id)
         {
