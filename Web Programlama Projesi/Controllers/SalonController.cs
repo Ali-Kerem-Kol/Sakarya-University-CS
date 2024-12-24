@@ -15,8 +15,7 @@ namespace Web_Programlama_Projesi.Controllers
             _context = context;
         }
 
-        // Salonun mevcut boş zaman dilimlerini döndürme
-        // Tüm zaman dilimlerini döndürmek için filtreyi kaldırıyoruz
+
         public List<TimeSlot> GetAvailableTimeSlots(int salonId)
         {
             // Salon verisini al
@@ -83,7 +82,6 @@ namespace Web_Programlama_Projesi.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            //var timeSlot = _context.TimeSlots.FirstOrDefault(ts => ts.Id == timeSlotId);
             var timeSlot = _context.TimeSlots
                        .Include(ts => ts.Salon)  // Salon'u dahil et
                        .Include(ts => ts.Appointments)
@@ -139,8 +137,7 @@ namespace Web_Programlama_Projesi.Controllers
                 EmployeeId = employeeId,
                 TimeSlotId = timeSlotId,
                 Price = timeSlot.Salon.AppointmentPrice,
-                //IsApproved = true,
-                IsApproved = false,
+                IsApproved = true,
             };
 
             // Randevuyu veritabanına kaydet

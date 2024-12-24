@@ -31,7 +31,7 @@ namespace Web_Programlama_Projesi.Controllers
             var id = HttpContext.Session.GetInt32("Id");
             ViewData["Id"] = id;
 
-            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+            ViewData["IsLoggedIn"] = username != null;
         }
 
         // Kullanıcı Paneli
@@ -83,10 +83,6 @@ namespace Web_Programlama_Projesi.Controllers
         }
 
 
-
-
-
-
         [HttpPost]
         public IActionResult DeleteAppointment(int AppointmentId)
         {
@@ -98,17 +94,30 @@ namespace Web_Programlama_Projesi.Controllers
 
             if (appointment != null)
             {
-                // Randevuyu sil
-                _context.Appointments.Remove(appointment);
+                // Randevunun ilişkili olduğu çalışanı getir
+                var employee = _context.Employees
+                    .FirstOrDefault(e => e.Id == appointment.EmployeeId); // Appointment'tan EmployeeId alınır
+
+                if (employee != null)
+                {
+                    // Çalışanın toplam kazanç ve randevu sayısını güncelle
+                    employee.TotalAppointments--;
+                    employee.TotalEarnings -= appointment.Price;
+                }
 
                 // Zaman dilimini yeniden uygun hale getir
                 appointment.TimeSlot.IsAvailable = true;
 
+                // Randevuyu sil
+                _context.Appointments.Remove(appointment);
+
+                // Değişiklikleri kaydet
                 _context.SaveChanges();
             }
 
             return RedirectToAction("Dashboard");
         }
+
 
 
 

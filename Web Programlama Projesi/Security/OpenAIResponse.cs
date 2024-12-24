@@ -1,10 +1,10 @@
-﻿namespace Web_Programlama_Projesi.Response
+﻿namespace Web_Programlama_Projesi.Security
 {
     public class OpenAIResponse
     {
         public string Id { get; set; }
 
-        public string Object {  get; set; }
+        public string Object { get; set; }
 
         public int Created { get; set; }
 
@@ -16,7 +16,7 @@
     public class Choice
     {
         public int Index { get; set; }
-    
+
         public Message Message { get; set; }
 
         public string FinishReason { get; set; }

@@ -77,8 +77,8 @@ namespace Web_Programlama_Projesi.Data
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
-                Username = "admin",
-                Password = "123",
+                Username = "B221210042@sakarya.edu.tr",
+                Password = "123456",
                 Role = "Admin",
                 IsActive = true,
             });
@@ -130,6 +130,44 @@ namespace Web_Programlama_Projesi.Data
                 UserId = 4,  // Kullanıcı Id'si 3 olan ahmet ile ilişkilendirme
             });
 
+            // Varsayılan Çalışan Kullanıcısı
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 5,
+                Username = "Mehmet",
+                Password = "123",
+                Role = "Employee",
+                IsActive = true,
+            });
+
+            // Varsayılan Çalışan (Employee Tablosu)
+            modelBuilder.Entity<Employee>().HasData(new Employee
+            {
+                Id = 3,
+                Expertise = "Masaj",
+                IsActive = true,
+                UserId = 5,  // Kullanıcı Id'si 3 olan ahmet ile ilişkilendirme
+            });
+
+            // Varsayılan Çalışan Kullanıcısı
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 6,
+                Username = "Fatma",
+                Password = "123",
+                Role = "Employee",
+                IsActive = true,
+            });
+
+            // Varsayılan Çalışan (Employee Tablosu)
+            modelBuilder.Entity<Employee>().HasData(new Employee
+            {
+                Id = 4,
+                Expertise = "Pedikür/Manikür",
+                IsActive = true,
+                UserId = 6,  // Kullanıcı Id'si 3 olan ahmet ile ilişkilendirme
+            });
+
             // Varsayılan Salon
             modelBuilder.Entity<Salon>().HasData(
     new Salon
@@ -157,7 +195,7 @@ namespace Web_Programlama_Projesi.Data
                 {
                     Id = 1,
                     SalonId = 1,
-                    StartTime = "09:00",
+                    StartTime = "1 Ocak 09:00",
                     EndTime = "10:00",
                     IsAvailable = true
                 },
@@ -165,7 +203,7 @@ namespace Web_Programlama_Projesi.Data
                 {
                     Id = 2,
                     SalonId = 1,
-                    StartTime = "10:00",
+                    StartTime = "1 Ocak 10:00",
                     EndTime = "11:00",
                     IsAvailable = true
                 },
@@ -173,33 +211,108 @@ namespace Web_Programlama_Projesi.Data
                 {
                     Id = 3,
                     SalonId = 1,
-                    StartTime = "11:00",
+                    StartTime = "1 Ocak 11:00",
                     EndTime = "12:00",
+                    IsAvailable = true
+                }, 
+                new TimeSlot
+                {
+                    Id = 4,
+                    SalonId = 1,
+                    StartTime = "1 Ocak 12:00",
+                    EndTime = "13:00",
+                    IsAvailable = true
+                }, 
+                new TimeSlot
+                {
+                    Id = 5,
+                    SalonId = 1,
+                    StartTime = "1 Ocak 13:00",
+                    EndTime = "14:00",
+                    IsAvailable = true
+                }, 
+                new TimeSlot
+                {
+                    Id = 6,
+                    SalonId = 1,
+                    StartTime = "1 Ocak 14:00",
+                    EndTime = "15:00",
+                    IsAvailable = true
+                }, 
+                new TimeSlot
+                {
+                    Id = 7,
+                    SalonId = 1,
+                    StartTime = "1 Ocak 15:00",
+                    EndTime = "16:00",
+                    IsAvailable = true
+                }, 
+                new TimeSlot
+                {
+                    Id = 8,
+                    SalonId = 1,
+                    StartTime = "1 Ocak 16:00",
+                    EndTime = "17:00",
                     IsAvailable = true
                 },
                 // Güzellik Salonu için TimeSlot'lar
                 new TimeSlot
                 {
-                    Id = 4,
+                    Id = 9,
                     SalonId = 2,
-                    StartTime = "10:00",
+                    StartTime = "1 Ocak 10:00",
                     EndTime = "11:00",
                     IsAvailable = true
                 },
                 new TimeSlot
                 {
-                    Id = 5,
+                    Id = 10,
                     SalonId = 2,
-                    StartTime = "11:00",
+                    StartTime = "1 Ocak 11:00",
                     EndTime = "12:00",
                     IsAvailable = true
                 },
                 new TimeSlot
                 {
-                    Id = 6,
+                    Id = 11,
                     SalonId = 2,
-                    StartTime = "12:00",
+                    StartTime = "1 Ocak 12:00",
                     EndTime = "13:00",
+                    IsAvailable = true
+                }, new TimeSlot
+                {
+                    Id = 12,
+                    SalonId = 2,
+                    StartTime = "1 Ocak 13:00",
+                    EndTime = "14:00",
+                    IsAvailable = true
+                }, new TimeSlot
+                {
+                    Id = 13,
+                    SalonId = 2,
+                    StartTime = "1 Ocak 14:00",
+                    EndTime = "15:00",
+                    IsAvailable = true
+                }, new TimeSlot
+                {
+                    Id = 14,
+                    SalonId = 2,
+                    StartTime = "1 Ocak 15:00",
+                    EndTime = "16:00",
+                    IsAvailable = true
+                }, new TimeSlot
+                {
+                    Id = 15,
+                    SalonId = 2,
+                    StartTime = "1 Ocak 16:00",
+                    EndTime = "17:00",
+                    IsAvailable = true
+                }, new TimeSlot
+                {
+                    Id = 16,
+                    SalonId = 2,
+                    StartTime = "1 Ocak 17:00",
+                    EndTime = "18:00",
                     IsAvailable = true
                 }
             );
