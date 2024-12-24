@@ -34,4 +34,35 @@
             </a>
         </div>
     </div>
+
+    <!-- Kullanıcı Bilgileri Formu -->
+    <div class="form-container text-center mt-5">
+        <h3>Bilgileriniz</h3>
+        <form asp-action="UpdateAdminCredentials" method="post" class="mt-3">
+            <div class="form-group">
+                <label for="Username">Kullanıcı Adı:</label>
+                <input type="text" id="Username" name="Username" class="form-control text-center"
+                       value="@ViewData["Username"]" required />
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="Password">Yeni Şifre:</label>
+                <input type="password" id="Password" name="Password" class="form-control text-center" required />
+            </div>
+
+            @if (ViewData["PasswordErrorMessage"] != null)
+            {
+                <div class="alert alert-danger mt-3">@ViewData["PasswordErrorMessage"]</div>
+            }
+
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success mt-3">@ViewData["SuccessMessage"]</div>
+            }
+
+            <button type="submit" class="btn btn-primary mt-3">Bilgileri Güncelle</button>
+        </form>
+    </div>
+
+
 </div>

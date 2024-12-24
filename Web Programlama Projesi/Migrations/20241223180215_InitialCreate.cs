@@ -139,10 +139,12 @@ namespace Web_Programlama_Projesi.Migrations
                 columns: new[] { "Id", "IsActive", "Password", "Role", "Username" },
                 values: new object[,]
                 {
-                    { 1, true, "123", "Admin", "admin" },
+                    { 1, true, "123456", "Admin", "B221210042@sakarya.edu.tr" },
                     { 2, true, "123", "User", "user" },
                     { 3, true, "123", "Employee", "Ahmet" },
-                    { 4, true, "123", "Employee", "Ayşe" }
+                    { 4, true, "123", "Employee", "Ayşe" },
+                    { 5, true, "123", "Employee", "Mehmet" },
+                    { 6, true, "123", "Employee", "Fatma" }
                 });
 
             migrationBuilder.InsertData(
@@ -151,7 +153,9 @@ namespace Web_Programlama_Projesi.Migrations
                 values: new object[,]
                 {
                     { 1, "Saç Kesimi", true, 0, 0m, 3 },
-                    { 2, "Güzellik Bakımı", true, 0, 0m, 4 }
+                    { 2, "Güzellik Bakımı", true, 0, 0m, 4 },
+                    { 3, "Masaj", true, 0, 0m, 5 },
+                    { 4, "Pedikür/Manikür", true, 0, 0m, 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -159,12 +163,22 @@ namespace Web_Programlama_Projesi.Migrations
                 columns: new[] { "Id", "EndTime", "IsAvailable", "SalonId", "StartTime" },
                 values: new object[,]
                 {
-                    { 1, "10:00", true, 1, "09:00" },
-                    { 2, "11:00", true, 1, "10:00" },
-                    { 3, "12:00", true, 1, "11:00" },
-                    { 4, "11:00", true, 2, "10:00" },
-                    { 5, "12:00", true, 2, "11:00" },
-                    { 6, "13:00", true, 2, "12:00" }
+                    { 1, "10:00", true, 1, "1 Ocak 09:00" },
+                    { 2, "11:00", true, 1, "1 Ocak 10:00" },
+                    { 3, "12:00", true, 1, "1 Ocak 11:00" },
+                    { 4, "13:00", true, 1, "1 Ocak 12:00" },
+                    { 5, "14:00", true, 1, "1 Ocak 13:00" },
+                    { 6, "15:00", true, 1, "1 Ocak 14:00" },
+                    { 7, "16:00", true, 1, "1 Ocak 15:00" },
+                    { 8, "17:00", true, 1, "1 Ocak 16:00" },
+                    { 9, "11:00", true, 2, "1 Ocak 10:00" },
+                    { 10, "12:00", true, 2, "1 Ocak 11:00" },
+                    { 11, "13:00", true, 2, "1 Ocak 12:00" },
+                    { 12, "14:00", true, 2, "1 Ocak 13:00" },
+                    { 13, "15:00", true, 2, "1 Ocak 14:00" },
+                    { 14, "16:00", true, 2, "1 Ocak 15:00" },
+                    { 15, "17:00", true, 2, "1 Ocak 16:00" },
+                    { 16, "18:00", true, 2, "1 Ocak 17:00" }
                 });
 
             migrationBuilder.CreateIndex(

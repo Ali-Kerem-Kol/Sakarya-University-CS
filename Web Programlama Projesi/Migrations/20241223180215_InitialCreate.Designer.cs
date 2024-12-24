@@ -11,7 +11,7 @@ using Web_Programlama_Projesi.Data;
 namespace Web_Programlama_Projesi.Migrations
 {
     [DbContext(typeof(KuaferContext))]
-    [Migration("20241220123350_InitialCreate")]
+    [Migration("20241223180215_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -108,6 +108,24 @@ namespace Web_Programlama_Projesi.Migrations
                             TotalAppointments = 0,
                             TotalEarnings = 0m,
                             UserId = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Expertise = "Masaj",
+                            IsActive = true,
+                            TotalAppointments = 0,
+                            TotalEarnings = 0m,
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Expertise = "Pedikür/Manikür",
+                            IsActive = true,
+                            TotalAppointments = 0,
+                            TotalEarnings = 0m,
+                            UserId = 6
                         });
                 });
 
@@ -192,7 +210,7 @@ namespace Web_Programlama_Projesi.Migrations
                             EndTime = "10:00",
                             IsAvailable = true,
                             SalonId = 1,
-                            StartTime = "09:00"
+                            StartTime = "1 Ocak 09:00"
                         },
                         new
                         {
@@ -200,7 +218,7 @@ namespace Web_Programlama_Projesi.Migrations
                             EndTime = "11:00",
                             IsAvailable = true,
                             SalonId = 1,
-                            StartTime = "10:00"
+                            StartTime = "1 Ocak 10:00"
                         },
                         new
                         {
@@ -208,31 +226,111 @@ namespace Web_Programlama_Projesi.Migrations
                             EndTime = "12:00",
                             IsAvailable = true,
                             SalonId = 1,
-                            StartTime = "11:00"
+                            StartTime = "1 Ocak 11:00"
                         },
                         new
                         {
                             Id = 4,
-                            EndTime = "11:00",
+                            EndTime = "13:00",
                             IsAvailable = true,
-                            SalonId = 2,
-                            StartTime = "10:00"
+                            SalonId = 1,
+                            StartTime = "1 Ocak 12:00"
                         },
                         new
                         {
                             Id = 5,
-                            EndTime = "12:00",
+                            EndTime = "14:00",
                             IsAvailable = true,
-                            SalonId = 2,
-                            StartTime = "11:00"
+                            SalonId = 1,
+                            StartTime = "1 Ocak 13:00"
                         },
                         new
                         {
                             Id = 6,
+                            EndTime = "15:00",
+                            IsAvailable = true,
+                            SalonId = 1,
+                            StartTime = "1 Ocak 14:00"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            EndTime = "16:00",
+                            IsAvailable = true,
+                            SalonId = 1,
+                            StartTime = "1 Ocak 15:00"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            EndTime = "17:00",
+                            IsAvailable = true,
+                            SalonId = 1,
+                            StartTime = "1 Ocak 16:00"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            EndTime = "11:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 10:00"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            EndTime = "12:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 11:00"
+                        },
+                        new
+                        {
+                            Id = 11,
                             EndTime = "13:00",
                             IsAvailable = true,
                             SalonId = 2,
-                            StartTime = "12:00"
+                            StartTime = "1 Ocak 12:00"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            EndTime = "14:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 13:00"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            EndTime = "15:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 14:00"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            EndTime = "16:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 15:00"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            EndTime = "17:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 16:00"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            EndTime = "18:00",
+                            IsAvailable = true,
+                            SalonId = 2,
+                            StartTime = "1 Ocak 17:00"
                         });
                 });
 
@@ -274,9 +372,9 @@ namespace Web_Programlama_Projesi.Migrations
                         {
                             Id = 1,
                             IsActive = true,
-                            Password = "123",
+                            Password = "123456",
                             Role = "Admin",
-                            Username = "admin"
+                            Username = "B221210042@sakarya.edu.tr"
                         },
                         new
                         {
@@ -301,6 +399,22 @@ namespace Web_Programlama_Projesi.Migrations
                             Password = "123",
                             Role = "Employee",
                             Username = "Ayşe"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsActive = true,
+                            Password = "123",
+                            Role = "Employee",
+                            Username = "Mehmet"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsActive = true,
+                            Password = "123",
+                            Role = "Employee",
+                            Username = "Fatma"
                         });
                 });
 

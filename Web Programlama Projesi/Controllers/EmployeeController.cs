@@ -24,7 +24,7 @@ namespace Web_Programlama_Projesi.Controllers
 
             // Employee'lerle birlikte User bilgilerini de alıyoruz
             var employees = _context.Employees
-                .Include(e => e.User) // User tablosunu dahil et
+                .Include(e => e.User)
                 .ToList();
 
             // Kullanıcının giriş yapıp yapmadığını kontrol et ve ViewData'ya aktar
@@ -34,7 +34,7 @@ namespace Web_Programlama_Projesi.Controllers
             var role = HttpContext.Session.GetString("Role");
             ViewData["Role"] = role;
 
-            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+            ViewData["IsLoggedIn"] = username != null;
 
             return View(employees);
         }
@@ -49,9 +49,8 @@ namespace Web_Programlama_Projesi.Controllers
             var currentUserId = HttpContext.Session.GetInt32("Id");
             if (currentUserId == null) return RedirectToAction("Login", "Home");
 
-            // Kullanıcının rolünü kontrol et
             var employee = _context.Employees
-                .Include(e => e.User) // User tablosu ile birleştir
+                .Include(e => e.User)
                 .Include(e => e.Appointments)
                 .ThenInclude(a => a.TimeSlot)
                 .FirstOrDefault(e => e.UserId == currentUserId);
@@ -81,7 +80,6 @@ namespace Web_Programlama_Projesi.Controllers
             var currentUserId = HttpContext.Session.GetInt32("Id");
             if (currentUserId == null) return RedirectToAction("Login", "Home");
 
-            // User ve Employee bilgilerini güncelle
             var employee = _context.Employees
                 .Include(e => e.User)
                 .FirstOrDefault(e => e.UserId == currentUserId);
@@ -96,9 +94,8 @@ namespace Web_Programlama_Projesi.Controllers
                     return View("EmployeeDashboard", employee.Appointments);
                 }
 
-                // Şifre ve uzmanlık alanını güncelle
-                employee.User.Password = Password; // User tablosundaki şifre
-                employee.Expertise = Expertise; // Employee tablosundaki uzmanlık alanı
+                employee.User.Password = Password;
+                employee.Expertise = Expertise;
 
                 _context.SaveChanges();
             }

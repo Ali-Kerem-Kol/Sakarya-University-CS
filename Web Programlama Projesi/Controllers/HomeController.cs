@@ -18,7 +18,6 @@ namespace Web_Programlama_Projesi.Controllers
         }
 
 
-
         // Ana sayfa
         public IActionResult Index()
         {
@@ -34,7 +33,7 @@ namespace Web_Programlama_Projesi.Controllers
             }
             else
             {
-                ViewData["Username"] = null; // Giriþ yapmamýþsa null olarak gönder
+                ViewData["Username"] = null;
                 ViewData["Role"] = null;
             }
 
@@ -100,16 +99,16 @@ namespace Web_Programlama_Projesi.Controllers
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
-            if (user.IsActive == false)
-            {
-                ModelState.AddModelError(string.Empty, "Hesabýnýz Askýya Alýndý.");
-                return View();
-            }
-
             // Kullanýcý kontrolü ve þifre doðrulama
             if (user == null || user.Password != password)
             {
                 ModelState.AddModelError(string.Empty, "Geçersiz kullanýcý adý veya þifre.");
+                return View();
+            }
+
+            if (user.IsActive == false)
+            {
+                ModelState.AddModelError(string.Empty, "Hesabýnýz Askýya Alýndý.");
                 return View();
             }
 
@@ -145,30 +144,6 @@ namespace Web_Programlama_Projesi.Controllers
             return RedirectToAction("Index");
         }
         //----------------------------Logout--------------------------------------------------------
-
-
-        //----------------------------Admin Dashboard--------------------------------------------------------
-        public IActionResult AdminDashboard()
-        {
-            return View();
-        }
-        //----------------------------Admin Dashboard--------------------------------------------------------
-        
-        
-        //----------------------------User Dashboard--------------------------------------------------------
-        public IActionResult UserDashboard()
-        {
-            return View();
-        }
-        //----------------------------User Dashboard--------------------------------------------------------
-        
-        
-        //----------------------------Employee Dashboard--------------------------------------------------------
-        public IActionResult EmployeeDashboard()
-        {
-            return View();
-        }
-        //----------------------------Employee Dashboard--------------------------------------------------------
 
     }
 

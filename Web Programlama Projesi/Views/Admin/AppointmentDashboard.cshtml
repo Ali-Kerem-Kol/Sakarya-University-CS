@@ -38,7 +38,6 @@
                 <td>@(appointment.Price)TL</td>
                 <td>@(appointment.IsApproved ? "Uygun" : "Dolu")</td>
                 <td style="white-space:nowrap">
-                    <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditAppointment" asp-route-id="@appointment.Id">Düzenle</a>
                     <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteAppointment" asp-route-id="@appointment.Id" onclick="return confirm('Emin Misiniz?')">Sil</a>
                 </td>
             </tr>

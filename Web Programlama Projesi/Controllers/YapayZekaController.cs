@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using OpenAI;
+using System.Net.Http.Headers;
 using System.Text;
-using Web_Programlama_Projesi.Response;
+using Web_Programlama_Projesi.Security;
 
 
 namespace Web_Programlama_Projesi.Controllers
@@ -35,14 +36,14 @@ namespace Web_Programlama_Projesi.Controllers
             var role = HttpContext.Session.GetString("Role");
             ViewData["Role"] = role;
 
-            ViewData["IsLoggedIn"] = username != null; // true/false olarak aktar
+            ViewData["IsLoggedIn"] = username != null;
         }
-
 
         // Ana sayfa
         public IActionResult Index()
         {
             SetUserInfoToViewData();
+
             return View();
         }
 
@@ -74,11 +75,8 @@ namespace Web_Programlama_Projesi.Controllers
             // İşlenen sonuçları kullanıcıya gösterelim
             ViewData["Message"] += $"<br/>Analiz Sonucu: {analysisResult}";
 
-            // Şimdi OpenAI API'sini kullanarak uygun saç modelini önerelim
-            var hairStyleRecommendation = await GetGPTResponse(analysisResult);
 
-            // Saç modeli önerisini kullanıcıya gösterelim
-            ViewData["HairStyleRecommendation"] = hairStyleRecommendation;
+            ViewData["Result"] = analysisResult + ",Bu Özelliklere sahip bir yüz için nasıl bir saç modeli önerirsin ?";
 
             return View();
         }
@@ -106,54 +104,7 @@ namespace Web_Programlama_Projesi.Controllers
             }
         }
 
-        // OpenAI API'si ile saç modeli önerisi alıyoruz
-        [HttpPost]
-        private async Task<IActionResult> GetGPTResponse(string query)
-        {
-            // Get the OpenAPI Key from AppSettings.json
-            var openAPIKey = _configuration1["OpenAI:ApiKey"];
 
-            // Set up the HttpClient with OpenApi Key
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAPIKey}");
-
-            // Define the request payload
-            var payload = new
-            {
-                model = "gpt-3.5-turbo", // Alternatif model
-                messages = new object[]
-                {
-                new { role = "user", content = "Bu özelliklere göre saç modeli öner: " + query }
-                },
-                temperature = 0,
-                max_tokens = 256
-            };
-
-            string jsonPayload = JsonConvert.SerializeObject(payload);
-            HttpContent httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            // Send the request
-            var responseMessage = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", httpContent);
-
-            // API yanıtını al
-            var responseMessageJson = await responseMessage.Content.ReadAsStringAsync();
-
-            // Yanıtı log'a yaz
-            _logger.LogInformation("API Yanıtı: " + responseMessageJson);
-
-            // Yanıtı çözümle
-            var response = JsonConvert.DeserializeObject<OpenAIResponse>(responseMessageJson);
-
-            if (response?.Choices != null && response.Choices.Any() && response.Choices[0]?.Message != null)
-            {
-                ViewBag.Result = response.Choices[0].Message.Content;
-            }
-            else
-            {
-                ViewBag.Result = "Saç modeli önerisi alınamadı.";
-            }
-
-            return View("Index");
-        }
 
 
     }
