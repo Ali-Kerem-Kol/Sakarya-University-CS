@@ -17,6 +17,13 @@ void executeCommand(char *cmd) {
         cmd[strlen(cmd) - 1] = '\0'; // '&' işaretini kaldır
     }
 
+    // Boru kontrolü
+    char *pipePos = strchr(cmd, '|');
+    if (pipePos) {
+        pipeIndex = pipePos - cmd;
+        cmd[pipeIndex] = '\0'; // Boruyu ayır
+    }
+
     // Giriş ve çıkış yönlendirme kontrolü
     int inRedirect = -1, outRedirect = -1;
     char *inputFile = NULL, *outputFile = NULL;
