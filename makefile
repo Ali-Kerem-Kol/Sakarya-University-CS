@@ -1,3 +1,8 @@
+# Ali Kerem Kol - B221210042
+# Muhammed Baha Bakan - B221210050
+# Engin Cavak - B221210056
+# Berat Alpsar - B221210044
+# Egemen Bozca - B221210037
 CC = gcc
 CFLAGS = -Wall -g
 SRC_DIR = src
