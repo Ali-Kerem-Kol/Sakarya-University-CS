@@ -74,7 +74,11 @@ void executeCommand(char *cmd) {
             close(inRedirect);
         }
 
-     
+        // Çıkış yönlendirme
+        if (outRedirect != -1) {
+            dup2(outRedirect, STDOUT_FILENO);
+            close(outRedirect);
+        }
 
         // Boru işlemi
         if (pipeIndex != -1) {
