@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web_Programlama_Projesi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Web_Programlama_Projesi</a>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Home/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Salon/Index">Salonlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Employee/Index">Çalışanlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/YapayZeka/Index">Yapay Zeka</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (ViewData["Username"] != null)
+                        {
+                            <!-- Admin rolü için -->
+                            @if (ViewData["Role"]?.ToString() == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Admin/Index">Hesap</a>
+                                </li>
+                            }
+                            <!-- Çalışan rolü için -->
+                            @if (ViewData["Role"]?.ToString() == "Employee")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Employee/Dashboard">Hesap</a>
+                                </li>
+                            }
+                            <!-- Kullanıcı rolü için -->
+                            @if (ViewData["Role"]?.ToString() == "User")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/User/Dashboard">Hesap</a>
+                                </li>
+                            }
+
+                            <!-- Çıkış Yap -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Logout">Çıkış Yap</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Giriş Yap ve Kayıt Ol -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Register">Kayıt Ol</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Login">Giriş Yap</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            &copy; 2024 - Web_Programlama_Projesi
+        </div>
+    </footer>
+</body>
+</html>

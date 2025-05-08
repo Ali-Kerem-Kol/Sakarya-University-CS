@@ -1,0 +1,48 @@
+﻿@model List<Salon>
+@{
+    ViewData["Title"] = "SalonDashboard";
+}
+
+<h2 class="text-center mb-5">Salonlar</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateSalon">Salon Ekle</a>
+    </div>
+    <div class="col">
+        
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>WorkingHours</th>
+            <th>TimeSlots</th>
+            <th>AppointmentPrice</th>
+            <th>Expertise</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salon in Model) {
+            <tr>
+                <td>@salon.Id</td>
+                <td>@salon.Name</td>
+                <td>@salon.WorkingHours</td>
+                <td>@salon.TimeSlots.Count</td>
+                <td>@salon.AppointmentPrice</td>
+                <td>@salon.Expertise</td>
+                <td style="white-space:nowrap">
+                    <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="EditSalon" asp-route-id="@salon.Id">Edit</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="TimeSlotDashboard" asp-route-id="@salon.Id">Edit Time Slots</a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteSalon" asp-route-id="@salon.Id" onclick="return confirm('Emin Misiniz?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

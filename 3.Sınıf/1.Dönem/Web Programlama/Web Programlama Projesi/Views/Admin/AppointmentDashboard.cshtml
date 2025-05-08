@@ -1,0 +1,47 @@
+﻿@model List<Appointment>
+@{
+}
+
+<h2 class="text-center mb-5">Randevular</h2>
+
+<div class="row mb-5">
+    <div class="col">
+    </div>
+    <div class="col">
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>TimeSlot ID</th>
+            <th>Customer ID</th>
+            <th>Customer Username</th>
+            <th>Employee ID</th>
+            <th>Employee Username</th>
+            <th>Price</th>
+            <th>Durum</th>
+            <th>Aksiyon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.Id</td>
+                <td>@appointment.TimeSlotId</td>
+                <td>@appointment.CustomerId</td>
+                <td>@(appointment.Customer != null ? appointment.Customer.Username : "Bilinmiyor")</td>
+                <td>@appointment.EmployeeId</td>
+                <td>@(appointment.Employee != null ? appointment.Employee.User.Username : "Bilinmiyor")</td>
+                <td>@(appointment.Price)TL</td>
+                <td>@(appointment.IsApproved ? "Uygun" : "Dolu")</td>
+                <td style="white-space:nowrap">
+                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteAppointment" asp-route-id="@appointment.Id" onclick="return confirm('Emin Misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

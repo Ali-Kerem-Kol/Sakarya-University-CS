@@ -1,0 +1,152 @@
+﻿@model List<Appointment> //<!-- Randevular için gerekli model -->
+@{
+    ViewData["Title"] = "Çalışan Paneli";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .container {
+        width: 70%;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-container {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        margin-top: 5px;
+    }
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+</style>
+
+<div class="container">
+    <h2>Çalışan Paneli</h2>
+
+    <!-- Kullanıcı Bilgileri Formu -->
+    <div class="form-container">
+        <h3>Bilgileriniz</h3>
+        <form asp-action="UpdateEmployee" method="post">
+            <label>Kullanıcı Adı:</label>
+            <input type="text" name="Username" value="@ViewData["Username"]" disabled />
+
+            <label>Şifre:</label>
+            <input type="password" name="Password" placeholder="Yeni Şifreniz" required />
+
+            <label>Uzmanlık Alanı:</label>
+            <input type="text" name="Specialization" value="@ViewData["Specialization"]" required />
+
+            @if (ViewData["PasswordErrorMessage"] != null)
+            {
+                <div style="color: red;">@ViewData["PasswordErrorMessage"]</div>
+            }
+
+            <button type="submit">Bilgileri Güncelle</button>
+        </form>
+    </div>
+
+    <!-- Randevular Tablosu -->
+    <div class="form-container">
+        <h3>Randevularınız</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Randevu ID</th>
+                    <th>Tarih ve Saat</th>
+                    <th>Fiyat</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var appointment in Model)
+                    {
+                        <tr>
+                            <td>@appointment.Id</td>
+                            <td>@appointment.TimeSlot.StartTime - @appointment.TimeSlot.EndTime</td>
+                            <td>@appointment.Price</td>
+                            <td>
+                                <form asp-action="CompleteAppointment" method="post">
+                                    <input type="hidden" name="AppointmentId" value="@appointment.Id" />
+                                    <button type="submit" class="btn-danger">Randevuyu Bitir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Henüz bir randevunuz bulunmamaktadır.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

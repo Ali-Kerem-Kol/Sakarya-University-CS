@@ -1,0 +1,42 @@
+﻿@model List<TimeSlot>
+@{
+    ViewData["Title"] = "TimeSlotDashboard";
+}
+
+<h2 class="text-center mb-5">Zaman Dilimleri - @ViewData["SalonName"]</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary mb-3" asp-controller="Admin" asp-action="CreateTimeSlot" asp-route-salonId="@ViewData["SalonId"]">Zaman Dilimi Ekle</a>
+
+    </div>
+    <div class="col">
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Başlangıç Zamanı</th>
+            <th>Bitiş Zamanı</th>
+            <th>Durum</th>
+            <th>Aksiyon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var timeSlot in Model)
+        {
+            <tr>
+                <td>@timeSlot.Id</td>
+                <td>@timeSlot.StartTime</td>
+                <td>@timeSlot.EndTime</td>
+                <td>@(timeSlot.IsAvailable ? "Uygun" : "Dolu")</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" asp-controller="Admin" asp-action="EditTimeSlot" asp-route-id="@timeSlot.Id">Düzenle</a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="DeleteTimeSlot" asp-route-id="@timeSlot.Id" onclick="return confirm('Emin Misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
