@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h1 class="text-center mt-4">Admin Paneli</h1>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Salon Yönetimi -->
+        <div class="col-md-3 mb-4">
+            <a asp-controller="Admin" asp-action="SalonDashboard" class="btn btn-primary btn-lg d-block text-center">
+                Salon Yönetimi
+            </a>
+        </div>
+
+        <!-- TimeSlot Yönetimi -->
+        <div class="col-md-3 mb-4">
+            <a asp-controller="Admin" asp-action="AppointmentDashboard" class="btn btn-success btn-lg d-block text-center">
+                Randevu Yönetimi
+            </a>
+        </div>
+
+        <!-- Çalışan Yönetimi -->
+        <div class="col-md-3 mb-4">
+            <a asp-controller="Admin" asp-action="EmployeeDashboard" class="btn btn-warning btn-lg d-block text-center">
+                Çalışan Yönetimi
+            </a>
+        </div>
+
+        <!-- Kullanıcı Yönetimi -->
+        <div class="col-md-3 mb-4">
+            <a asp-controller="Admin" asp-action="UserDashboard" class="btn btn-danger btn-lg d-block text-center">
+                Kullanıcı Yönetimi
+            </a>
+        </div>
+    </div>
+
+    <!-- Kullanıcı Bilgileri Formu -->
+    <div class="form-container text-center mt-5">
+        <h3>Bilgileriniz</h3>
+        <form asp-action="UpdateAdminCredentials" method="post" class="mt-3">
+            <div class="form-group">
+                <label for="Username">Kullanıcı Adı:</label>
+                <input type="text" id="Username" name="Username" class="form-control text-center"
+                       value="@ViewData["Username"]" required />
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="Password">Yeni Şifre:</label>
+                <input type="password" id="Password" name="Password" class="form-control text-center" required />
+            </div>
+
+            @if (ViewData["PasswordErrorMessage"] != null)
+            {
+                <div class="alert alert-danger mt-3">@ViewData["PasswordErrorMessage"]</div>
+            }
+
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success mt-3">@ViewData["SuccessMessage"]</div>
+            }
+
+            <button type="submit" class="btn btn-primary mt-3">Bilgileri Güncelle</button>
+        </form>
+    </div>
+
+
+</div>
