@@ -1,0 +1,1036 @@
+using Npgsql;
+using NpgsqlTypes;
+using System.Collections.Specialized;
+using System.Data;
+
+namespace OtelWindowsForm
+{
+
+
+
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        NpgsqlConnection connection = new NpgsqlConnection("server=localHost;port=5432;Database=DB_Otel;user ID=postgres;password=1234");
+
+
+        //---
+
+        static string GetPrefixByPozisyon(string pozisyon)
+        {
+            // Pozisyonlara göre önek belirleme (Temizlikçi için T, Güvenlik için G, vb.)
+            switch (pozisyon.ToLower())
+            {
+                case "temizlikçi":
+                    return "T";
+                case "güvenlik":
+                    return "G";
+                case "aşçı":
+                    return "A";
+                case "lobi Elemanı":
+                    return "L";
+                case "yönetici":
+                    return "Y";
+                default:
+                    throw new ArgumentException("Geçersiz pozisyon");
+            }
+        }
+
+        static string GeneratePersonelId(NpgsqlConnection connection, string pozisyon)
+        {
+            using (NpgsqlCommand command = new NpgsqlCommand())
+            {
+                command.Connection = connection;
+
+                // Personel ID'sini oluşturmak için sıralı numarayı al
+                command.CommandText = $"SELECT '{GetPrefixByPozisyon(pozisyon)}' || COALESCE(MAX(CAST(SUBSTRING(CAST(personel_id AS VARCHAR) FROM 2) AS INTEGER)), 0) + 1 FROM public.\"Personel\" WHERE pozisyon = '{pozisyon}'";
+
+                object result = command.ExecuteScalar();
+
+                return result.ToString();
+            }
+        }
+
+
+        static void InsertNewPersonel(NpgsqlConnection connection, string personelId, string adi, string soyadi, string telNo, string pozisyon, decimal maas)
+        {
+            using (NpgsqlCommand command = new NpgsqlCommand())
+            {
+                command.Connection = connection;
+                command.CommandText = "INSERT INTO public.\"Personel\" (personel_id, adi, soyadi, tel_no, pozisyon, maas) VALUES (@p1, @p2, @p3, @p4, @p5, @p6)";
+
+                command.Parameters.AddWithValue("@p1", personelId);
+                command.Parameters.AddWithValue("@p2", adi);
+                command.Parameters.AddWithValue("@p3", soyadi);
+                command.Parameters.AddWithValue("@p4", telNo);
+                command.Parameters.AddWithValue("@p5", pozisyon);
+                command.Parameters.AddWithValue("@p6", maas);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+        //----
+
+        static int personelIDkontrol(string deger)
+        {
+            if (string.IsNullOrEmpty(deger))
+            {
+                // Hata durumu: Boş veya null gelen değer
+                Console.WriteLine("Hata: Geçersiz değer. Boş veya null değerler kabul edilmez.");
+                return -1; // Hata durumunu temsil eden bir değer döndürülebilir.
+            }
+
+            // İlk harfi kontrol et ve uygun değeri döndür
+            char ilkHarf = char.ToUpper(deger[0]);
+
+            switch (ilkHarf)
+            {
+                case 'T':
+                    return 1;
+                case 'G':
+                    return 2;
+                case 'A':
+                    return 3;
+                case 'L':
+                    return 4;
+                case 'Y':
+                    return 5;
+                default:
+                    // Hata durumu: Geçersiz başlangıç harfi
+                    Console.WriteLine($"Hata: Geçersiz başlangıç harfi '{ilkHarf}'.");
+                    return -1; // Hata durumunu temsil eden bir değer döndürülebilir.
+            }
+        }
+
+        private bool PersonelIdVarMi(string personelId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Personel\" WHERE \"personel_id\" = @personelId", connection);
+            kontrolKomutu.Parameters.AddWithValue("@personelId", personelId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool musterilIdVarMi(int musteriId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Musteri\" WHERE \"musteri_id\" = @musteri_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@musteri_id", musteriId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool odaIdVarMi(int odaiId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Oda\" WHERE \"oda_id\" = @oda_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@oda_id", odaiId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool turIdVarMi(int turiId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"OdaTur\" WHERE \"tur_id\" = @tur_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@tur_id", turiId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool rezervasyonIdVarMi(int rezervasyoniId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Rezervasyon\" WHERE \"rezervasyon_id\" = @rezervasyon_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@rezervasyon_id", rezervasyoniId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool odemeIdVarMi(int odemeiId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Odeme\" WHERE \"odeme_id\" = @odeme_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@odeme_id", odemeiId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool istekIdVarMi(int istekId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"MusteriHizmetIstekleri\" WHERE \"istek_id\" = @istek_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@istek_id", istekId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool hizmetIdVarMi(int hizmetId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Hizmetler\" WHERE \"hizmet_id\" = @hizmet_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@hizmet_id", hizmetId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+
+        private bool temizlikVarMi(string temizlik)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"TemizlikAlanlari\" WHERE \"personel_id\" = @personel_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@personel_id", temizlik);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+
+        private bool IzinVarMi(string izin)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"PersonelIzinleri\" WHERE \"personel_id\" = @personel_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@personel_id", izin);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+
+
+        //----
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_listele_musteri_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"Musteri\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_Musteri.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }   //Müşteri listele
+
+        private void btn_ekle_musteri_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand musteriEklemeKomutu = new NpgsqlCommand("INSERT INTO \"Musteri\" (\"musteri_id\",\"adi\", \"soyadi\", \"tel_no\")\r\nVALUES (@p1, @p2, @p3,@p4)", connection);
+
+            if (musterilIdVarMi((int)num_musteri_id.Value))
+            {
+                MessageBox.Show("Bu Müşteri ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            musteriEklemeKomutu.Parameters.AddWithValue("@p1", num_musteri_id.Value);
+            musteriEklemeKomutu.Parameters.AddWithValue("@p2", txt_musteri_ad.Text);
+            musteriEklemeKomutu.Parameters.AddWithValue("@p3", txt_musteri_soyad.Text);
+            musteriEklemeKomutu.Parameters.AddWithValue("@p4", txt_musteri_telno.Text);
+
+            musteriEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }   //Müşteri ekle
+
+        private void btn_ekle_personel_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            // Aynı personel_id ile kayıt olup olmadığını kontrol et
+            if (PersonelIdVarMi(txt_personel_id.Text))
+            {
+                MessageBox.Show("Bu personel_id zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand personelEklemeKomutu = new NpgsqlCommand("INSERT INTO \"Personel\" (\"adi\",\"soyadi\",\"tel_no\",\"pozisyon\",\"maas\",\"personel_id\")\r\nVALUES (@p1,@p2,@p3,@p4,@p5,@p6);\r\n", connection);
+
+            string pozisyon = cmbbox_personel_pozisyon.Text;
+            int kontrol = personelIDkontrol(txt_personel_id.Text);
+            if (pozisyon == "Temizlikçi" && kontrol == 1)
+            {
+                personelEklemeKomutu.Parameters.AddWithValue("@p6", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Güvenlik" && kontrol == 2)
+            {
+                personelEklemeKomutu.Parameters.AddWithValue("@p6", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Aşçı" && kontrol == 3)
+            {
+                personelEklemeKomutu.Parameters.AddWithValue("@p6", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Lobi Elemanı" && kontrol == 4)
+            {
+                personelEklemeKomutu.Parameters.AddWithValue("@p6", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Yönetici" && kontrol == 5)
+            {
+                personelEklemeKomutu.Parameters.AddWithValue("@p6", txt_personel_id.Text);
+            }
+            else
+            {
+                MessageBox.Show("Personel Türü ile ID Uyumsuz !!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+
+
+            personelEklemeKomutu.Parameters.AddWithValue("@p1", txt_personel_ad.Text);
+            personelEklemeKomutu.Parameters.AddWithValue("@p2", txt_personel_soyad.Text);
+            personelEklemeKomutu.Parameters.AddWithValue("@p3", txt_personel_telno.Text);
+            personelEklemeKomutu.Parameters.AddWithValue("@p4", cmbbox_personel_pozisyon.Text);
+            personelEklemeKomutu.Parameters.AddWithValue("@p5", num_personel_maas.Value);
+
+
+
+            personelEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_listele_personel_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"Personel\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_Personel.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_sil_personel_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand personelSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Personel\" WHERE personel_id=@p1 ", connection);
+            if (!PersonelIdVarMi(txt_personel_id.Text))
+            {
+                MessageBox.Show("Personel Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            //---------
+
+            NpgsqlTransaction transaction = connection.BeginTransaction();
+
+            try
+            {
+                string pozisyon = cmbbox_personel_pozisyon.Text;
+                int kontrol = personelIDkontrol(txt_personel_id.Text);
+                if (kontrol == 1)
+                {
+                    // 1. Diğer tablolardaki kayıtları sil
+                    NpgsqlCommand temizlikciSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Temizlikci\" WHERE personel_id=@p1", connection);
+
+                    NpgsqlCommand temizlikSilmeKomutu = new NpgsqlCommand("DELETE FROM \"TemizlikAlanlari\" WHERE personel_id=@p1 ", connection);
+                    if (temizlikVarMi(txt_personel_id.Text))
+                    {
+                        temizlikSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        temizlikSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    NpgsqlCommand izinSilmeKomutu = new NpgsqlCommand("DELETE FROM \"PersonelIzinleri\" WHERE personel_id=@p1", connection);
+                    if (IzinVarMi(txt_personel_id.Text))
+                    {
+                        izinSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        izinSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    temizlikciSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                    temizlikciSilmeKomutu.ExecuteNonQuery();
+                }
+                else if (kontrol == 2)
+                {
+                    // 2. Diğer tablolardaki kayıtları sil
+                    NpgsqlCommand izinSilmeKomutu = new NpgsqlCommand("DELETE FROM \"PersonelIzinleri\" WHERE personel_id=@p1", connection);
+                    if (IzinVarMi(txt_personel_id.Text))
+                    {
+                        izinSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        izinSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    NpgsqlCommand guvenlikSillmeKomutu = new NpgsqlCommand("DELETE FROM \"Guvenlik\" WHERE personel_id=@p1", connection);
+                    guvenlikSillmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                    guvenlikSillmeKomutu.ExecuteNonQuery();
+                }
+                else if (kontrol == 3)
+                {
+                    // 3. Diğer tablolardaki kayıtları sil
+                    NpgsqlCommand izinSilmeKomutu = new NpgsqlCommand("DELETE FROM \"PersonelIzinleri\" WHERE personel_id=@p1", connection);
+                    if (IzinVarMi(txt_personel_id.Text))
+                    {
+                        izinSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        izinSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    NpgsqlCommand asciSillmeKomutu = new NpgsqlCommand("DELETE FROM \"Asci\" WHERE personel_id=@p1", connection);
+                    asciSillmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                    asciSillmeKomutu.ExecuteNonQuery();
+                }
+                else if (kontrol == 4)
+                {
+                    // 4. Diğer tablolardaki kayıtları sil
+                    NpgsqlCommand izinSilmeKomutu = new NpgsqlCommand("DELETE FROM \"PersonelIzinleri\" WHERE personel_id=@p1", connection);
+                    if (IzinVarMi(txt_personel_id.Text))
+                    {
+                        izinSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        izinSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    NpgsqlCommand lobielemaniSillmeKomutu = new NpgsqlCommand("DELETE FROM \"LobiElemani\" WHERE personel_id=@p1", connection);
+                    lobielemaniSillmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                    lobielemaniSillmeKomutu.ExecuteNonQuery();
+                }
+                else if (kontrol == 5)
+                {
+                    // 5. Diğer tablolardaki kayıtları sil
+                    NpgsqlCommand izinSilmeKomutu = new NpgsqlCommand("DELETE FROM \"PersonelIzinleri\" WHERE personel_id=@p1", connection);
+                    if (IzinVarMi(txt_personel_id.Text))
+                    {
+                        izinSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                        izinSilmeKomutu.ExecuteNonQuery();
+                    }
+
+                    NpgsqlCommand yoneticiSillmeKomutu = new NpgsqlCommand("DELETE FROM \"Yonetici\" WHERE personel_id=@p1", connection);
+                    yoneticiSillmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                    yoneticiSillmeKomutu.ExecuteNonQuery();
+                }
+                else
+                {
+                    MessageBox.Show("Geçersiz Personel ID !!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    connection.Close();
+                    return;
+                }
+
+
+                //NpgsqlCommand personelSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Personel\" WHERE personel_id=@p1", connection);
+                personelSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+                personelSilmeKomutu.ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                MessageBox.Show("Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+            connection.Open();
+            //---------
+            personelSilmeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            personelSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+
+            ///////////////
+
+        }
+
+        private void btn_sil_musteri_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand musteriSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Musteri\" WHERE musteri_id=@p1 ", connection);
+            if (!musterilIdVarMi((int)num_musteri_id.Value))
+            {
+                MessageBox.Show("Musteri Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            musteriSilmeKomutu.Parameters.AddWithValue("@p1", num_musteri_id.Value);
+            musteriSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }   //Müşteri sil
+
+        private void btn_guncelle_musteri_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!musterilIdVarMi((int)num_musteri_id.Value))
+            {
+                MessageBox.Show("Musteri Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand musteriGuncellemeKomutu = new NpgsqlCommand("UPDATE \"Musteri\" SET adi = @p2, soyadi = @p3,tel_no = @p4 WHERE musteri_id = @p1", connection);
+
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p1", num_musteri_id.Value);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p2", txt_musteri_ad.Text);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p3", txt_musteri_soyad.Text);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p4", txt_musteri_telno.Text);
+
+            musteriGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }   //Müşteri güncelle
+
+        private void btn_guncelle_personel_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!PersonelIdVarMi(txt_personel_id.Text))
+            {
+                MessageBox.Show("Personel Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand personelGuncellemeKomutu = new NpgsqlCommand("UPDATE \"Personel\" SET adi = @p2,soyadi = @p3,tel_no = @p4,pozisyon = @p5,maas = @p6 WHERE personel_id = @p1", connection);
+
+            string pozisyon = cmbbox_personel_pozisyon.Text;
+            int kontrol = personelIDkontrol(txt_personel_id.Text);
+            if (pozisyon == "Temizlikçi" && kontrol == 1)
+            {
+                personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Güvenlik" && kontrol == 2)
+            {
+                personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Aşçı" && kontrol == 3)
+            {
+                personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Lobi Elemanı" && kontrol == 4)
+            {
+                personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            }
+            else if (pozisyon == "Yonetici" && kontrol == 5)
+            {
+                personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            }
+            else
+            {
+                MessageBox.Show("Personel Türü ile ID Uyumsuz !!", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p1", txt_personel_id.Text);
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p2", txt_personel_ad.Text);
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p3", txt_personel_soyad.Text);
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p4", txt_personel_telno.Text);
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p5", cmbbox_personel_pozisyon.Text);
+            personelGuncellemeKomutu.Parameters.AddWithValue("@p6", num_personel_maas.Value);
+
+            personelGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_detaylar_personel_Click(object sender, EventArgs e)
+        {
+            Personel_Detayları personelDetay = new Personel_Detayları();
+
+            this.Hide(); // veya this.Close(); 
+            ///// ilk başta "Detaylar..." a tıklayınca ana formu çarpı işaretinen kapatınca program sonlanmıyor ?!
+
+            personelDetay.Show();
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_ekle_oda_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand odaEklemeKomutu = new NpgsqlCommand("INSERT INTO \"Oda\" (\"oda_id\",\"tur_id\", \"durum\", \"kat\")\r\nVALUES (@p1, @p2, @p3,@p4)", connection);
+
+            if (odaIdVarMi((int)num_oda_id.Value))
+            {
+                MessageBox.Show("Bu Oda ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (!turIdVarMi((int)num_oda_turu.Value))
+            {
+                MessageBox.Show("Böyle Bir Oda Türü Mevcut Değil !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+
+            odaEklemeKomutu.Parameters.AddWithValue("@p1", num_oda_id.Value);
+            odaEklemeKomutu.Parameters.AddWithValue("@p2", num_oda_turu.Value);
+            odaEklemeKomutu.Parameters.AddWithValue("@p3", txt_oda_durum.Text);
+            odaEklemeKomutu.Parameters.AddWithValue("@p4", num_oda_kat.Value);
+
+            odaEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_sil_oda_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand odaSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Oda\" WHERE oda_id=@p1 ", connection);
+            if (!odaIdVarMi((int)num_oda_id.Value))
+            {
+                MessageBox.Show("Oda Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!turIdVarMi((int)num_oda_turu.Value))
+            {
+                MessageBox.Show("Böyle Bir Oda Türü Mevcut Değil !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+
+            }
+
+            odaSilmeKomutu.Parameters.AddWithValue("@p1", num_oda_id.Value);
+            odaSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_guncelle_oda_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!odaIdVarMi((int)num_oda_id.Value))
+            {
+                MessageBox.Show("Oda Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!turIdVarMi((int)num_oda_turu.Value))
+            {
+                MessageBox.Show("Böyle Bir Oda Türü Mevcut Değil !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+
+            }
+
+            NpgsqlCommand odaGuncellemeKomutu = new NpgsqlCommand("UPDATE \"Oda\" SET tur_id = @p2, durum = @p3,kat = @p4 WHERE oda_id = @p1", connection);
+
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p1", num_oda_id.Value);
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p2", num_oda_turu.Value);
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p3", txt_oda_durum.Text);
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p4", num_oda_kat.Value);
+
+            odaGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_listele_oda_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"Oda\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_Oda.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_oda_turleri_Click(object sender, EventArgs e)
+        {
+            Oda_Türleri odaDetay = new Oda_Türleri();
+
+            this.Hide(); // veya this.Close(); 
+            ///// ilk başta "Detaylar..." a tıklayınca ana formu çarpı işaretinen kapatınca program sonlanmıyor ?!
+
+            odaDetay.Show();
+        }
+
+        private void btn_ekle_rezervasyon_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand rezervasyonEklemeKomutu = new NpgsqlCommand("INSERT INTO \"Rezervasyon\" (\"rezervasyon_id\",\"musteri_id\", \"oda_id\", \"giris_tarihi\",\"cikis_tarihi\",\"gun_sayisi\")\r\nVALUES (@p1, @p2, @p3,@p4,@p5,@p6)", connection);
+
+            if (rezervasyonIdVarMi((int)num_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Bu Rezervasyon ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p1", num_rezervasyon_id.Value);
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p2", num_rezervasyon_musteri_id.Value);
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p3", num_rezervasyon_oda_id.Value);
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p4", dtp_rezervasyon_giris_tarihi.Value);
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p5", dtp_rezervasyon_cikis_tarihi.Value);
+            rezervasyonEklemeKomutu.Parameters.AddWithValue("@p6", (dtp_rezervasyon_cikis_tarihi.Value - dtp_rezervasyon_giris_tarihi.Value));
+
+
+
+            rezervasyonEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_sil_rezervasyon_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand rezervasyonSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Rezervasyon\" WHERE rezervasyon_id=@p1 ", connection);
+            if (!rezervasyonIdVarMi((int)num_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Rezervasyon Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            rezervasyonSilmeKomutu.Parameters.AddWithValue("@p1", num_rezervasyon_id.Value);
+            rezervasyonSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_guncelle_rezervasyon_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!rezervasyonIdVarMi((int)num_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Rezervasyon Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand rezervasyonGuncellemeKomutu = new NpgsqlCommand("UPDATE \"Rezervasyon\" SET giris_tarihi = @p2, cikis_tarihi = @p3,gun_sayisi = @p4 WHERE rezervasyon_id = @p1", connection);
+
+            rezervasyonGuncellemeKomutu.Parameters.AddWithValue("@p1", num_rezervasyon_id.Value);
+            rezervasyonGuncellemeKomutu.Parameters.AddWithValue("@p2", dtp_rezervasyon_giris_tarihi.Value);
+            rezervasyonGuncellemeKomutu.Parameters.AddWithValue("@p3", dtp_rezervasyon_cikis_tarihi.Value);
+            rezervasyonGuncellemeKomutu.Parameters.AddWithValue("@p4", (dtp_rezervasyon_cikis_tarihi.Value - dtp_rezervasyon_giris_tarihi.Value));
+
+            rezervasyonGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_listele_rezervasyon_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"Rezervasyon\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_Rezervasyon.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_ekle_odeme_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand odemeEklemeKomutu = new NpgsqlCommand("INSERT INTO \"Odeme\" (\"odeme_id\",\"rezervasyon_id\", \"tutar\", \"odeme_tarihi\")\r\nVALUES (@p1, @p2, @p3,@p4)", connection);
+
+            if (odemeIdVarMi((int)num_odemeid.Value))
+            {
+                MessageBox.Show("Bu Odeme ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (!rezervasyonIdVarMi((int)num_odeme_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Böyle Bir Rezervasyon Yok !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            odemeEklemeKomutu.Parameters.AddWithValue("@p1", num_odemeid.Value);
+            odemeEklemeKomutu.Parameters.AddWithValue("@p2", num_odeme_rezervasyon_id.Value);
+            odemeEklemeKomutu.Parameters.AddWithValue("@p3", num_odeme_toplam_tutar.Value);
+            odemeEklemeKomutu.Parameters.AddWithValue("@p4", dtp_odeme_odeme_tarihi.Value);
+
+            odemeEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_sil_odeme_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand odemeSilmeKomutu = new NpgsqlCommand("DELETE FROM \"Odeme\" WHERE odeme_id=@p1 ", connection);
+            if (!odemeIdVarMi((int)num_odemeid.Value))
+            {
+                MessageBox.Show("Ödeme ID Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!rezervasyonIdVarMi((int)num_odeme_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Böyle Bir Rezervasyon Yok !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            odemeSilmeKomutu.Parameters.AddWithValue("@p1", num_odemeid.Value);
+            odemeSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_guncelle_odeme_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!odemeIdVarMi((int)num_odemeid.Value))
+            {
+                MessageBox.Show("Ödeme ID Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!rezervasyonIdVarMi((int)num_odeme_rezervasyon_id.Value))
+            {
+                MessageBox.Show("Böyle Bir Rezervasyon Yok !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand odemeGuncellemeKomutu = new NpgsqlCommand("UPDATE \"Odeme\" SET tutar = @p3, odeme_tarihi = @p4 WHERE odeme_id = @p1 AND rezervasyon_id = @p2", connection);
+
+            odemeGuncellemeKomutu.Parameters.AddWithValue("@p1", num_odemeid.Value);
+            odemeGuncellemeKomutu.Parameters.AddWithValue("@p2", num_odeme_rezervasyon_id.Value);
+            odemeGuncellemeKomutu.Parameters.AddWithValue("@p3", num_odeme_toplam_tutar.Value);
+            odemeGuncellemeKomutu.Parameters.AddWithValue("@p4", dtp_odeme_odeme_tarihi.Value);
+
+            odemeGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_listele_odeme_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"Odeme\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_Odeme.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_ekle_musteri_istek_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand musteriistekEklemeKomutu = new NpgsqlCommand("INSERT INTO \"MusteriHizmetIstekleri\" (\"istek_id\",\"musteri_id\", \"hizmet_id\", \"istek_aciklama\",\"istek_tarihi\",\"durum\")\r\nVALUES (@p1, @p2, @p3,@p4,@p5,@p6)", connection);
+
+            if (istekIdVarMi((int)num_musteri_hizmet_istekleri_istek_id.Value))
+            {
+                MessageBox.Show("Bu İstek ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (musterilIdVarMi((int)num_musteri_id.Value))
+            {
+                MessageBox.Show("Bu Müşteri ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (!hizmetIdVarMi((int)num_musteri_hizmet_istekleri_hizmet_id.Value))
+            {
+                MessageBox.Show("Böyle Bir Hizmet Yok !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p1", num_musteri_hizmet_istekleri_istek_id.Value);
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p2", num_musteri_hizmet_istekleri_musteri_id.Value);
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p3", num_musteri_hizmet_istekleri_hizmet_id.Value);
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p4", txt_musteri_hizmet_istekleri_istek_aciklama.Text);
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p5", dtp_musteri_hizmet_istekleri_istek_tarihi.Value);
+            musteriistekEklemeKomutu.Parameters.AddWithValue("@p6", txt_musteri_hizmet_istekleri_durum.Text);
+
+            musteriistekEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_sil_musteri_istek_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand musteriistekSilmeKomutu = new NpgsqlCommand("DELETE FROM \"MusteriHizmetIstekleri\" WHERE istek_id=@p1 ", connection);
+            if (!istekIdVarMi((int)num_musteri_hizmet_istekleri_istek_id.Value))
+            {
+                MessageBox.Show("Bu İstek ID Bulunamadı !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            musteriistekSilmeKomutu.Parameters.AddWithValue("@p1", num_musteri_hizmet_istekleri_istek_id.Value);
+            musteriistekSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_guncelle_musteri_istek_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!istekIdVarMi((int)num_musteri_hizmet_istekleri_istek_id.Value))
+            {
+                MessageBox.Show("Bu İstek ID Bulunamadı !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand musteriistekGuncellemeKomutu = new NpgsqlCommand("UPDATE \"MusteriHizmetIstekleri\" SET musteri_id = @p2, hizmet_id = @p3,istek_aciklama = @p4,istek_tarihi = @p5,durum = @p6 WHERE istek_id = @p1", connection);
+
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p1", num_musteri_hizmet_istekleri_istek_id.Value);
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p2", num_musteri_hizmet_istekleri_musteri_id.Value);
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p3", num_musteri_hizmet_istekleri_hizmet_id.Value);
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p4", txt_musteri_hizmet_istekleri_istek_aciklama.Text);
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p5", dtp_musteri_hizmet_istekleri_istek_tarihi.Value);
+            musteriistekGuncellemeKomutu.Parameters.AddWithValue("@p6", txt_musteri_hizmet_istekleri_durum.Text);
+
+            musteriistekGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_listele_musteri_istek_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"MusteriHizmetIstekleri\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_MusteriHizmetIstekleri.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_hizmetler_Click(object sender, EventArgs e)
+        {
+            Hizmetler hizmetler = new Hizmetler();
+
+            this.Hide(); // veya this.Close(); 
+            ///// ilk başta "Detaylar..." a tıklayınca ana formu çarpı işaretinen kapatınca program sonlanmıyor ?!
+
+            hizmetler.Show();
+        }
+
+
+    }
+}

@@ -1,0 +1,136 @@
+using Npgsql;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace OtelWindowsForm
+{
+    public partial class Oda_Türleri : Form
+    {
+        public Oda_Türleri()
+        {
+            InitializeComponent();
+        }
+
+        NpgsqlConnection connection = new NpgsqlConnection("server=localHost;port=5432;Database=DB_Otel;user ID=postgres;password=1234");
+
+        //----
+
+        private bool turIdVarMi(int turId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"OdaTur\" WHERE \"tur_id\" = @tur_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@tur_id", turId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+
+        //----
+
+        private void btn_oda_tur_ekle_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand odaturEklemeKomutu = new NpgsqlCommand("INSERT INTO \"OdaTur\" (\"tur_id\",\"tur_adi\", \"gunluk_fiyat\")\r\nVALUES (@p1, @p2, @p3)", connection);
+
+            if (turIdVarMi((int)num_oda_tur_id.Value))
+            {
+                MessageBox.Show("Bu Tür ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            odaturEklemeKomutu.Parameters.AddWithValue("@p1", num_oda_tur_id.Value);
+            odaturEklemeKomutu.Parameters.AddWithValue("@p2", txt_oda_tur_adi.Text);
+            odaturEklemeKomutu.Parameters.AddWithValue("@p3", num_oda_tur_gunluk_fiyat.Value);
+
+            odaturEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_oda_tur_sil_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand odaturSilmeKomutu = new NpgsqlCommand("DELETE FROM \"OdaTur\" WHERE tur_id=@p1 ", connection);
+            if (!turIdVarMi((int)num_oda_tur_id.Value))
+            {
+                MessageBox.Show("Tür ID Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            odaturSilmeKomutu.Parameters.AddWithValue("@p1", num_oda_tur_id.Value);
+            odaturSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_oda_tur_guncelle_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!turIdVarMi((int)num_oda_tur_id.Value))
+            {
+                MessageBox.Show("Tür ID Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand odaGuncellemeKomutu = new NpgsqlCommand("UPDATE \"OdaTur\" SET tur_adi = @p2, gunluk_fiyat = @p3 WHERE tur_id = @p1", connection);
+
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p1", num_oda_tur_id.Value);
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p2", txt_oda_tur_adi.Text);
+            odaGuncellemeKomutu.Parameters.AddWithValue("@p3", num_oda_tur_gunluk_fiyat.Value);
+
+            odaGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_oda_tur_listele_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"OdaTur\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_OdaTur.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void btn_ana_sayfaya_don_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+
+            this.Close(); // veya this.Close();
+
+            form1.Show();
+        }
+
+    }
+}

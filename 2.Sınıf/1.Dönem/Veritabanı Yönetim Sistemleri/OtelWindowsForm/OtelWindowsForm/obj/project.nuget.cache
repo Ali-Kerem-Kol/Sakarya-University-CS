@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "RG9a72tf7Og2et2/QYf46Rw6cwQKtbWDsY2E1BvsstDC8+I1iVxdw8Go4uYvrCsaHpy7HjYMmfq6/dIAkD2KoQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ali_k\\source\\repos\\OtelWindowsForm\\OtelWindowsForm\\OtelWindowsForm.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ali_k\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\npgsql\\8.0.1\\npgsql.8.0.1.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.0\\system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\ali_k\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

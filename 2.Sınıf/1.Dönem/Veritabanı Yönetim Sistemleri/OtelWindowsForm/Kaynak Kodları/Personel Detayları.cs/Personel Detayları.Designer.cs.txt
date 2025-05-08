@@ -1,0 +1,842 @@
+namespace OtelWindowsForm
+{
+    partial class Personel_Detayları
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            label1 = new Label();
+            dtgw_PersonelIzinDegisiklikleri = new DataGridView();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            dtgw_Temizlikci = new DataGridView();
+            dtgw_Guvenlik = new DataGridView();
+            dtgw_Asci = new DataGridView();
+            dtgw_LobiElemani = new DataGridView();
+            dtgw_Yonetici = new DataGridView();
+            label7 = new Label();
+            dtgw_PersonelIzinleri = new DataGridView();
+            btn_guncelle_temizlikci = new Button();
+            btn_listele_temizlikci = new Button();
+            btn_guncelle_asci = new Button();
+            btn_listele_asci = new Button();
+            btn_guncelle_yonetici = new Button();
+            btn_listele_yonetici = new Button();
+            btn_guncelle_guvenlik = new Button();
+            btn_listele_guvenlik = new Button();
+            btn_guncelle_lobi_elemani = new Button();
+            btn_listele_lobi_elemani = new Button();
+            btn_guncelle_personel_izinleri = new Button();
+            btn_listele_personel_izinleri = new Button();
+            btn_listele_personel_izin_loglari = new Button();
+            btn_ekle_personel_izinleri = new Button();
+            btn_sil_personel_izinleri = new Button();
+            btn_exit_Personel_Detaylari = new Button();
+            btn_sil_personel_izin_loglari = new Button();
+            label8 = new Label();
+            label9 = new Label();
+            label10 = new Label();
+            txt_temizlikci_personel_id = new TextBox();
+            txt_temizlikci_temizlik_alani = new TextBox();
+            num_temizlikci_calisma_saati = new NumericUpDown();
+            label11 = new Label();
+            label12 = new Label();
+            label13 = new Label();
+            txt_guvenlik_personel_id = new TextBox();
+            txt_guvenlik_vardiya = new TextBox();
+            txt_guvenlik_calistigi_bolge = new TextBox();
+            label14 = new Label();
+            label15 = new Label();
+            txt_asci_personel_id = new TextBox();
+            txt_asci_tecrube = new TextBox();
+            label16 = new Label();
+            label17 = new Label();
+            txt_lobi_elemani_personel_id = new TextBox();
+            txt_lobi_elemani_vardiya = new TextBox();
+            txt_yonetici_personel_id = new TextBox();
+            txt_yonetici_yonettikleri = new TextBox();
+            label19 = new Label();
+            label20 = new Label();
+            label21 = new Label();
+            label22 = new Label();
+            label23 = new Label();
+            label24 = new Label();
+            label25 = new Label();
+            txt_personel_izinleri_personel_id = new TextBox();
+            txt_personel_izinleri_aciklama = new TextBox();
+            num_personel_izinleri_izin_id = new NumericUpDown();
+            btn_temizlik_alanlari = new Button();
+            dtp_personel_izinleri_baslangic_tarihi = new DateTimePicker();
+            dtp_personel_izinleri_bitis_tarihi = new DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)dtgw_PersonelIzinDegisiklikleri).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Temizlikci).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Guvenlik).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Asci).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_LobiElemani).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Yonetici).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_PersonelIzinleri).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlikci_calisma_saati).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_personel_izinleri_izin_id).BeginInit();
+            SuspendLayout();
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(869, 250);
+            label1.Name = "label1";
+            label1.Size = new Size(115, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Personel İzin Logları:";
+            // 
+            // dtgw_PersonelIzinDegisiklikleri
+            // 
+            dtgw_PersonelIzinDegisiklikleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_PersonelIzinDegisiklikleri.Location = new Point(869, 270);
+            dtgw_PersonelIzinDegisiklikleri.Name = "dtgw_PersonelIzinDegisiklikleri";
+            dtgw_PersonelIzinDegisiklikleri.RowTemplate.Height = 25;
+            dtgw_PersonelIzinDegisiklikleri.Size = new Size(123, 150);
+            dtgw_PersonelIzinDegisiklikleri.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(12, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(61, 15);
+            label2.TabIndex = 2;
+            label2.Text = "Temizlikçi:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 250);
+            label3.Name = "label3";
+            label3.Size = new Size(56, 15);
+            label3.TabIndex = 3;
+            label3.Text = "Güvenlik:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(294, 9);
+            label4.Name = "label4";
+            label4.Size = new Size(32, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Aşçı:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(294, 250);
+            label5.Name = "label5";
+            label5.Size = new Size(78, 15);
+            label5.TabIndex = 5;
+            label5.Text = "Lobi Elemanı:";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(570, 9);
+            label6.Name = "label6";
+            label6.Size = new Size(52, 15);
+            label6.TabIndex = 6;
+            label6.Text = "Yönetici:";
+            // 
+            // dtgw_Temizlikci
+            // 
+            dtgw_Temizlikci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_Temizlikci.Location = new Point(12, 29);
+            dtgw_Temizlikci.Name = "dtgw_Temizlikci";
+            dtgw_Temizlikci.RowTemplate.Height = 25;
+            dtgw_Temizlikci.Size = new Size(123, 150);
+            dtgw_Temizlikci.TabIndex = 7;
+            // 
+            // dtgw_Guvenlik
+            // 
+            dtgw_Guvenlik.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_Guvenlik.Location = new Point(12, 270);
+            dtgw_Guvenlik.Name = "dtgw_Guvenlik";
+            dtgw_Guvenlik.RowTemplate.Height = 25;
+            dtgw_Guvenlik.Size = new Size(123, 150);
+            dtgw_Guvenlik.TabIndex = 8;
+            // 
+            // dtgw_Asci
+            // 
+            dtgw_Asci.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_Asci.Location = new Point(294, 29);
+            dtgw_Asci.Name = "dtgw_Asci";
+            dtgw_Asci.RowTemplate.Height = 25;
+            dtgw_Asci.Size = new Size(123, 150);
+            dtgw_Asci.TabIndex = 9;
+            // 
+            // dtgw_LobiElemani
+            // 
+            dtgw_LobiElemani.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_LobiElemani.Location = new Point(294, 270);
+            dtgw_LobiElemani.Name = "dtgw_LobiElemani";
+            dtgw_LobiElemani.RowTemplate.Height = 25;
+            dtgw_LobiElemani.Size = new Size(123, 150);
+            dtgw_LobiElemani.TabIndex = 10;
+            // 
+            // dtgw_Yonetici
+            // 
+            dtgw_Yonetici.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_Yonetici.Location = new Point(570, 29);
+            dtgw_Yonetici.Name = "dtgw_Yonetici";
+            dtgw_Yonetici.RowTemplate.Height = 25;
+            dtgw_Yonetici.Size = new Size(123, 150);
+            dtgw_Yonetici.TabIndex = 11;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(570, 250);
+            label7.Name = "label7";
+            label7.Size = new Size(92, 15);
+            label7.TabIndex = 12;
+            label7.Text = "Personel İzinleri:";
+            // 
+            // dtgw_PersonelIzinleri
+            // 
+            dtgw_PersonelIzinleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_PersonelIzinleri.Location = new Point(570, 270);
+            dtgw_PersonelIzinleri.Name = "dtgw_PersonelIzinleri";
+            dtgw_PersonelIzinleri.RowTemplate.Height = 25;
+            dtgw_PersonelIzinleri.Size = new Size(123, 150);
+            dtgw_PersonelIzinleri.TabIndex = 13;
+            // 
+            // btn_guncelle_temizlikci
+            // 
+            btn_guncelle_temizlikci.Location = new Point(12, 185);
+            btn_guncelle_temizlikci.Name = "btn_guncelle_temizlikci";
+            btn_guncelle_temizlikci.Size = new Size(61, 23);
+            btn_guncelle_temizlikci.TabIndex = 14;
+            btn_guncelle_temizlikci.Text = "Güncelle";
+            btn_guncelle_temizlikci.UseVisualStyleBackColor = true;
+            btn_guncelle_temizlikci.Click += btn_guncelle_temizlikci_Click;
+            // 
+            // btn_listele_temizlikci
+            // 
+            btn_listele_temizlikci.Location = new Point(74, 185);
+            btn_listele_temizlikci.Name = "btn_listele_temizlikci";
+            btn_listele_temizlikci.Size = new Size(61, 23);
+            btn_listele_temizlikci.TabIndex = 15;
+            btn_listele_temizlikci.Text = "Listele";
+            btn_listele_temizlikci.UseVisualStyleBackColor = true;
+            btn_listele_temizlikci.Click += btn_listele_temizlikci_Click;
+            // 
+            // btn_guncelle_asci
+            // 
+            btn_guncelle_asci.Location = new Point(294, 185);
+            btn_guncelle_asci.Name = "btn_guncelle_asci";
+            btn_guncelle_asci.Size = new Size(61, 23);
+            btn_guncelle_asci.TabIndex = 16;
+            btn_guncelle_asci.Text = "Güncelle";
+            btn_guncelle_asci.UseVisualStyleBackColor = true;
+            btn_guncelle_asci.Click += btn_guncelle_asci_Click;
+            // 
+            // btn_listele_asci
+            // 
+            btn_listele_asci.Location = new Point(356, 185);
+            btn_listele_asci.Name = "btn_listele_asci";
+            btn_listele_asci.Size = new Size(61, 23);
+            btn_listele_asci.TabIndex = 17;
+            btn_listele_asci.Text = "Listele";
+            btn_listele_asci.UseVisualStyleBackColor = true;
+            btn_listele_asci.Click += btn_listele_asci_Click;
+            // 
+            // btn_guncelle_yonetici
+            // 
+            btn_guncelle_yonetici.Location = new Point(570, 185);
+            btn_guncelle_yonetici.Name = "btn_guncelle_yonetici";
+            btn_guncelle_yonetici.Size = new Size(61, 23);
+            btn_guncelle_yonetici.TabIndex = 18;
+            btn_guncelle_yonetici.Text = "Güncelle";
+            btn_guncelle_yonetici.UseVisualStyleBackColor = true;
+            btn_guncelle_yonetici.Click += btn_guncelle_yonetici_Click;
+            // 
+            // btn_listele_yonetici
+            // 
+            btn_listele_yonetici.Location = new Point(632, 185);
+            btn_listele_yonetici.Name = "btn_listele_yonetici";
+            btn_listele_yonetici.Size = new Size(61, 23);
+            btn_listele_yonetici.TabIndex = 19;
+            btn_listele_yonetici.Text = "Listele";
+            btn_listele_yonetici.UseVisualStyleBackColor = true;
+            btn_listele_yonetici.Click += btn_listele_yonetici_Click;
+            // 
+            // btn_guncelle_guvenlik
+            // 
+            btn_guncelle_guvenlik.Location = new Point(12, 426);
+            btn_guncelle_guvenlik.Name = "btn_guncelle_guvenlik";
+            btn_guncelle_guvenlik.Size = new Size(61, 23);
+            btn_guncelle_guvenlik.TabIndex = 20;
+            btn_guncelle_guvenlik.Text = "Güncelle";
+            btn_guncelle_guvenlik.UseVisualStyleBackColor = true;
+            btn_guncelle_guvenlik.Click += btn_guncelle_guvenlik_Click;
+            // 
+            // btn_listele_guvenlik
+            // 
+            btn_listele_guvenlik.Location = new Point(74, 426);
+            btn_listele_guvenlik.Name = "btn_listele_guvenlik";
+            btn_listele_guvenlik.Size = new Size(61, 23);
+            btn_listele_guvenlik.TabIndex = 21;
+            btn_listele_guvenlik.Text = "Listele";
+            btn_listele_guvenlik.UseVisualStyleBackColor = true;
+            btn_listele_guvenlik.Click += btn_listele_guvenlik_Click;
+            // 
+            // btn_guncelle_lobi_elemani
+            // 
+            btn_guncelle_lobi_elemani.Location = new Point(294, 426);
+            btn_guncelle_lobi_elemani.Name = "btn_guncelle_lobi_elemani";
+            btn_guncelle_lobi_elemani.Size = new Size(61, 23);
+            btn_guncelle_lobi_elemani.TabIndex = 22;
+            btn_guncelle_lobi_elemani.Text = "Güncelle";
+            btn_guncelle_lobi_elemani.UseVisualStyleBackColor = true;
+            btn_guncelle_lobi_elemani.Click += btn_guncelle_lobi_elemani_Click;
+            // 
+            // btn_listele_lobi_elemani
+            // 
+            btn_listele_lobi_elemani.Location = new Point(356, 426);
+            btn_listele_lobi_elemani.Name = "btn_listele_lobi_elemani";
+            btn_listele_lobi_elemani.Size = new Size(61, 23);
+            btn_listele_lobi_elemani.TabIndex = 23;
+            btn_listele_lobi_elemani.Text = "Listele";
+            btn_listele_lobi_elemani.UseVisualStyleBackColor = true;
+            btn_listele_lobi_elemani.Click += btn_listele_lobi_elemani_Click;
+            // 
+            // btn_guncelle_personel_izinleri
+            // 
+            btn_guncelle_personel_izinleri.Location = new Point(570, 426);
+            btn_guncelle_personel_izinleri.Name = "btn_guncelle_personel_izinleri";
+            btn_guncelle_personel_izinleri.Size = new Size(61, 23);
+            btn_guncelle_personel_izinleri.TabIndex = 24;
+            btn_guncelle_personel_izinleri.Text = "Güncelle";
+            btn_guncelle_personel_izinleri.UseVisualStyleBackColor = true;
+            btn_guncelle_personel_izinleri.Click += btn_guncelle_personel_izinleri_Click;
+            // 
+            // btn_listele_personel_izinleri
+            // 
+            btn_listele_personel_izinleri.Location = new Point(632, 426);
+            btn_listele_personel_izinleri.Name = "btn_listele_personel_izinleri";
+            btn_listele_personel_izinleri.Size = new Size(61, 23);
+            btn_listele_personel_izinleri.TabIndex = 25;
+            btn_listele_personel_izinleri.Text = "Listele";
+            btn_listele_personel_izinleri.UseVisualStyleBackColor = true;
+            btn_listele_personel_izinleri.Click += btn_listele_personel_izinleri_Click;
+            // 
+            // btn_listele_personel_izin_loglari
+            // 
+            btn_listele_personel_izin_loglari.Location = new Point(931, 426);
+            btn_listele_personel_izin_loglari.Name = "btn_listele_personel_izin_loglari";
+            btn_listele_personel_izin_loglari.Size = new Size(61, 23);
+            btn_listele_personel_izin_loglari.TabIndex = 27;
+            btn_listele_personel_izin_loglari.Text = "Listele";
+            btn_listele_personel_izin_loglari.UseVisualStyleBackColor = true;
+            btn_listele_personel_izin_loglari.Click += btn_listele_personel_izin_loglari_Click;
+            // 
+            // btn_ekle_personel_izinleri
+            // 
+            btn_ekle_personel_izinleri.Location = new Point(570, 455);
+            btn_ekle_personel_izinleri.Name = "btn_ekle_personel_izinleri";
+            btn_ekle_personel_izinleri.Size = new Size(61, 23);
+            btn_ekle_personel_izinleri.TabIndex = 28;
+            btn_ekle_personel_izinleri.Text = "Ekle";
+            btn_ekle_personel_izinleri.UseVisualStyleBackColor = true;
+            btn_ekle_personel_izinleri.Click += btn_ekle_personel_izinleri_Click;
+            // 
+            // btn_sil_personel_izinleri
+            // 
+            btn_sil_personel_izinleri.Location = new Point(632, 455);
+            btn_sil_personel_izinleri.Name = "btn_sil_personel_izinleri";
+            btn_sil_personel_izinleri.Size = new Size(61, 23);
+            btn_sil_personel_izinleri.TabIndex = 29;
+            btn_sil_personel_izinleri.Text = "Sil";
+            btn_sil_personel_izinleri.UseVisualStyleBackColor = true;
+            btn_sil_personel_izinleri.Click += btn_sil_personel_izinleri_Click;
+            // 
+            // btn_exit_Personel_Detaylari
+            // 
+            btn_exit_Personel_Detaylari.Location = new Point(869, 12);
+            btn_exit_Personel_Detaylari.Name = "btn_exit_Personel_Detaylari";
+            btn_exit_Personel_Detaylari.Size = new Size(133, 70);
+            btn_exit_Personel_Detaylari.TabIndex = 30;
+            btn_exit_Personel_Detaylari.Text = " Ana Menüye Dön";
+            btn_exit_Personel_Detaylari.UseVisualStyleBackColor = true;
+            btn_exit_Personel_Detaylari.Click += btn_exit_Personel_Detaylari_Click;
+            // 
+            // btn_sil_personel_izin_loglari
+            // 
+            btn_sil_personel_izin_loglari.Location = new Point(869, 426);
+            btn_sil_personel_izin_loglari.Name = "btn_sil_personel_izin_loglari";
+            btn_sil_personel_izin_loglari.Size = new Size(61, 23);
+            btn_sil_personel_izin_loglari.TabIndex = 31;
+            btn_sil_personel_izin_loglari.Text = "Temizle";
+            btn_sil_personel_izin_loglari.UseVisualStyleBackColor = true;
+            btn_sil_personel_izin_loglari.Click += btn_sil_personel_izin_loglari_Click;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(141, 32);
+            label8.Name = "label8";
+            label8.Size = new Size(69, 15);
+            label8.TabIndex = 32;
+            label8.Text = "Personel ID:";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(141, 61);
+            label9.Name = "label9";
+            label9.Size = new Size(82, 15);
+            label9.TabIndex = 33;
+            label9.Text = "Temizlik Alanı:";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(141, 89);
+            label10.Name = "label10";
+            label10.Size = new Size(80, 15);
+            label10.TabIndex = 34;
+            label10.Text = "Çalışma Saati:";
+            // 
+            // txt_temizlikci_personel_id
+            // 
+            txt_temizlikci_personel_id.Location = new Point(227, 29);
+            txt_temizlikci_personel_id.Name = "txt_temizlikci_personel_id";
+            txt_temizlikci_personel_id.Size = new Size(62, 23);
+            txt_temizlikci_personel_id.TabIndex = 35;
+            // 
+            // txt_temizlikci_temizlik_alani
+            // 
+            txt_temizlikci_temizlik_alani.Location = new Point(227, 58);
+            txt_temizlikci_temizlik_alani.Name = "txt_temizlikci_temizlik_alani";
+            txt_temizlikci_temizlik_alani.Size = new Size(62, 23);
+            txt_temizlikci_temizlik_alani.TabIndex = 36;
+            // 
+            // num_temizlikci_calisma_saati
+            // 
+            num_temizlikci_calisma_saati.Location = new Point(227, 87);
+            num_temizlikci_calisma_saati.Name = "num_temizlikci_calisma_saati";
+            num_temizlikci_calisma_saati.Size = new Size(62, 23);
+            num_temizlikci_calisma_saati.TabIndex = 37;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(141, 303);
+            label11.Name = "label11";
+            label11.Size = new Size(48, 15);
+            label11.TabIndex = 38;
+            label11.Text = "Vardiya:";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(141, 332);
+            label12.Name = "label12";
+            label12.Size = new Size(85, 15);
+            label12.TabIndex = 39;
+            label12.Text = "Çalıştığı Bölge:";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(141, 274);
+            label13.Name = "label13";
+            label13.Size = new Size(69, 15);
+            label13.TabIndex = 40;
+            label13.Text = "Personel ID:";
+            // 
+            // txt_guvenlik_personel_id
+            // 
+            txt_guvenlik_personel_id.Location = new Point(227, 271);
+            txt_guvenlik_personel_id.Name = "txt_guvenlik_personel_id";
+            txt_guvenlik_personel_id.Size = new Size(62, 23);
+            txt_guvenlik_personel_id.TabIndex = 41;
+            // 
+            // txt_guvenlik_vardiya
+            // 
+            txt_guvenlik_vardiya.Location = new Point(227, 300);
+            txt_guvenlik_vardiya.Name = "txt_guvenlik_vardiya";
+            txt_guvenlik_vardiya.Size = new Size(62, 23);
+            txt_guvenlik_vardiya.TabIndex = 42;
+            // 
+            // txt_guvenlik_calistigi_bolge
+            // 
+            txt_guvenlik_calistigi_bolge.Location = new Point(227, 329);
+            txt_guvenlik_calistigi_bolge.Name = "txt_guvenlik_calistigi_bolge";
+            txt_guvenlik_calistigi_bolge.Size = new Size(62, 23);
+            txt_guvenlik_calistigi_bolge.TabIndex = 43;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(423, 32);
+            label14.Name = "label14";
+            label14.Size = new Size(69, 15);
+            label14.TabIndex = 44;
+            label14.Text = "Personel ID:";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(423, 61);
+            label15.Name = "label15";
+            label15.Size = new Size(51, 15);
+            label15.TabIndex = 45;
+            label15.Text = "Tecrübe:";
+            // 
+            // txt_asci_personel_id
+            // 
+            txt_asci_personel_id.Location = new Point(500, 29);
+            txt_asci_personel_id.Name = "txt_asci_personel_id";
+            txt_asci_personel_id.Size = new Size(62, 23);
+            txt_asci_personel_id.TabIndex = 46;
+            // 
+            // txt_asci_tecrube
+            // 
+            txt_asci_tecrube.Location = new Point(500, 58);
+            txt_asci_tecrube.Name = "txt_asci_tecrube";
+            txt_asci_tecrube.Size = new Size(62, 23);
+            txt_asci_tecrube.TabIndex = 47;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(423, 274);
+            label16.Name = "label16";
+            label16.Size = new Size(69, 15);
+            label16.TabIndex = 48;
+            label16.Text = "Personel ID:";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(423, 303);
+            label17.Name = "label17";
+            label17.Size = new Size(48, 15);
+            label17.TabIndex = 49;
+            label17.Text = "Vardiya:";
+            // 
+            // txt_lobi_elemani_personel_id
+            // 
+            txt_lobi_elemani_personel_id.Location = new Point(500, 271);
+            txt_lobi_elemani_personel_id.Name = "txt_lobi_elemani_personel_id";
+            txt_lobi_elemani_personel_id.Size = new Size(62, 23);
+            txt_lobi_elemani_personel_id.TabIndex = 50;
+            // 
+            // txt_lobi_elemani_vardiya
+            // 
+            txt_lobi_elemani_vardiya.Location = new Point(500, 300);
+            txt_lobi_elemani_vardiya.Name = "txt_lobi_elemani_vardiya";
+            txt_lobi_elemani_vardiya.Size = new Size(62, 23);
+            txt_lobi_elemani_vardiya.TabIndex = 51;
+            // 
+            // txt_yonetici_personel_id
+            // 
+            txt_yonetici_personel_id.Location = new Point(776, 29);
+            txt_yonetici_personel_id.Name = "txt_yonetici_personel_id";
+            txt_yonetici_personel_id.Size = new Size(60, 23);
+            txt_yonetici_personel_id.TabIndex = 52;
+            // 
+            // txt_yonetici_yonettikleri
+            // 
+            txt_yonetici_yonettikleri.Location = new Point(776, 58);
+            txt_yonetici_yonettikleri.Name = "txt_yonetici_yonettikleri";
+            txt_yonetici_yonettikleri.Size = new Size(60, 23);
+            txt_yonetici_yonettikleri.TabIndex = 53;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new Point(699, 32);
+            label19.Name = "label19";
+            label19.Size = new Size(69, 15);
+            label19.TabIndex = 55;
+            label19.Text = "Personel ID:";
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new Point(699, 61);
+            label20.Name = "label20";
+            label20.Size = new Size(69, 15);
+            label20.TabIndex = 56;
+            label20.Text = "Yönettikleri:";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new Point(699, 273);
+            label21.Name = "label21";
+            label21.Size = new Size(42, 15);
+            label21.TabIndex = 57;
+            label21.Text = "İzin ID:";
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(699, 298);
+            label22.Name = "label22";
+            label22.Size = new Size(69, 15);
+            label22.TabIndex = 58;
+            label22.Text = "Personel ID:";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(699, 327);
+            label23.Name = "label23";
+            label23.Size = new Size(91, 15);
+            label23.TabIndex = 59;
+            label23.Text = "Başlangıç Tarihi:";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Location = new Point(699, 356);
+            label24.Name = "label24";
+            label24.Size = new Size(63, 15);
+            label24.TabIndex = 60;
+            label24.Text = "Bitiş Tarihi:";
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Location = new Point(699, 385);
+            label25.Name = "label25";
+            label25.Size = new Size(59, 15);
+            label25.TabIndex = 61;
+            label25.Text = "Açıklama:";
+            // 
+            // txt_personel_izinleri_personel_id
+            // 
+            txt_personel_izinleri_personel_id.Location = new Point(796, 295);
+            txt_personel_izinleri_personel_id.Name = "txt_personel_izinleri_personel_id";
+            txt_personel_izinleri_personel_id.Size = new Size(62, 23);
+            txt_personel_izinleri_personel_id.TabIndex = 62;
+            // 
+            // txt_personel_izinleri_aciklama
+            // 
+            txt_personel_izinleri_aciklama.Location = new Point(796, 382);
+            txt_personel_izinleri_aciklama.Name = "txt_personel_izinleri_aciklama";
+            txt_personel_izinleri_aciklama.Size = new Size(62, 23);
+            txt_personel_izinleri_aciklama.TabIndex = 65;
+            // 
+            // num_personel_izinleri_izin_id
+            // 
+            num_personel_izinleri_izin_id.Location = new Point(796, 266);
+            num_personel_izinleri_izin_id.Name = "num_personel_izinleri_izin_id";
+            num_personel_izinleri_izin_id.Size = new Size(62, 23);
+            num_personel_izinleri_izin_id.TabIndex = 66;
+            // 
+            // btn_temizlik_alanlari
+            // 
+            btn_temizlik_alanlari.Location = new Point(141, 185);
+            btn_temizlik_alanlari.Name = "btn_temizlik_alanlari";
+            btn_temizlik_alanlari.Size = new Size(69, 40);
+            btn_temizlik_alanlari.TabIndex = 67;
+            btn_temizlik_alanlari.Text = "Temizlik Alanları";
+            btn_temizlik_alanlari.UseVisualStyleBackColor = true;
+            btn_temizlik_alanlari.Click += button1_Click;
+            // 
+            // dtp_personel_izinleri_baslangic_tarihi
+            // 
+            dtp_personel_izinleri_baslangic_tarihi.Location = new Point(796, 324);
+            dtp_personel_izinleri_baslangic_tarihi.Name = "dtp_personel_izinleri_baslangic_tarihi";
+            dtp_personel_izinleri_baslangic_tarihi.Size = new Size(62, 23);
+            dtp_personel_izinleri_baslangic_tarihi.TabIndex = 68;
+            // 
+            // dtp_personel_izinleri_bitis_tarihi
+            // 
+            dtp_personel_izinleri_bitis_tarihi.Location = new Point(796, 353);
+            dtp_personel_izinleri_bitis_tarihi.Name = "dtp_personel_izinleri_bitis_tarihi";
+            dtp_personel_izinleri_bitis_tarihi.Size = new Size(62, 23);
+            dtp_personel_izinleri_bitis_tarihi.TabIndex = 69;
+            // 
+            // Personel_Detayları
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1014, 509);
+            Controls.Add(dtp_personel_izinleri_bitis_tarihi);
+            Controls.Add(dtp_personel_izinleri_baslangic_tarihi);
+            Controls.Add(btn_temizlik_alanlari);
+            Controls.Add(num_personel_izinleri_izin_id);
+            Controls.Add(txt_personel_izinleri_aciklama);
+            Controls.Add(txt_personel_izinleri_personel_id);
+            Controls.Add(label25);
+            Controls.Add(label24);
+            Controls.Add(label23);
+            Controls.Add(label22);
+            Controls.Add(label21);
+            Controls.Add(label20);
+            Controls.Add(label19);
+            Controls.Add(txt_yonetici_yonettikleri);
+            Controls.Add(txt_yonetici_personel_id);
+            Controls.Add(txt_lobi_elemani_vardiya);
+            Controls.Add(txt_lobi_elemani_personel_id);
+            Controls.Add(label17);
+            Controls.Add(label16);
+            Controls.Add(txt_asci_tecrube);
+            Controls.Add(txt_asci_personel_id);
+            Controls.Add(label15);
+            Controls.Add(label14);
+            Controls.Add(txt_guvenlik_calistigi_bolge);
+            Controls.Add(txt_guvenlik_vardiya);
+            Controls.Add(txt_guvenlik_personel_id);
+            Controls.Add(label13);
+            Controls.Add(label12);
+            Controls.Add(label11);
+            Controls.Add(num_temizlikci_calisma_saati);
+            Controls.Add(txt_temizlikci_temizlik_alani);
+            Controls.Add(txt_temizlikci_personel_id);
+            Controls.Add(label10);
+            Controls.Add(label9);
+            Controls.Add(label8);
+            Controls.Add(btn_sil_personel_izin_loglari);
+            Controls.Add(btn_exit_Personel_Detaylari);
+            Controls.Add(btn_sil_personel_izinleri);
+            Controls.Add(btn_ekle_personel_izinleri);
+            Controls.Add(btn_listele_personel_izin_loglari);
+            Controls.Add(btn_listele_personel_izinleri);
+            Controls.Add(btn_guncelle_personel_izinleri);
+            Controls.Add(btn_listele_lobi_elemani);
+            Controls.Add(btn_guncelle_lobi_elemani);
+            Controls.Add(btn_listele_guvenlik);
+            Controls.Add(btn_guncelle_guvenlik);
+            Controls.Add(btn_listele_yonetici);
+            Controls.Add(btn_guncelle_yonetici);
+            Controls.Add(btn_listele_asci);
+            Controls.Add(btn_guncelle_asci);
+            Controls.Add(btn_listele_temizlikci);
+            Controls.Add(btn_guncelle_temizlikci);
+            Controls.Add(dtgw_PersonelIzinleri);
+            Controls.Add(label7);
+            Controls.Add(dtgw_Yonetici);
+            Controls.Add(dtgw_LobiElemani);
+            Controls.Add(dtgw_Asci);
+            Controls.Add(dtgw_Guvenlik);
+            Controls.Add(dtgw_Temizlikci);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(dtgw_PersonelIzinDegisiklikleri);
+            Controls.Add(label1);
+            Name = "Personel_Detayları";
+            Text = "Personel_Detayları";
+            Load += Personel_Detayları_Load;
+            ((System.ComponentModel.ISupportInitialize)dtgw_PersonelIzinDegisiklikleri).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Temizlikci).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Guvenlik).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Asci).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_LobiElemani).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_Yonetici).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtgw_PersonelIzinleri).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlikci_calisma_saati).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_personel_izinleri_izin_id).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Label label1;
+        private DataGridView dtgw_PersonelIzinDegisiklikleri;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private DataGridView dtgw_Temizlikci;
+        private DataGridView dtgw_Guvenlik;
+        private DataGridView dtgw_Asci;
+        private DataGridView dtgw_LobiElemani;
+        private DataGridView dtgw_Yonetici;
+        private Label label7;
+        private DataGridView dtgw_PersonelIzinleri;
+        private Button btn_guncelle_temizlikci;
+        private Button btn_listele_temizlikci;
+        private Button btn_guncelle_asci;
+        private Button btn_listele_asci;
+        private Button btn_guncelle_yonetici;
+        private Button btn_listele_yonetici;
+        private Button btn_guncelle_guvenlik;
+        private Button btn_listele_guvenlik;
+        private Button btn_guncelle_lobi_elemani;
+        private Button btn_listele_lobi_elemani;
+        private Button btn_guncelle_personel_izinleri;
+        private Button btn_listele_personel_izinleri;
+        private Button btn_listele_personel_izin_loglari;
+        private Button btn_ekle_personel_izinleri;
+        private Button btn_sil_personel_izinleri;
+        private Button btn_exit_Personel_Detaylari;
+        private Button btn_sil_personel_izin_loglari;
+        private Label label8;
+        private Label label9;
+        private Label label10;
+        private TextBox txt_temizlikci_personel_id;
+        private TextBox txt_temizlikci_temizlik_alani;
+        private NumericUpDown num_temizlikci_calisma_saati;
+        private Label label11;
+        private Label label12;
+        private Label label13;
+        private TextBox txt_guvenlik_personel_id;
+        private TextBox txt_guvenlik_vardiya;
+        private TextBox txt_guvenlik_calistigi_bolge;
+        private Label label14;
+        private Label label15;
+        private TextBox txt_asci_personel_id;
+        private TextBox txt_asci_tecrube;
+        private Label label16;
+        private Label label17;
+        private TextBox txt_lobi_elemani_personel_id;
+        private TextBox txt_lobi_elemani_vardiya;
+        private TextBox txt_yonetici_personel_id;
+        private TextBox txt_yonetici_yonettikleri;
+        private Label label19;
+        private Label label20;
+        private Label label21;
+        private Label label22;
+        private Label label23;
+        private Label label24;
+        private Label label25;
+        private TextBox txt_personel_izinleri_personel_id;
+        private TextBox txt_personel_izinleri_aciklama;
+        private NumericUpDown num_personel_izinleri_izin_id;
+        private Button btn_temizlik_alanlari;
+        private DateTimePicker dtp_personel_izinleri_baslangic_tarihi;
+        private DateTimePicker dtp_personel_izinleri_bitis_tarihi;
+    }
+}
