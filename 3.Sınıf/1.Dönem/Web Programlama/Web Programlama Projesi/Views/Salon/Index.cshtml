@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Salonlar";
+    var salonWithAvailableSlots = TempData["SalonWithAvailableSlots"] != null ? TempData["SalonWithAvailableSlots"] as List<dynamic> : new List<dynamic>();
+    var employees = TempData["Employees"] != null ? TempData["Employees"] as List<Employee> : new List<Employee>();
+    var isLoggedIn = ViewData["IsLoggedIn"] != null && (bool)ViewData["IsLoggedIn"];
+    var username = ViewData["Username"] as string;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-3 {
+            width: 23%;
+            margin-right: 2%;
+            margin-bottom: 10px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+
+            .time-slot.btn-success {
+                background-color: green;
+                color: white;
+            }
+
+            .time-slot.btn-danger {
+                background-color: red;
+                color: white;
+                cursor: not-allowed;
+            }
+
+            .time-slot.temp-alert {
+                background-color: red !important;
+                color: white;
+            }
+
+            .time-slot:hover {
+                opacity: 0.8;
+            }
+
+        button {
+            width: 100%;
+            padding: 10px;
+        }
+
+        #appointmentForm {
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .form-select {
+            width: 100%;
+        }
+    </style>
+
+    <script>
+        function showTemporaryAlert(button) {
+            // Mevcut metin ve sınıfları sakla
+            const originalText = button.innerHTML;
+            const originalClass = button.className;
+
+            // Kutucuğun rengini kırmızı yap ve mesaj göster
+            button.className = "time-slot temp-alert";
+            button.innerHTML = "Lütfen giriş yapınız.";
+
+            // 1 saniye sonra eski haline döndür
+            setTimeout(() => {
+                button.className = originalClass;
+                button.innerHTML = originalText;
+            }, 1000);
+        }
+
+        function selectTimeSlot(timeSlotId, salonId) {
+            $("#timeSlotId").val(timeSlotId);
+            $("#salonId").val(salonId);
+            $("#appointmentForm").show();
+        }
+    </script>
+</head>
+<body>
+
+    <h2 class="text-center mb-5">@ViewData["Title"]</h2>
+
+    @if (salonWithAvailableSlots != null && salonWithAvailableSlots.Any())
+    {
+        @foreach (var salonItem in salonWithAvailableSlots)
+        {
+            <hr />
+            var salon = salonItem.Salon;
+            var availableSlots = salonItem.AvailableSlots;
+
+            <div>
+                <h3>@salon.Name</h3>
+                <p>Çalışma Saatleri: @salon.WorkingHours</p>
+                <p>Randevu Fiyatı: @salon.AppointmentPrice TL</p>
+
+                <div class="row">
+                    @foreach (var timeSlot in availableSlots)
+                    {
+                        var slotTime = timeSlot.StartTime + " - " + timeSlot.EndTime;
+                        var isAvailable = timeSlot.IsAvailable;
+
+                        <div class="col-3 mb-2">
+                            @if (isLoggedIn)
+                            {
+                                <!-- Giriş yapmış kullanıcılar için -->
+                                <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
+                                @(!isAvailable ? "disabled" : "")
+                                        onclick="selectTimeSlot('@timeSlot.Id', '@salon.Id')">
+                                    @slotTime
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Giriş yapmamış kullanıcılar için -->
+                                <button class="btn @((isAvailable ? "btn-success" : "btn-danger"))"
+                                @(!isAvailable ? "disabled" : "")
+                                        onclick="@((isAvailable ? "showTemporaryAlert(this)" : ""))">
+                                    @slotTime
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Salonlar ve boş zaman dilimleri bulunamadı.</p>
+    }
+
+    @if (isLoggedIn)
+    {
+        <!-- Giriş yapmış kullanıcılar için randevu formu -->
+        <div id="appointmentForm">
+            <h4>Randevu Al</h4>
+            <form method="post" action="@Url.Action("BookAppointment", "Salon")">
+                <input type="hidden" id="salonId" name="salonId" />
+                <input type="hidden" id="timeSlotId" name="timeSlotId" />
+
+                <div class="mb-3">
+                    <label for="employeeId" class="form-label">Çalışan Seçin:</label>
+                    <select name="employeeId" id="employeeId" class="form-select">
+                        @foreach (var employee in employees)
+                        {
+                            <option value="@employee.Id">@employee.User.Username - @employee.Expertise</option>
+                        }
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Randevu Al</button>
+            </form>
+        </div>
+    }
+
+</body>
+</html>

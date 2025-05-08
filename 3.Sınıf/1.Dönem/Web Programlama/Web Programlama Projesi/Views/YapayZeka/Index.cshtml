@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Yapay Zeka";
+}
+
+<h2>Fotoğraf Yükleyin</h2>
+
+<form method="post" enctype="multipart/form-data" asp-controller="YapayZeka" asp-action="Index">
+    <div class="form-group">
+        <label for="photo">Fotoğraf Seçin</label>
+        <input type="file" name="photo" id="photo" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Fotoğrafı Yükle ve Analiz Et</button>
+</form>
+
+<h2 class="mt-5">Gemini API</h2>
+<div>
+    <textarea id="prompt" rows="4" placeholder="Metin Giriniz..." cols="50" class="form-control">@ViewData["Result"]</textarea>
+    <button id="generateBtn" class="btn btn-success mt-2">Sonucu Gör</button>
+    <pre id="result" class="alert alert-secondary mt-3"></pre>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "@@google/generative-ai": "https://esm.run/@@google/generative-ai"
+        }
+    }
+</script>
+
+<script type="module">
+    import { GoogleGenerativeAI } from "@@google/generative-ai";
+
+
+    const API_KEY = "AIzaSyD-y0oiNCdNrSYSa6vTdfVX_0tyxfFTTgw";
+
+
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+        const prompt = document.getElementById("prompt").value;
+        if (!prompt) {
+            alert("Lütfen bir metin girin!");
+            return;
+        }
+
+        try {
+  
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+            
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = await response.text();
+
+            
+            document.getElementById("result").innerText = text;
+        } catch (error) {
+            console.error("Hata oluştu:", error);
+            document.getElementById("result").innerText = "Bir hata oluştu. Lütfen tekrar deneyin.";
+        }
+    });
+</script>
