@@ -1,0 +1,184 @@
+﻿using Npgsql;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace OtelWindowsForm
+{
+    public partial class Temizlik_Alanlari : Form
+    {
+        public Temizlik_Alanlari()
+        {
+            InitializeComponent();
+        }
+
+        NpgsqlConnection connection = new NpgsqlConnection("server=localHost;port=5432;Database=DB_Otel;user ID=postgres;password=1234");
+
+
+        private bool temizlikIdVarMi(int temizlikId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"TemizlikAlanlari\" WHERE \"temizlik_id\" = @temizlik_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@temizlik_id", temizlikId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool odaIdVarMi(int odaiId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Oda\" WHERE \"oda_id\" = @oda_id", connection);
+            kontrolKomutu.Parameters.AddWithValue("@oda_id", odaiId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+        private bool PersonelIdVarMi(string personelId)
+        {
+            NpgsqlCommand kontrolKomutu = new NpgsqlCommand("SELECT COUNT(*) FROM \"Personel\" WHERE \"personel_id\" = @personelId", connection);
+            kontrolKomutu.Parameters.AddWithValue("@personelId", personelId);
+
+            int kayitSayisi = Convert.ToInt32(kontrolKomutu.ExecuteScalar());
+
+            return kayitSayisi > 0;
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            NpgsqlCommand temizlikEklemeKomutu = new NpgsqlCommand("INSERT INTO \"TemizlikAlanlari\" (\"temizlik_id\",\"oda_id\", \"notlar\", \"personel_id\",\"temizlik_tarihi_saati\")\r\nVALUES (@p1, @p2, @p3,@p4,@p5)", connection);
+
+            if (temizlikIdVarMi((int)num_temizlik_id.Value))
+            {
+                MessageBox.Show("Bu Temizlik ID zaten kullanımda.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (!odaIdVarMi((int)num_temizlik_oda_id.Value))
+            {
+                MessageBox.Show("Oda Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!PersonelIdVarMi(txt_temizlik_personel_id.Text))
+            {
+                MessageBox.Show("Personel Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            temizlikEklemeKomutu.Parameters.AddWithValue("@p1", num_temizlik_id.Value);
+            temizlikEklemeKomutu.Parameters.AddWithValue("@p2", num_temizlik_oda_id.Value);
+            temizlikEklemeKomutu.Parameters.AddWithValue("@p3", txt_temizlik_notlar.Text);
+            temizlikEklemeKomutu.Parameters.AddWithValue("@p4", txt_temizlik_personel_id.Text);
+            temizlikEklemeKomutu.Parameters.AddWithValue("@p5", dtp_temizlik_tarihi.Value);
+
+            temizlikEklemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+
+            NpgsqlCommand temizlikSilmeKomutu = new NpgsqlCommand("DELETE FROM \"TemizlikAlanlari\" WHERE temizlik_id=@p1 ", connection);
+
+            if (!temizlikIdVarMi((int)num_temizlik_id.Value))
+            {
+                MessageBox.Show("Temizlik ID Bulunamadı !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+
+            temizlikSilmeKomutu.Parameters.AddWithValue("@p1", num_temizlik_id.Value);
+            temizlikSilmeKomutu.ExecuteNonQuery();
+
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ///////////////
+            connection.Open();
+
+            if (!temizlikIdVarMi((int)num_temizlik_id.Value))
+            {
+                MessageBox.Show("Temizlik ID Bulunamadı !!!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                connection.Close();
+                return;
+            }
+            if (!odaIdVarMi((int)num_temizlik_oda_id.Value))
+            {
+                MessageBox.Show("Oda Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+            if (!PersonelIdVarMi(txt_temizlik_personel_id.Text))
+            {
+                MessageBox.Show("Personel Bulunamadı !", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connection.Close();
+                return;
+            }
+
+            NpgsqlCommand musteriGuncellemeKomutu = new NpgsqlCommand("UPDATE \"TemizlikAlanlari\" SET oda_id = @p2, notlar = @p3,personel_id = @p4,temizlik_tarihi_saati = @p5 WHERE temizlik_id = @p1", connection);
+
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p1", num_temizlik_id.Value);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p2", num_temizlik_oda_id.Value);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p3", txt_temizlik_notlar.Text);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p4", txt_temizlik_personel_id.Text);
+            musteriGuncellemeKomutu.Parameters.AddWithValue("@p5", dtp_temizlik_tarihi.Value);
+
+            musteriGuncellemeKomutu.ExecuteNonQuery();
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string sorgu = "select * from \"TemizlikAlanlari\"";
+            ///////////////
+            connection.Open();
+
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter(sorgu, connection);
+
+            DataSet ds = new DataSet();
+
+            da.Fill(ds);
+
+            dtgw_TemizlikAlanlari.DataSource = ds.Tables[0];
+
+            connection.Close();
+            ///////////////
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Personel_Detayları personelDetay = new Personel_Detayları();
+
+            this.Hide(); // veya this.Close(); 
+            ///// ilk başta "Detaylar..." a tıklayınca ana formu çarpı işaretinen kapatınca program sonlanmıyor ?!
+
+            personelDetay.Show();
+        }
+
+
+    }
+}

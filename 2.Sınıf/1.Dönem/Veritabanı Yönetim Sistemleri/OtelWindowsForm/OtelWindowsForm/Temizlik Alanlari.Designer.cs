@@ -1,0 +1,240 @@
+﻿namespace OtelWindowsForm
+{
+    partial class Temizlik_Alanlari
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            dtgw_TemizlikAlanlari = new DataGridView();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            label1 = new Label();
+            button5 = new Button();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            num_temizlik_id = new NumericUpDown();
+            num_temizlik_oda_id = new NumericUpDown();
+            txt_temizlik_personel_id = new TextBox();
+            txt_temizlik_notlar = new TextBox();
+            label5 = new Label();
+            dtp_temizlik_tarihi = new DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)dtgw_TemizlikAlanlari).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlik_id).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlik_oda_id).BeginInit();
+            SuspendLayout();
+            // 
+            // dtgw_TemizlikAlanlari
+            // 
+            dtgw_TemizlikAlanlari.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgw_TemizlikAlanlari.Location = new Point(12, 12);
+            dtgw_TemizlikAlanlari.Name = "dtgw_TemizlikAlanlari";
+            dtgw_TemizlikAlanlari.RowTemplate.Height = 25;
+            dtgw_TemizlikAlanlari.Size = new Size(262, 150);
+            dtgw_TemizlikAlanlari.TabIndex = 0;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(12, 168);
+            button1.Name = "button1";
+            button1.Size = new Size(61, 23);
+            button1.TabIndex = 1;
+            button1.Text = "Ekle";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(79, 168);
+            button2.Name = "button2";
+            button2.Size = new Size(61, 23);
+            button2.TabIndex = 2;
+            button2.Text = "Sil";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(146, 168);
+            button3.Name = "button3";
+            button3.Size = new Size(61, 23);
+            button3.TabIndex = 3;
+            button3.Text = "Güncelle";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(213, 168);
+            button4.Name = "button4";
+            button4.Size = new Size(61, 23);
+            button4.TabIndex = 4;
+            button4.Text = "Listele";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(280, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(66, 15);
+            label1.TabIndex = 5;
+            label1.Text = "Temizlik ID:";
+            // 
+            // button5
+            // 
+            button5.Location = new Point(371, 168);
+            button5.Name = "button5";
+            button5.Size = new Size(115, 57);
+            button5.TabIndex = 6;
+            button5.Text = "Personel Detaylarına Dön";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(280, 43);
+            label2.Name = "label2";
+            label2.Size = new Size(46, 15);
+            label2.TabIndex = 7;
+            label2.Text = "Oda ID:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(280, 102);
+            label3.Name = "label3";
+            label3.Size = new Size(43, 15);
+            label3.TabIndex = 8;
+            label3.Text = "Notlar:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(280, 73);
+            label4.Name = "label4";
+            label4.Size = new Size(69, 15);
+            label4.TabIndex = 9;
+            label4.Text = "Personel ID:";
+            // 
+            // num_temizlik_id
+            // 
+            num_temizlik_id.Location = new Point(355, 12);
+            num_temizlik_id.Name = "num_temizlik_id";
+            num_temizlik_id.Size = new Size(100, 23);
+            num_temizlik_id.TabIndex = 10;
+            // 
+            // num_temizlik_oda_id
+            // 
+            num_temizlik_oda_id.Location = new Point(355, 41);
+            num_temizlik_oda_id.Name = "num_temizlik_oda_id";
+            num_temizlik_oda_id.Size = new Size(100, 23);
+            num_temizlik_oda_id.TabIndex = 11;
+            // 
+            // txt_temizlik_personel_id
+            // 
+            txt_temizlik_personel_id.Location = new Point(355, 70);
+            txt_temizlik_personel_id.Name = "txt_temizlik_personel_id";
+            txt_temizlik_personel_id.Size = new Size(100, 23);
+            txt_temizlik_personel_id.TabIndex = 12;
+            // 
+            // txt_temizlik_notlar
+            // 
+            txt_temizlik_notlar.Location = new Point(355, 99);
+            txt_temizlik_notlar.Name = "txt_temizlik_notlar";
+            txt_temizlik_notlar.Size = new Size(100, 23);
+            txt_temizlik_notlar.TabIndex = 13;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(280, 138);
+            label5.Name = "label5";
+            label5.Size = new Size(83, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Temizlik Tarihi:";
+            // 
+            // dtp_temizlik_tarihi
+            // 
+            dtp_temizlik_tarihi.Location = new Point(369, 132);
+            dtp_temizlik_tarihi.Name = "dtp_temizlik_tarihi";
+            dtp_temizlik_tarihi.Size = new Size(127, 23);
+            dtp_temizlik_tarihi.TabIndex = 15;
+            // 
+            // Temizlik_Alanlari
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(498, 237);
+            Controls.Add(dtp_temizlik_tarihi);
+            Controls.Add(label5);
+            Controls.Add(txt_temizlik_notlar);
+            Controls.Add(txt_temizlik_personel_id);
+            Controls.Add(num_temizlik_oda_id);
+            Controls.Add(num_temizlik_id);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(button5);
+            Controls.Add(label1);
+            Controls.Add(button4);
+            Controls.Add(button3);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(dtgw_TemizlikAlanlari);
+            Name = "Temizlik_Alanlari";
+            Text = "Temizlik_Alanlari";
+            ((System.ComponentModel.ISupportInitialize)dtgw_TemizlikAlanlari).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlik_id).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_temizlik_oda_id).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private DataGridView dtgw_TemizlikAlanlari;
+        private Button button1;
+        private Button button2;
+        private Button button3;
+        private Button button4;
+        private Label label1;
+        private Button button5;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private NumericUpDown num_temizlik_id;
+        private NumericUpDown num_temizlik_oda_id;
+        private TextBox txt_temizlik_personel_id;
+        private TextBox txt_temizlik_notlar;
+        private Label label5;
+        private DateTimePicker dtp_temizlik_tarihi;
+    }
+}
