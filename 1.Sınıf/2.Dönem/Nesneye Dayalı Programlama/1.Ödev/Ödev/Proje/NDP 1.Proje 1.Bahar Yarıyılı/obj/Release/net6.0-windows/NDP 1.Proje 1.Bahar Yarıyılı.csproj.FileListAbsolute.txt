@@ -1,0 +1,17 @@
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\bin\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.exe
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\bin\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.deps.json
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\bin\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.runtimeconfig.json
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\bin\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.dll
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\bin\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.pdb
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP_1.Proje_1.Bahar_Yarıyılı.Form1.resources
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP_1.Proje_1.Bahar_Yarıyılı.Properties.Resources.resources
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.csproj.GenerateResource.cache
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.AssemblyInfoInputs.cache
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.AssemblyInfo.cs
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.csproj.CoreCompileInputs.cache
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.dll
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\refint\NDP 1.Proje 1.Bahar Yarıyılı.dll
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.pdb
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\NDP 1.Proje 1.Bahar Yarıyılı.genruntimeconfig.cache
+C:\Users\ali_k\Desktop\NDP -Proje\NDP -Proje\NDP 1.Proje 1.Bahar Yarıyılı\NDP 1.Proje 1.Bahar Yarıyılı\obj\Release\net6.0-windows\ref\NDP 1.Proje 1.Bahar Yarıyılı.dll

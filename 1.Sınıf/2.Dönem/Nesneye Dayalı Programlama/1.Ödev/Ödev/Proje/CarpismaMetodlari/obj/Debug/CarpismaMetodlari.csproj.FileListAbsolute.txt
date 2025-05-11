@@ -1,0 +1,6 @@
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\bin\Debug\CarpismaMetodlari.dll
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\bin\Debug\CarpismaMetodlari.pdb
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\obj\Debug\CarpismaMetodlari.csproj.AssemblyReference.cache
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\obj\Debug\CarpismaMetodlari.csproj.CoreCompileInputs.cache
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\obj\Debug\CarpismaMetodlari.dll
+C:\Users\ali_k\source\repos\NDP 1.Proje 1.Bahar Yarıyılı\CarpismaMetodlari\obj\Debug\CarpismaMetodlari.pdb
