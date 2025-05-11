@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "NDP 1.Proje 1.Bahar Yarıyılı/1.0.0": {
+        "runtime": {
+          "NDP 1.Proje 1.Bahar Yarıyılı.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NDP 1.Proje 1.Bahar Yarıyılı/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

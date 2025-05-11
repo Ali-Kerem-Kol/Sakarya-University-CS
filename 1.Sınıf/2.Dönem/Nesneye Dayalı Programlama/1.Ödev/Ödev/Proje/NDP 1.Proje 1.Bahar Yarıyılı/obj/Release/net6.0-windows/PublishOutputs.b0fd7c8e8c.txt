@@ -1,0 +1,5 @@
+C:\Users\ali_k\Desktop\odev\NDP 1.Proje 1.Bahar Yarıyılı.exe
+C:\Users\ali_k\Desktop\odev\NDP 1.Proje 1.Bahar Yarıyılı.dll
+C:\Users\ali_k\Desktop\odev\NDP 1.Proje 1.Bahar Yarıyılı.deps.json
+C:\Users\ali_k\Desktop\odev\NDP 1.Proje 1.Bahar Yarıyılı.runtimeconfig.json
+C:\Users\ali_k\Desktop\odev\NDP 1.Proje 1.Bahar Yarıyılı.pdb
