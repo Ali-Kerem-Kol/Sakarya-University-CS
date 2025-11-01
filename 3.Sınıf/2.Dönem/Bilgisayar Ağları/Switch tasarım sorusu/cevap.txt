@@ -1,0 +1,2 @@
+c) VLAN sayısı kadardır = 5
+d) Port sayısı kadar = 112
