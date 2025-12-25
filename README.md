@@ -1,3 +1,3 @@
-# 🎓 Sakarya University - Bilgisayar Mühendisliği Ders Arşivi
+# 🎓 Sakarya University - Computer Engineering
 
-Bu repo, Sakarya Üniversitesi Bilgisayar Mühendisliği bölümünde 1. sınıftan 4. sınıfa kadar aldığım derslerin ödev, proje ve uygulama dosyalarını içermektedir. Her sınıf ve dönem ayrı klasörler altında düzenlenmiştir.
+This repository contains the assignments, projects, and application files of the courses I took from the 1st year to the 4th year in the Computer Engineering department at Sakarya University. Each year and semester is organized under separate folders.
