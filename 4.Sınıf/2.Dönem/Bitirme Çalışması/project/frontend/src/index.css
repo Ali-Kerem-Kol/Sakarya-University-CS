@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 12 20% 95%;
+    --foreground: 230 18% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 18% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 18% 16%;
+
+    --primary: 2 74% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 10 16% 92%;
+    --secondary-foreground: 230 16% 21%;
+
+    --muted: 12 14% 89%;
+    --muted-foreground: 230 9% 40%;
+
+    --accent: 6 46% 94%;
+    --accent-foreground: 350 70% 34%;
+
+    --destructive: 0 72% 52%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 10 15% 83%;
+    --input: 10 14% 85%;
+    --ring: 2 72% 54%;
+
+    --radius: 0.95rem;
+  }
+
+  .dark {
+    --background: 226 26% 8%;
+    --foreground: 210 16% 92%;
+
+    --card: 226 22% 12%;
+    --card-foreground: 210 16% 92%;
+
+    --popover: 226 22% 12%;
+    --popover-foreground: 210 16% 92%;
+
+    --primary: 2 82% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 224 16% 18%;
+    --secondary-foreground: 210 16% 92%;
+
+    --muted: 224 14% 20%;
+    --muted-foreground: 220 12% 72%;
+
+    --accent: 222 16% 20%;
+    --accent-foreground: 4 90% 76%;
+
+    --destructive: 0 68% 53%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 223 14% 26%;
+    --input: 223 14% 26%;
+    --ring: 2 82% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Manrope', 'Segoe UI', Tahoma, sans-serif;
+    background-image:
+      radial-gradient(circle at 6% 0%, hsl(3 76% 58% / 0.1) 0 12rem, transparent 13rem),
+      radial-gradient(circle at 94% 96%, hsl(219 40% 54% / 0.08) 0 20rem, transparent 21rem);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(circle at 4% 0%, hsl(222 78% 62% / 0.2) 0 16rem, transparent 17rem),
+      radial-gradient(circle at 98% 98%, hsl(2 90% 60% / 0.15) 0 14rem, transparent 15rem),
+      linear-gradient(180deg, hsl(227 28% 9%) 0%, hsl(226 25% 7%) 100%);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Sora', 'Manrope', 'Segoe UI', Tahoma, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  .dark input,
+  .dark textarea,
+  .dark select {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--input));
+  }
+
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: hsl(var(--muted-foreground));
+    opacity: 0.85;
+  }
+
+  .dark input:disabled,
+  .dark textarea:disabled,
+  .dark select:disabled {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark textarea:-webkit-autofill,
+  .dark textarea:-webkit-autofill:hover,
+  .dark textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: hsl(var(--foreground));
+    -webkit-box-shadow: 0 0 0px 1000px hsl(var(--card)) inset;
+    transition: background-color 9999s ease-in-out 0s;
+    caret-color: hsl(var(--foreground));
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .dark * {
+    scrollbar-color: hsl(223 14% 34%) transparent;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(223 14% 34%);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220 12% 54%);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+@layer components {
+  .panel-surface {
+    @apply rounded-2xl border border-border/80 bg-card/90 shadow-sm shadow-black/5 backdrop-blur;
+  }
+
+  .panel-heading {
+    @apply text-sm font-semibold tracking-wide text-primary;
+  }
+
+  .soft-grid {
+    background-image: linear-gradient(to right, hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .dark .soft-grid {
+    background-image: linear-gradient(to right, hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
+  }
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: white; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; padding: 20px; }
+  .container { width: 950px; }
+
+  .er-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .group { margin-bottom: 20px; }
+  .group-title { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 6px 6px 0 0; color: white; }
+
+  .table-card { border: 2px solid #ddd; border-radius: 8px; overflow: hidden; font-size: 11px; }
+  .table-card .t-header { padding: 8px 10px; font-weight: 700; font-size: 12px; color: white; display: flex; align-items: center; gap: 6px; }
+  .table-card .t-header .icon { font-size: 14px; }
+  .table-card .t-row { padding: 4px 10px; border-top: 1px solid #eee; display: flex; justify-content: space-between; }
+  .table-card .t-row:nth-child(even) { background: #fafafa; }
+  .table-card .t-col { font-size: 10px; color: #666; }
+  .t-pk { color: #F57C00; font-weight: 600; }
+  .t-fk { color: #1976D2; font-weight: 600; }
+
+  .c-user .t-header { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+  .c-user { border-color: #4CAF50; }
+  .c-posting .t-header { background: linear-gradient(135deg, #2196F3, #1565C0); }
+  .c-posting { border-color: #2196F3; }
+  .c-task .t-header { background: linear-gradient(135deg, #FF9800, #E65100); }
+  .c-task { border-color: #FF9800; }
+  .c-qa .t-header { background: linear-gradient(135deg, #9C27B0, #6A1B9A); }
+  .c-qa { border-color: #9C27B0; }
+  .c-auth .t-header { background: linear-gradient(135deg, #F44336, #B71C1C); }
+  .c-auth { border-color: #F44336; }
+  .c-mail .t-header { background: linear-gradient(135deg, #607D8B, #37474F); }
+  .c-mail { border-color: #607D8B; }
+  .c-system .t-header { background: linear-gradient(135deg, #795548, #4E342E); }
+  .c-system { border-color: #795548; }
+
+  .relations { margin-top: 20px; padding: 12px; background: #F5F5F5; border-radius: 8px; }
+  .relations h3 { font-size: 13px; margin-bottom: 8px; color: #333; }
+  .rel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .rel { font-size: 11px; color: #555; padding: 3px 8px; background: white; border-radius: 4px; border: 1px solid #e0e0e0; }
+  .rel strong { color: #1976D2; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="er-grid">
+
+    <!-- Kullanıcı Modülü -->
+    <div>
+      <div class="table-card c-user" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128100;</span> users</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span>email</span> <span class="t-col">VARCHAR (UNIQUE)</span></div>
+        <div class="t-row"><span>password_hash</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>role</span> <span class="t-col">ENUM (ADMIN/USER)</span></div>
+        <div class="t-row"><span>enabled</span> <span class="t-col">BOOLEAN</span></div>
+        <div class="t-row"><span>email_verified</span> <span class="t-col">BOOLEAN</span></div>
+        <div class="t-row"><span>preferred_color</span> <span class="t-col">VARCHAR</span></div>
+      </div>
+      <div class="table-card c-user" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128203;</span> user_profiles</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>first_name, last_name</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>phone</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>department, gpa</span> <span class="t-col">VARCHAR/DECIMAL</span></div>
+        <div class="t-row"><span class="t-fk">FK cv_document_id</span> <span class="t-col">&#8594; documents</span></div>
+      </div>
+      <div class="table-card c-user" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128339;</span> user_availability_slots</div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>day, start_time, end_time</span> <span class="t-col">VARCHAR/TIME</span></div>
+      </div>
+      <div class="table-card c-user" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128203;</span> user_applications</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>position_key</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>motivation_text</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>status</span> <span class="t-col">ENUM (DRAFT/...)</span></div>
+      </div>
+      <div class="table-card c-auth">
+        <div class="t-header"><span class="icon">&#128274;</span> email_verification_tokens</div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>token</span> <span class="t-col">VARCHAR (UUID)</span></div>
+        <div class="t-row"><span>expires_at, used_at</span> <span class="t-col">TIMESTAMP</span></div>
+      </div>
+      <div class="table-card c-auth" style="margin-top:12px;">
+        <div class="t-header"><span class="icon">&#128273;</span> password_reset_tokens</div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>token, expires_at</span> <span class="t-col">VARCHAR/TIMESTAMP</span></div>
+      </div>
+    </div>
+
+    <!-- İlan & Başvuru Modülü -->
+    <div>
+      <div class="table-card c-posting" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128196;</span> application_postings</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span>category</span> <span class="t-col">ENUM (BE/FE/MOB/FS)</span></div>
+        <div class="t-row"><span>title, description</span> <span class="t-col">VARCHAR/TEXT</span></div>
+        <div class="t-row"><span>project_name</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>status</span> <span class="t-col">ENUM (DRAFT/PUB/CLOSED)</span></div>
+      </div>
+      <div class="table-card c-posting" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128233;</span> application_submissions</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span class="t-fk">FK posting_id</span> <span class="t-col">&#8594; application_postings</span></div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>profile_snapshot</span> <span class="t-col">JSONB</span></div>
+        <div class="t-row"><span>status</span> <span class="t-col">ENUM (PEND/APPR/REJ)</span></div>
+        <div class="t-row"><span>UQ(posting_id, user_id)</span> <span class="t-col">UNIQUE</span></div>
+      </div>
+      <div class="table-card c-posting" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128206;</span> posting_attachments</div>
+        <div class="t-row"><span class="t-fk">FK posting_id</span> <span class="t-col">&#8594; application_postings</span></div>
+        <div class="t-row"><span class="t-fk">FK document_id</span> <span class="t-col">&#8594; documents</span></div>
+      </div>
+      <div class="table-card c-system" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128193;</span> documents</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span>storage_key</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>checksum, content_type</span> <span class="t-col">VARCHAR</span></div>
+        <div class="t-row"><span>size</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span class="t-fk">FK uploaded_by</span> <span class="t-col">&#8594; users</span></div>
+      </div>
+      <div class="table-card c-system">
+        <div class="t-header"><span class="icon">&#128221;</span> admin_notes</div>
+        <div class="t-row"><span class="t-fk">FK submission_id</span> <span class="t-col">&#8594; submissions</span></div>
+        <div class="t-row"><span>note_text</span> <span class="t-col">TEXT</span></div>
+        <div class="t-row"><span>created_by_admin</span> <span class="t-col">VARCHAR</span></div>
+      </div>
+    </div>
+
+    <!-- Görev & İletişim Modülü -->
+    <div>
+      <div class="table-card c-task" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#9745;</span> project_tasks</div>
+        <div class="t-row"><span class="t-pk">PK id</span> <span class="t-col">BIGINT</span></div>
+        <div class="t-row"><span class="t-fk">FK posting_id</span> <span class="t-col">&#8594; application_postings</span></div>
+        <div class="t-row"><span>title, description</span> <span class="t-col">VARCHAR/TEXT</span></div>
+        <div class="t-row"><span>due_date</span> <span class="t-col">TIMESTAMP</span></div>
+        <div class="t-row"><span>status</span> <span class="t-col">ENUM (OPEN/CLOSED)</span></div>
+      </div>
+      <div class="table-card c-task" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128101;</span> task_assignments</div>
+        <div class="t-row"><span class="t-fk">FK task_id</span> <span class="t-col">&#8594; project_tasks</span></div>
+        <div class="t-row"><span class="t-fk">FK user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>status</span> <span class="t-col">ENUM (7 durum)</span></div>
+        <div class="t-row"><span>text_answer</span> <span class="t-col">TEXT</span></div>
+        <div class="t-row"><span>assigned/submitted/reviewed_at</span> <span class="t-col">TIMESTAMP</span></div>
+      </div>
+      <div class="table-card c-task" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128206;</span> task_attachments</div>
+        <div class="t-row"><span class="t-fk">FK task_id</span> <span class="t-col">&#8594; project_tasks</span></div>
+        <div class="t-row"><span class="t-fk">FK document_id</span> <span class="t-col">&#8594; documents</span></div>
+      </div>
+      <div class="table-card c-task" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128206;</span> task_submission_files</div>
+        <div class="t-row"><span class="t-fk">FK task_assignment_id</span> <span class="t-col">&#8594; task_assignments</span></div>
+        <div class="t-row"><span class="t-fk">FK document_id</span> <span class="t-col">&#8594; documents</span></div>
+      </div>
+      <div class="table-card c-qa" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#10067;</span> posting_questions</div>
+        <div class="t-row"><span class="t-fk">FK posting_id</span> <span class="t-col">&#8594; application_postings</span></div>
+        <div class="t-row"><span class="t-fk">FK asked_by</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>question_text</span> <span class="t-col">TEXT</span></div>
+        <div class="t-row"><span>publish_scope</span> <span class="t-col">ENUM (PVT/PUB)</span></div>
+      </div>
+      <div class="table-card c-qa" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128172;</span> question_answers</div>
+        <div class="t-row"><span class="t-fk">FK question_id</span> <span class="t-col">&#8594; posting_questions (1:1)</span></div>
+        <div class="t-row"><span>answer_text</span> <span class="t-col">TEXT</span></div>
+      </div>
+      <div class="table-card c-qa" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128227;</span> announcements</div>
+        <div class="t-row"><span>title, content</span> <span class="t-col">VARCHAR/TEXT</span></div>
+      </div>
+      <div class="table-card c-mail" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128231;</span> mail_jobs</div>
+        <div class="t-row"><span>type, status, payload</span> <span class="t-col">ENUM/JSONB</span></div>
+      </div>
+      <div class="table-card c-mail" style="margin-bottom:12px;">
+        <div class="t-header"><span class="icon">&#128206;</span> mail_job_attachments</div>
+        <div class="t-row"><span class="t-fk">FK mail_job_id</span> <span class="t-col">&#8594; mail_jobs</span></div>
+        <div class="t-row"><span class="t-fk">FK document_id</span> <span class="t-col">&#8594; documents</span></div>
+      </div>
+      <div class="table-card c-system">
+        <div class="t-header"><span class="icon">&#128340;</span> timeline_events</div>
+        <div class="t-row"><span>scope_type, event_type</span> <span class="t-col">ENUM</span></div>
+        <div class="t-row"><span class="t-fk">FK actor_user_id</span> <span class="t-col">&#8594; users</span></div>
+        <div class="t-row"><span>payload</span> <span class="t-col">JSONB</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: white; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; padding: 30px; }
+  .container { width: 850px; }
+
+  .participants { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .participant { text-align: center; width: 140px; }
+  .participant .icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-size: 24px; font-weight: bold; }
+  .participant .name { font-size: 13px; font-weight: 600; color: #333; }
+  .participant .sub { font-size: 10px; color: #888; }
+
+  .p-client .icon { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+  .p-filter .icon { background: linear-gradient(135deg, #FF9800, #E65100); }
+  .p-controller .icon { background: linear-gradient(135deg, #7B1FA2, #4A148C); }
+  .p-service .icon { background: linear-gradient(135deg, #1976D2, #0D47A1); }
+  .p-jwt .icon { background: linear-gradient(135deg, #F44336, #B71C1C); }
+
+  .lifelines { display: flex; justify-content: space-between; position: relative; padding: 0 40px; }
+  .lifeline { width: 4px; background: #ddd; min-height: 650px; position: relative; }
+
+  .msg { position: absolute; display: flex; align-items: center; font-size: 11px; }
+  .msg .arrow { height: 2px; background: #333; flex: 1; position: relative; min-width: 60px; }
+  .msg .arrow::after { content: ''; position: absolute; right: -1px; top: -5px; border: 6px solid transparent; border-left: 8px solid #333; }
+  .msg.reverse .arrow::after { right: auto; left: -1px; border-left: none; border-right: 8px solid #333; }
+  .msg .label { position: absolute; top: -18px; white-space: nowrap; font-size: 11px; color: #333; font-weight: 500; }
+
+  .step { position: absolute; left: 0; right: 0; padding: 0 20px; }
+  .step-box { display: flex; align-items: center; margin: 5px 0; }
+  .step-line { flex: 1; height: 2px; position: relative; }
+  .step-line.solid { background: #333; }
+  .step-line.dashed { background: repeating-linear-gradient(90deg, #333 0, #333 6px, transparent 6px, transparent 10px); }
+  .step-line .tip { position: absolute; right: -1px; top: -4px; width: 0; height: 0; border: 5px solid transparent; border-left: 7px solid #333; }
+  .step-line .tip-left { position: absolute; left: -1px; top: -4px; width: 0; height: 0; border: 5px solid transparent; border-right: 7px solid #333; }
+  .step-label { font-size: 11px; color: #333; white-space: nowrap; padding: 2px 6px; background: #f5f5f5; border-radius: 4px; border: 1px solid #e0e0e0; }
+  .step-num { width: 22px; height: 22px; border-radius: 50%; background: #2196F3; color: white; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-right: 8px; flex-shrink: 0; }
+
+  .section { border-left: 3px solid; padding: 12px 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+  .section-login { border-color: #4CAF50; background: #E8F5E9; }
+  .section-auth { border-color: #FF9800; background: #FFF3E0; }
+  .section-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+
+  .flow { display: flex; flex-direction: column; gap: 12px; }
+  .flow-step { display: flex; align-items: flex-start; gap: 10px; }
+  .flow-step .num { width: 24px; height: 24px; border-radius: 50%; color: white; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .flow-step .desc { font-size: 12px; color: #333; line-height: 1.5; }
+  .flow-step .desc code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-family: 'Consolas', monospace; font-size: 11px; }
+
+  .green { background: #4CAF50; }
+  .orange { background: #FF9800; }
+  .blue { background: #2196F3; }
+  .red { background: #F44336; }
+  .purple { background: #7B1FA2; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="section section-login">
+    <div class="section-title" style="color:#2E7D32;">Giriş Akışı (Login Flow)</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num green">1</div>
+        <div class="desc"><strong>İstemci</strong> &rarr; <code>POST /api/v1/auth/login</code> isteği gönderir<br>(e-posta + şifre)</div>
+      </div>
+      <div class="flow-step">
+        <div class="num green">2</div>
+        <div class="desc"><strong>AuthController</strong> isteği karşılar ve <strong>AuthService</strong>'e yönlendirir</div>
+      </div>
+      <div class="flow-step">
+        <div class="num green">3</div>
+        <div class="desc"><strong>AuthService</strong>, <code>UserAccountRepository</code> ile kullanıcıyı bulur<br>BCrypt ile şifre doğrulaması yapar</div>
+      </div>
+      <div class="flow-step">
+        <div class="num green">4</div>
+        <div class="desc"><strong>JwtService</strong>, HMAC-SHA256 ile JWT belirteci oluşturur<br>Payload: <code>{ sub: email, role: ADMIN/USER, iss: "project", exp: 60dk }</code></div>
+      </div>
+      <div class="flow-step">
+        <div class="num green">5</div>
+        <div class="desc"><strong>İstemciye</strong> JWT belirteci ve kullanıcı bilgileri JSON olarak döner<br>Token, <code>localStorage</code>'a kaydedilir</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section-auth">
+    <div class="section-title" style="color:#E65100;">Kimlik Doğrulama Akışı (Her İstek İçin)</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num orange">6</div>
+        <div class="desc"><strong>İstemci</strong>, her API isteğinde <code>Authorization: Bearer &lt;token&gt;</code> başlığını ekler<br>(Axios interceptor otomatik ekler)</div>
+      </div>
+      <div class="flow-step">
+        <div class="num orange">7</div>
+        <div class="desc"><strong>JwtAuthenticationFilter</strong> (OncePerRequestFilter), Authorization başlığını okur<br>Bearer şemasından token'ı çıkarır</div>
+      </div>
+      <div class="flow-step">
+        <div class="num orange">8</div>
+        <div class="desc"><strong>JwtService.validateToken()</strong> çağrılır:<br>&bull; İmza doğrulanır (HMAC-SHA256)<br>&bull; Süre kontrolü yapılır (exp claim)<br>&bull; Issuer doğrulanır</div>
+      </div>
+      <div class="flow-step">
+        <div class="num orange">9</div>
+        <div class="desc"><strong>SecurityContext</strong>'e kimlik bilgileri yerleştirilir<br><code>UsernamePasswordAuthenticationToken</code> oluşturulur</div>
+      </div>
+      <div class="flow-step">
+        <div class="num orange">10</div>
+        <div class="desc"><strong>Spring Security</strong> yetkilendirme kurallarını uygular:<br>&bull; <code>/api/v1/admin/**</code> &rarr; ADMIN rolü gerekli<br>&bull; <code>/api/v1/me/**</code> &rarr; Giriş yapmış kullanıcı gerekli<br>&bull; <code>/api/v1/public/**</code> &rarr; Herkese açık</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 15px; padding: 12px 15px; background: #FFEBEE; border-left: 3px solid #F44336; border-radius: 0 8px 8px 0;">
+    <div class="section-title" style="color:#B71C1C;">Hata Durumları</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num red">!</div>
+        <div class="desc"><strong>Geçersiz/Süresi dolmuş token:</strong> <code>401 Unauthorized</code> &rarr; RestAuthenticationEntryPoint &rarr; İstemci /login'e yönlendirir</div>
+      </div>
+      <div class="flow-step">
+        <div class="num purple">!</div>
+        <div class="desc"><strong>Yetersiz yetki:</strong> <code>403 Forbidden</code> &rarr; RestAccessDeniedHandler &rarr; Erişim engellenir</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
