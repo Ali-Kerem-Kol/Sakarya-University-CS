@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: white; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; padding: 30px; }
+  .container { width: 900px; }
+  h2 { text-align: center; font-size: 16px; color: #333; margin-bottom: 20px; }
+
+  .layers { display: flex; flex-direction: column; gap: 20px; }
+
+  .layer { border: 2px solid #ccc; border-radius: 12px; padding: 15px; position: relative; }
+  .layer-title { position: absolute; top: -12px; left: 20px; background: white; padding: 0 10px; font-weight: bold; font-size: 13px; color: #555; }
+
+  .boxes { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+
+  .box { border-radius: 10px; padding: 14px 20px; text-align: center; min-width: 140px; color: white; font-size: 13px; font-weight: 600; box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
+  .box small { display: block; font-weight: 400; font-size: 11px; margin-top: 4px; opacity: 0.9; }
+
+  .client { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+  .nginx { background: linear-gradient(135deg, #009688, #00695C); }
+  .spring { background: linear-gradient(135deg, #6DB33F, #4E8A2E); }
+  .postgres { background: linear-gradient(135deg, #336791, #1E3A5F); }
+  .pgadmin { background: linear-gradient(135deg, #326690, #1B4D6E); }
+  .mailpit { background: linear-gradient(135deg, #FF7043, #D84315); }
+  .docker { background: linear-gradient(135deg, #2196F3, #1565C0); }
+  .react { background: linear-gradient(135deg, #61DAFB, #0097A7); color: #1a1a2e; }
+
+  .arrow-down { text-align: center; font-size: 28px; color: #888; line-height: 1; }
+  .arrow-label { text-align: center; font-size: 11px; color: #888; margin: -5px 0; }
+
+  .docker-wrap { border: 3px dashed #2196F3; border-radius: 16px; padding: 20px; position: relative; }
+  .docker-label { position: absolute; top: -14px; right: 20px; background: #2196F3; color: white; padding: 3px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+  .port { font-size: 10px; color: #999; margin-top: 2px; }
+
+  .row { display: flex; gap: 15px; justify-content: center; align-items: center; }
+  .connector { width: 30px; height: 2px; background: #ccc; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="docker-wrap">
+    <div class="docker-label">Docker Compose Network (ats-net)</div>
+    <div class="layers">
+
+      <!-- İstemci Katmanı -->
+      <div class="layer">
+        <div class="layer-title">Sunum Katmanı (Port: 3000)</div>
+        <div class="boxes">
+          <div class="box client">
+            Web Tarayıcı
+            <small>Kullanıcı Arayüzü</small>
+          </div>
+          <div style="display:flex;align-items:center;font-size:24px;color:#888">&#8594;</div>
+          <div class="box nginx">
+            nginx
+            <small>Web Sunucusu / Ters Proxy</small>
+          </div>
+          <div style="display:flex;align-items:center;font-size:24px;color:#888">&#8594;</div>
+          <div class="box react">
+            React 19 + TypeScript
+            <small>SPA Frontend (Vite 7.3)</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">&#8595;</div>
+      <div class="arrow-label">REST API (JSON / HTTP)</div>
+
+      <!-- Sunucu Katmanı -->
+      <div class="layer">
+        <div class="layer-title">İş Mantığı Katmanı (Port: 8080)</div>
+        <div class="boxes">
+          <div class="box spring" style="min-width: 200px;">
+            Spring Boot 3.3.4
+            <small>Java 17 | Spring Security | JPA</small>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="box" style="background:linear-gradient(135deg,#7B1FA2,#4A148C);min-width:120px;padding:10px 14px;">
+              Controller
+              <small>29 adet</small>
+            </div>
+            <div class="box" style="background:linear-gradient(135deg,#E65100,#BF360C);min-width:120px;padding:10px 14px;">
+              Service
+              <small>26 adet</small>
+            </div>
+            <div class="box" style="background:linear-gradient(135deg,#1565C0,#0D47A1);min-width:120px;padding:10px 14px;">
+              Repository
+              <small>21 adet</small>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="box" style="background:linear-gradient(135deg,#F57C00,#E65100);min-width:120px;padding:10px 14px;">
+              JWT Auth
+              <small>HMAC-SHA256</small>
+            </div>
+            <div class="box" style="background:linear-gradient(135deg,#00838F,#006064);min-width:120px;padding:10px 14px;">
+              Flyway
+              <small>12 Migration</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">&#8595;</div>
+      <div class="arrow-label">JDBC (SQL)</div>
+
+      <!-- Veri Katmanı -->
+      <div class="layer">
+        <div class="layer-title">Veri Katmanı</div>
+        <div class="boxes">
+          <div class="box postgres">
+            PostgreSQL 16
+            <small>20 Tablo | Port: 5432</small>
+          </div>
+          <div class="box pgadmin">
+            pgAdmin 4
+            <small>DB Yönetim | Port: 5050</small>
+          </div>
+          <div class="box mailpit">
+            Mailpit
+            <small>E-posta Test | Port: 8025</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

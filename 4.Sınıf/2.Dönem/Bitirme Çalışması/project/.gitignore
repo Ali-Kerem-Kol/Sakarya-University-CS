@@ -1,0 +1,49 @@
+# Environment
+.env
+
+# Java / Maven
+target/
+*.iml
+*.iws
+*.ipr
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDE
+.idea/
+.vscode/
+.aiassistant/
+.claude/
+*.swp
+*.swo
+
+# Spring Boot
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Node
+node_modules/
+package-lock.json
+dist/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Docker volumes
+data/
+
+# Storage uploads
+backend/storage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
